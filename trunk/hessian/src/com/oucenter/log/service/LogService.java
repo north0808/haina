@@ -1,4 +1,4 @@
-package com.soar.log.service;
+package com.oucenter.log.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +7,7 @@ import com.oucenter.core.service.BaseSerivce;
 import com.oucenter.log.dao.ILogDAO;
 import com.oucenter.log.domain.Log;
 import com.oucenter.log.mvc.LogCommand;
-import com.soar.log.service.ILogService;
+import com.oucenter.log.service.ILogService;
 
 /**
  * @author:付翔.

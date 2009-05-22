@@ -1,4 +1,4 @@
-package com.soar.log.service;
+package com.oucenter.log.service;
 
 import java.util.List;
 

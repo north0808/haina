@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
-import com.soar.log.service.ILogService;
+import com.oucenter.log.service.ILogService;
 
 /**
  * @author:付翔.
