@@ -20,12 +20,6 @@
 		</property>
 	</bean>
 	
-	<bean id="messageSource"
-		class="org.springframework.context.support.ResourceBundleMessageSource">
-		<property name="basename">
-			<value>resource/messages_zh_CN</value>
-		</property>
-	</bean>
 	
 	<bean id="localeResolver"
 		class="org.springframework.web.servlet.i18n.CookieLocaleResolver">

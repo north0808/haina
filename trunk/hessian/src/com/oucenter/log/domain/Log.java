@@ -10,7 +10,7 @@ import com.oucenter.core.model.IModel;
 *
  * @hibernate.class table="LOG"
  */
-@Component
+ @Component
 public class Log implements IModel{
 
 	 // Fields    

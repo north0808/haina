@@ -3,21 +3,22 @@ package com.oucenter.log.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import com.oucenter.core.service.BaseSerivce;
 import com.oucenter.log.dao.ILogDAO;
 import com.oucenter.log.domain.Log;
 import com.oucenter.log.mvc.LogCommand;
-import com.oucenter.log.service.ILogService;
 
 /**
  * @author:付翔.
  * @createDate:2007-7-17.
  * @classInfo:
  */
+@Component
+public class LogService extends BaseSerivce<ILogDAO,Log,String> implements ILogService {
 
-public class LogService extends BaseSerivce<Log> implements ILogService {
-
-	private ILogDAO logdao;
+	//private ILogDao logdao;
 	
 	public List<Log> findByPaginate(LogCommand logc,int startIndex,int rowCount) {
 		List<Log>  list = new ArrayList<Log>();
@@ -44,10 +45,13 @@ public class LogService extends BaseSerivce<Log> implements ILogService {
 		String[] parm = new String[]{logc.getUser(),logc.getRemark(),
 				logc.getStartIp(),logc.getEndIp(),
 				logc.getStartTime(),logc.getEndTime()};
-		return logdao.getSizebyParams(parm);
+//		return logdao.getSizebyParams(parm);
+		return null;
 	}
 
-	public void setLogdao(ILogDAO logdao) {
-		this.logdao = logdao;
-	}
+//	public void setLogdao(ILogDao logdao) {
+//		this.logdao = logdao;
+//	}
+
+
 }

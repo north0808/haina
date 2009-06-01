@@ -1,10 +1,8 @@
 package com.oucenter.core.finder;
 
 import java.lang.reflect.Method;
-import java.util.List;
 import java.util.Iterator;
-
-import org.hibernate.ScrollableResults;
+import java.util.List;
 
 public interface FinderExecutor<T>
 {

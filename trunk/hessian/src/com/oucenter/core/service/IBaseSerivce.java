@@ -1,8 +1,8 @@
 package com.oucenter.core.service;
 
-import java.util.List;
+import java.io.Serializable;
 
-import com.oucenter.core.dao.IBaseDAO;
+import com.oucenter.core.dao.IBaseDao;
 import com.oucenter.core.model.IModel;
 /**
  * 业务与管理分离,业务逻辑不处理异常.
@@ -11,16 +11,17 @@ import com.oucenter.core.model.IModel;
  * @author X_FU.
  *
  */
-public interface IBaseSerivce<T extends IModel> {
+public interface IBaseSerivce<D extends IBaseDao<T,PK>,T extends IModel,PK extends Serializable> {
 	
-	IBaseDAO<T> getBaseDAO();
-	void save(T model);
+	D getBaseDao();
+	
+	void create(T model);
 	void saveOrUpdate(T model);
 	void update(T model); 
 	void delete(T model);
-	void deleteById(Object id);
+	void deleteById(PK id);
 	//IBaseDTO findById(Object id);
-	T findById(Object id);
-	List<T> findAll();
-	Long findAllSize();
+	T read(PK id);
+//	List<IModel> findAll();
+//	Long findAllSize();
 }

@@ -14,9 +14,12 @@ public class FinderIntroductionInterceptor implements IntroductionInterceptor
 
     public Object invoke(MethodInvocation methodInvocation) throws Throwable
     {
-
-        FinderExecutor executor = (FinderExecutor) methodInvocation.getThis();
-
+    	FinderExecutor executor = null;
+    	if(methodInvocation.getClass().isAssignableFrom(FinderExecutor.class)){
+    		executor = (FinderExecutor) methodInvocation.getThis();
+    	}else{
+    		return methodInvocation.proceed();
+    	}
         String methodName = methodInvocation.getMethod().getName();
         if(methodName.startsWith("find") || methodName.startsWith("list"))
         {

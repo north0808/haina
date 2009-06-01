@@ -2,12 +2,15 @@ package com.oucenter.core.finder.impl;
 
 import java.lang.reflect.Method;
 
+import org.springframework.stereotype.Component;
+
 import com.oucenter.core.finder.FinderNamingStrategy;
 
 
 /**
  * Looks up Hibernate named queries based on the simple name of the invoced class and the method name of the invocation
  */
+@Component
 public class ExtendedFinderNamingStrategy implements FinderNamingStrategy
 {
     // Always look for queries that start with findBy (even if method is iterateBy.. or scrollBy...)

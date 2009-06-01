@@ -2,33 +2,30 @@ package com.oucenter.log.dao;
 
 import java.util.List;
 
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.springframework.orm.hibernate3.HibernateCallback;
+import org.springframework.stereotype.Component;
 
-import com.oucenter.core.dao.BaseDAO;
+import com.oucenter.core.dao.BaseDao;
 import com.oucenter.log.domain.Log;
 /**
  * @author:付翔.
  * @createDate:2007-7-16.
  * @classInfo:
  */
-
-public class LogDAO extends BaseDAO<Log> implements ILogDAO {
+@Component
+public class LogDAO extends BaseDao<Log,String> implements ILogDAO{
 
 	@SuppressWarnings("unchecked")
 	public List<Log> findlogbyParams( String[] param,final int startIndex,final int rowCount) {
 		final String hqlStr = toHql(param,false);
-		return (List<Log>)getHibernateTemplate().execute(   
-                new HibernateCallback() {   
-                    public Object doInHibernate(Session session) throws HibernateException {   
-                        Query query = session.createQuery(hqlStr);   
-                        query.setFirstResult(startIndex).setMaxResults(rowCount);   
-                        return query.list();   
-                    }   
-                }   
-            );   
+//		return (List<Log>)getHibernateTemplate().execute(   
+//                new HibernateCallback() {   
+//                    public Object doInHibernate(Session session) throws HibernateException {   
+//                        Query query = session.createQuery(hqlStr);   
+//                        query.setFirstResult(startIndex).setMaxResults(rowCount);   
+//                        return query.list();   
+//                    }   
+//                }   
+//            );   
 		
 //		Session session=this.getHibernateTemplate().getSessionFactory().openSession(); 
 //		Query query = session.createQuery(hql.toString());
@@ -36,12 +33,14 @@ public class LogDAO extends BaseDAO<Log> implements ILogDAO {
 //        return query.list();
 
 		//return this.getResultByHQLAndParam(hql.toString());
+		return null;
 	}
 
 
 	public Long getSizebyParams(String[] param) {
 		final String hqlStr = toHql(param,true);
-		return (Long) getHibernateTemplate().find(hqlStr).get(0);
+//		return (Long) getHibernateTemplate().find(hqlStr).get(0);
+		return null;
 	}
 	private String toHql(String[] param,boolean isGetSize){
 		StringBuffer hql = null;

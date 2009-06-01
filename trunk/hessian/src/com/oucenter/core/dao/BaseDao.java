@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 import com.oucenter.core.finder.FinderArgumentTypeFactory;
 import com.oucenter.core.finder.FinderExecutor;
 import com.oucenter.core.finder.FinderNamingStrategy;
+import com.oucenter.core.model.IModel;
 
 
 /**
@@ -26,16 +27,16 @@ import com.oucenter.core.finder.FinderNamingStrategy;
  */
 @SuppressWarnings("unchecked")
 @Component
-public class GenericDaoHibernateImpl<T, PK extends Serializable> implements GenericDao<T, PK>, FinderExecutor
+public class BaseDao<T extends IModel, PK extends Serializable>  implements IBaseDao<T, PK>, FinderExecutor
 {
-	@Autowired
+	@Autowired(required=true)
     private SessionFactory sessionFactory;
-	@Autowired
+	@Autowired(required=true)
     private FinderNamingStrategy namingStrategy;// = new SimpleFinderNamingStrategy(); // Default. Can override in config
-	@Autowired
+	@Autowired(required=true)
 	private FinderArgumentTypeFactory argumentTypeFactory;// = new SimpleFinderArgumentTypeFactory(); // Default. Can override in config
 
-    @Autowired
+	@Autowired(required=true)
     private T type;
 
     public PK create(T o)
@@ -155,4 +156,26 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable> implements Gene
     {
         return argumentTypeFactory;
     }
+
+	@Override
+	public void saveOrUpdate(T newInstance) {
+		 getSession().saveOrUpdate(newInstance);
+	}
+	
+	@Override
+	public void deleteById(PK id) {
+		getSession().delete(read(id));
+	}
+
+	@Override
+	public void setBaseModel(T t) {
+		type = t;
+		
+	}
+
+	@Override
+	public T getBaseModel() {
+		return type;
+	}
+	
 }

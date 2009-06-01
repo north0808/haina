@@ -3,6 +3,7 @@ package com.oucenter.log.service;
 import java.util.List;
 
 import com.oucenter.core.service.IBaseSerivce;
+import com.oucenter.log.dao.ILogDAO;
 import com.oucenter.log.domain.Log;
 import com.oucenter.log.mvc.LogCommand;
 
@@ -12,7 +13,7 @@ import com.oucenter.log.mvc.LogCommand;
  * @classInfo:
  */
 
-public interface ILogService extends IBaseSerivce<Log> {
+public interface ILogService extends IBaseSerivce<ILogDAO,Log,String> {
 	
 	/*分页*/
 	public List<Log> findByPaginate(LogCommand logc,int startIndex,int rowCount);

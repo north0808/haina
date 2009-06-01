@@ -1,65 +1,74 @@
 package com.oucenter.core.service;
 
 import java.io.Serializable;
-import java.util.List;
 
-import com.oucenter.core.dao.IBaseDAO;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.oucenter.core.dao.IBaseDao;
 import com.oucenter.core.model.IModel;
 /**
  *  基本的Service层实现.
  * @author X_FU.
  *
  */
-@SuppressWarnings("unchecked")
-public abstract class BaseSerivce<T extends IModel> implements IBaseSerivce<T> {
+
+
+public  class BaseSerivce<D extends IBaseDao<T,PK>,T extends IModel,PK extends Serializable> implements IBaseSerivce<D,T,PK> {
 	
-	/*基本DAO的注入*/
-	private IBaseDAO<T> baseDAO;
 	
+	private D baseDao;
+	
+
+	@Autowired(required=true)
+	public void setBaseDao(D baseDao) {
+		this.baseDao = baseDao;
+	}
+
+	@Override
+	public void create(T model) {
+		baseDao.create(model);
+	}
+
+	@Override
 	public void delete(T model) {
-		//BeanUtil.copyPropertie(dto, baseDAO.getBaseModel());
-		baseDAO.deleteModel(model);
+		baseDao.delete(model);
 	}
 
-	public void deleteById(Object id) {
-		baseDAO.deleteModel( (Class<T>) baseDAO.getBaseModel().getClass(), (Serializable)id);
-	}
-	/**
-	 */
-	public List<T> findAll() {
-		return baseDAO.getModels( (Class<T>) baseDAO.getBaseModel().getClass());
-	}
-	public Long findAllSize() {
-		return baseDAO.getModelSize((Class<T>) baseDAO.getBaseModel().getClass());
+	@Override
+	public void deleteById(PK id) {
+		baseDao.deleteById(id);
 	}
 
-	public T findById(Object id) {
-		return baseDAO.getModel((Class<T>) baseDAO.getBaseModel().getClass(), (Serializable)id);
-		 
+//	@Override
+//	public List<IModel> findAll() {
+//		return null;
+//	}
+
+	@Override
+	public D getBaseDao() {
+		return baseDao;
 	}
 
-	public void save(T model){
-		baseDAO.saveModel(model);
+	@Override
+	public T read(PK id) {
+		return baseDao.read(id);
 	}
 
-	public void update(T model) {
-		baseDAO.updateModel(model);
-	}
-	
-
-
+	@Override
 	public void saveOrUpdate(T model) {
-		baseDAO.saveOrUpdateModel(model);
-		
+		baseDao.saveOrUpdate(model);
 	}
 
-	public void setBaseDAO(IBaseDAO<T> baseDAO) {
-		this.baseDAO = baseDAO;
+	@Override
+	public void update(T model) {
+		baseDao.update(model);
 	}
+//
+//	@Override
+//	public Long findAllSize() {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 	
-	public IBaseDAO<T> getBaseDAO() {
-		return baseDAO;
-	}
-
 
 }

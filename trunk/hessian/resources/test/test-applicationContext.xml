@@ -13,16 +13,22 @@
  <context:component-scan base-package="com.oucenter">    
  </context:component-scan> 
 
-<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+<bean id="dataSource"  class="org.springframework.jdbc.datasource.DriverManagerDataSource">
      <property name="driverClassName">
-    	<value>org.logicalcobwebs.proxool.ProxoolDriver</value>
-    </property>
-    <property name="url">
-    	<value>proxool.oucenterdb</value>
-    </property>
+     <value>com.mysql.jdbc.Driver</value>
+     </property>
+     <property name="url">
+     <value>jdbc:mysql://localhost:3306/oucenter</value>
+     </property>
+     <property name="username">
+     <value>root</value>
+     </property>
+     <property name="password">
+     <value>root</value>
+     </property>
    </bean>
 
-<!--Hibernate的连接,事务管理等由sessionFactroy开始-->
+<!--Hibernate��l��,����������sessionFactroy��ʼ-->
 
 <bean id="sessionFactory"
 			class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
@@ -58,42 +64,7 @@
             <value>org.hibernate.cfg.ImprovedNamingStrategy.INSTANCE</value>
         </property>
     </bean>
- <!-- enable the configuration of transactional behavior based on annotations -->
-  <tx:annotation-driven transaction-manager="txManager"/>
-
-  <!-- a PlatformTransactionManager is still required -->
-  <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-  <!-- (this dependency is defined somewhere else) -->
-  <property name="dataSource" ref="dataSource"/>
-  </bean>
-
-   
-<!--以下是利用AspectJ AOP进行拦截,以下是针对以上的拦截进行事务配置-->
-<aop:config>
-				<!-- Core框架事务拦截 --> 
-	 <aop:pointcut id="serviceOperation"
-          expression="execution(* com.oucenter.core.service.*.*(..))"/>
-	 <aop:advisor pointcut-ref="serviceOperation" 
-				advice-ref="oucenterAdvice"/>
-				<!-- security安全事务拦截 
-	<aop:advisor pointcut="execution(* com.soar.security.service.SecurityManager.*(..))" 
-	  			advice-ref="oucenterAdvice"/>  
-	   应用系统(App)事务拦截 
-	<aop:advisor pointcut="execution(* service.*.*(..))" 
-				advice-ref="oucenterAdvice"/>-->
-	  </aop:config>
-	     	
-	<!--基本事务定义,使用transactionManager作事务管理,默认的设置请参考Spring文档事务一章. -->
-	     <tx:advice id="oucenterAdvice" transaction-manager="txManager">   
-	       <tx:attributes>       
-	         <tx:method name="save*" propagation="REQUIRES_NEW"/> 
-	         <tx:method name="creat*" propagation="REQUIRES_NEW"/>     
-	         <tx:method name="remove*" propagation="REQUIRES_NEW"/> 
-	         <tx:method name="del*" propagation="REQUIRES_NEW"/> 
-	         <tx:method name="up*" propagation="REQUIRES_NEW"/>  
-	         <tx:method name="*"/>  
-	       </tx:attributes>
-	     </tx:advice> 
+ 
 
 </beans>
    

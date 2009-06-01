@@ -6,6 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 import org.springframework.aop.AfterReturningAdvice;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.oucenter.core.util.Constants;
 import com.oucenter.core.util.DateUtil;
@@ -19,10 +21,11 @@ import com.oucenter.log.domain.Log;
  * @createDate:2007-7-16.
  * @classInfo:系统响应请求后，日志织入。 
  */
-
+@Component
 public class LogAfterAdvice implements AfterReturningAdvice {
 	
 	private String handleName="submit";
+	@Autowired(required=true)
 	private ILogDAO logdao;
 	private String pattern = "yyyy-MM-dd HH:mm:ss";
 	
@@ -57,7 +60,7 @@ public class LogAfterAdvice implements AfterReturningAdvice {
 				long useTime =  endTime - startTime;
 				log.setRemark(""+useTime);
 			}
-			logdao.saveModel(log);
+			logdao.create(log);
 			handleName="submit";
 			//debugInfo
 //			if(null == SafeMapUtil.get(Constants.STARTTIME)){
@@ -85,8 +88,5 @@ public class LogAfterAdvice implements AfterReturningAdvice {
 //			logger.info("Status: Undesign.");
 //			logger.info("----------"+"UseTime:"+useTime+"(ms)----------");
 		}
-	}
-	public void setLogdao(ILogDAO logdao) {
-		this.logdao = logdao;
 	}
 }

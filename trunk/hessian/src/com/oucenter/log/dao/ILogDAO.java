@@ -2,7 +2,7 @@ package com.oucenter.log.dao;
 
 import java.util.List;
 
-import com.oucenter.core.dao.IBaseDAO;
+import com.oucenter.core.dao.IBaseDao;
 import com.oucenter.log.domain.Log;
 
 /**
@@ -11,7 +11,7 @@ import com.oucenter.log.domain.Log;
  * @classInfo:
  */
 
-public interface ILogDAO extends IBaseDAO<Log> {
+public interface ILogDAO extends IBaseDao<Log, String> {
 	
 	List<Log> findlogbyParams( String[] param,int startIndex,int rowCount);
 	Long getSizebyParams( String[] param);
