@@ -42,64 +42,23 @@ public class PersonDaoTest extends TestCase
         // Read
         Log foundLog = logService.read(id);
         assertEquals(foundLog.getId(), log.getId());
-//
-//        restartSession();
-//
-//        // Update
-//        Integer updateWeight = 90;
-//        foundPerson.setWeight(updateWeight);
-//        personDao.update(foundPerson);
-//        Person updatedPerson = personDao.read(id);
-//        assertEquals(updateWeight, updatedPerson.getWeight());
-//
-//        restartSession();
-//
-//        // Delete
-//        personDao.delete(updatedPerson);
-//        restartSession();
-//        assertNull(personDao.read(id));
+
+        restartSession();
+
+        // Update
+        foundLog.setInfoClass("test");
+        logService.update(foundLog);
+        Log updatedLog = logService.read(id);
+        assertEquals("test", updatedLog.getInfoClass());
+
+        restartSession();
+
+        // Delete
+        logService.deleteById(id);
+        restartSession();
+        assertNull(logService.read(id));
     }
 
-//    public void testFindByName() throws Exception
-//    {
-//        PersonDao personDao = getPersonDao();
-//        Person person1 = new Person("Mellqvist", 88);
-//        personDao.create(person1);
-//        Person person2 = new Person("Doe", 80);
-//        personDao.create(person2);
-//
-//        restartSession();
-//
-//        List<Person> byName = personDao.findByName("Mellqvist");
-//        assertTrue(byName.size() == 1);
-//        assertEquals(person1.getWeight(), byName.get(0).getWeight());
-//
-//        restartSession();
-//
-//        personDao.delete(person1);
-//        personDao.delete(person2);
-//    }
-//
-//    public void testIterateByWeight() throws Exception
-//    {
-//        PersonDao personDao = getPersonDao();
-//        Person person1 = new Person("Mellqvist", 88);
-//        personDao.create(person1);
-//        Person person2 = new Person("Doe", 80);
-//        personDao.create(person2);
-//
-//        restartSession();
-//
-//        Iterator<Person> byWeight = personDao.iterateByWeight(person1.getWeight());
-//        assertTrue(byWeight.hasNext());
-//        Person found = byWeight.next();
-//        assertEquals(person1.getWeight(), found.getWeight());
-//
-//        restartSession();
-//
-//        personDao.delete(person1);
-//        personDao.delete(person2);
-//    }
 
     protected void setUp() throws Exception
     {
