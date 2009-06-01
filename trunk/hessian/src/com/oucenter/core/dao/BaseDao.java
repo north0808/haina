@@ -1,22 +1,17 @@
 package com.oucenter.core.dao;
 
 import java.io.Serializable;
-import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.Iterator;
+import java.math.BigInteger;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.type.Type;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.SessionFactoryUtils;
 import org.springframework.stereotype.Component;
 
-import com.oucenter.core.finder.FinderArgumentTypeFactory;
-import com.oucenter.core.finder.FinderExecutor;
-import com.oucenter.core.finder.FinderNamingStrategy;
 import com.oucenter.core.model.IModel;
 
 
@@ -27,15 +22,11 @@ import com.oucenter.core.model.IModel;
  */
 @SuppressWarnings("unchecked")
 @Component
-public class BaseDao<T extends IModel, PK extends Serializable>  implements IBaseDao<T, PK>, FinderExecutor
+public class BaseDao<T extends IModel, PK extends Serializable>  implements IBaseDao<T, PK>
 {
 	@Autowired(required=true)
     private SessionFactory sessionFactory;
-	@Autowired(required=true)
-    private FinderNamingStrategy namingStrategy;// = new SimpleFinderNamingStrategy(); // Default. Can override in config
-	@Autowired(required=true)
-	private FinderArgumentTypeFactory argumentTypeFactory;// = new SimpleFinderArgumentTypeFactory(); // Default. Can override in config
-
+	
 	@Autowired(required=true)
     private T type;
 
@@ -59,103 +50,13 @@ public class BaseDao<T extends IModel, PK extends Serializable>  implements IBas
         getSession().delete(o);
     }
 
-    public List<T> executeFinder(Method method, final Object[] queryArgs)
-    {
-        final Query namedQuery = prepareQuery(method, queryArgs);
-        return (List<T>) namedQuery.list();
-    }
-
-    public Iterator<T> iterateFinder(Method method, final Object[] queryArgs)
-    {
-        final Query namedQuery = prepareQuery(method, queryArgs);
-        return (Iterator<T>) namedQuery.iterate();
-    }
-
-//    public ScrollableResults scrollFinder(Method method, final Object[] queryArgs)
-//    {
-//        final Query namedQuery = prepareQuery(method, queryArgs);
-//        return (ScrollableResults) namedQuery.scroll();
-//    }
-
-    private Query prepareQuery(Method method, Object[] queryArgs)
-    {
-        final String queryName = getNamingStrategy().queryNameFromMethod(type.getClass(), method);
-        final Query namedQuery = getSession().getNamedQuery(queryName);
-        String[] namedParameters = namedQuery.getNamedParameters();
-        if(namedParameters.length==0)
-        {
-            setPositionalParams(queryArgs, namedQuery);
-        } else {
-            setNamedParams(namedParameters, queryArgs, namedQuery);
-        }
-        return namedQuery;
-    }
-
-    private void setPositionalParams(Object[] queryArgs, Query namedQuery)
-    {
-        // Set parameter. Use custom Hibernate Type if necessary
-        if(queryArgs!=null)
-        {
-            for(int i = 0; i < queryArgs.length; i++)
-            {
-                Object arg = queryArgs[i];
-                Type argType = getArgumentTypeFactory().getArgumentType(arg);
-                if(argType != null)
-                {
-                    namedQuery.setParameter(i, arg, argType);
-                }
-                else
-                {
-                    namedQuery.setParameter(i, arg);
-                }
-            }
-        }
-    }
-
-    private void setNamedParams(String[] namedParameters, Object[] queryArgs, Query namedQuery)
-    {
-        // Set parameter. Use custom Hibernate Type if necessary
-        if(queryArgs!=null)
-        {
-            for(int i = 0; i < queryArgs.length; i++)
-            {
-                Object arg = queryArgs[i];
-                Type argType = getArgumentTypeFactory().getArgumentType(arg);
-                if(argType != null)
-                {
-                    namedQuery.setParameter(namedParameters[i], arg, argType);
-                }
-                else
-                {
-                    if(arg instanceof Collection) {
-                        namedQuery.setParameterList(namedParameters[i], (Collection) arg);
-                    }
-                    else
-                    {
-                        namedQuery.setParameter(namedParameters[i], arg);
-                    }
-                }
-            }
-        }
-    }
-
+   
     public Session getSession()
     {
         boolean allowCreate = true;
         return SessionFactoryUtils.getSession(sessionFactory, allowCreate);
     }
 
-
-    public FinderNamingStrategy getNamingStrategy()
-    {
-        return namingStrategy;
-    }
-
-
-    public FinderArgumentTypeFactory getArgumentTypeFactory()
-    {
-        return argumentTypeFactory;
-    }
 
 	@Override
 	public void saveOrUpdate(T newInstance) {
@@ -176,6 +77,24 @@ public class BaseDao<T extends IModel, PK extends Serializable>  implements IBas
 	@Override
 	public T getBaseModel() {
 		return type;
+	}
+
+	@Override
+	public List<T> getModels(boolean useCache) {
+		Criteria c=getSession().createCriteria(type.getClass());  
+		c.setCacheable(useCache);  
+		return c.list(); 
+	}
+
+	@Override
+	public Long getModelSize() {
+		Query q = getSession().createSQLQuery("select count(*) from " + type.getClass().getSimpleName());  
+		return  ((BigInteger)q.list().get(0)).longValue(); 
+	}
+
+	@Override
+	public T load(PK id) {
+		 return (T) getSession().load(type.getClass(), id);
 	}
 	
 }

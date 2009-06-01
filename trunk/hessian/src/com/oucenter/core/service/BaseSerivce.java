@@ -1,6 +1,7 @@
 package com.oucenter.core.service;
 
 import java.io.Serializable;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -63,12 +64,21 @@ public  class BaseSerivce<D extends IBaseDao<T,PK>,T extends IModel,PK extends S
 	public void update(T model) {
 		baseDao.update(model);
 	}
-//
-//	@Override
-//	public Long findAllSize() {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
+
+	@Override
+	public List<T> findAll(boolean useCache) {
+		return baseDao.getModels(useCache);
+	}
+
+	@Override
+	public Long findAllSize() {
+		return baseDao.getModelSize();
+	}
+
+	@Override
+	public T load(PK id) {
+		return baseDao.load(id);
+	}
 	
 
 }

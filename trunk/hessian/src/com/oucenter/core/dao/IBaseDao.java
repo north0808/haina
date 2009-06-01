@@ -1,6 +1,7 @@
 package com.oucenter.core.dao;
 
 import java.io.Serializable;
+import java.util.List;
 
 import com.oucenter.core.model.IModel;
 
@@ -17,6 +18,8 @@ public interface IBaseDao<T extends IModel, PK extends Serializable>
     PK create(T newInstance);
 
     T read(PK id);
+    //Load from cache
+    T load(PK id);
     
     void saveOrUpdate(T newInstance);
     
@@ -29,4 +32,8 @@ public interface IBaseDao<T extends IModel, PK extends Serializable>
     void setBaseModel(T t);
     
     T getBaseModel();
+    
+	public List<T> getModels(boolean useCache);
+	
+	public Long getModelSize();
 }

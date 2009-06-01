@@ -12,7 +12,7 @@
             name="com.oucenter.log.domain.Log"
             table="LOG"
     >
-
+	
     <id
         name="id"
             column="ID"
