@@ -18,7 +18,7 @@
      <value>com.mysql.jdbc.Driver</value>
      </property>
      <property name="url">
-     <value>jdbc:mysql://localhost:3306/oucenter</value>
+     <value>jdbc:mysql://localhost:3306/oucenter?useUnicode=true&amp;characterEncoding=utf8</value>
      </property>
      <property name="username">
      <value>root</value>
