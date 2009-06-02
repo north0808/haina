@@ -6,6 +6,6 @@ import java.io.Serializable;
  * @author X_FU.
  *
  */
-public interface  IModel extends Serializable {    
+public interface  IModel extends Serializable , Cloneable{    
 	
 }
