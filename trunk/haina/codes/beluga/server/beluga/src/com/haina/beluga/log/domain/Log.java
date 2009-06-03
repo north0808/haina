@@ -2,7 +2,7 @@ package com.haina.beluga.log.domain;
 
 import org.springframework.stereotype.Component;
 
-import com.haina.beluga.core.model.IModel;
+import com.haina.beluga.core.model.VersionalModel;
 
 
 /**
@@ -11,12 +11,11 @@ import com.haina.beluga.core.model.IModel;
  * @hibernate.class table="LOG"
  */
  @Component
-public class Log implements IModel{
+public class Log extends VersionalModel{
 
 	 // Fields    
 	private static final long serialVersionUID = 712763106703674149L;
 	
-	private String id;
    // private Account account;
     private String ip;
     private String roleName;
@@ -25,17 +24,7 @@ public class Log implements IModel{
     private String infoClass;
     private String remark;
 
-    /**
-	 * @hibernate.id column="ID" generator-class="uuid.hex"  unsaved-value="null"
-	 * @return String
-	 */
-    public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
+    
 	 /**
 	 * @hibernate.property column="HANDLE" length="20"
 	 * @return String
@@ -102,19 +91,42 @@ public class Log implements IModel{
 	public void setRoleName(String roleName) {
 		this.roleName = roleName;
 	}
-//	/**
-//	 * @hibernate.many-to-one  name="account" class="com.soar.security.domain.Account"
-//	 *              column="ACCOUNT_ID"
-//	 *              not-null="false"
-//	 *              lazy="false"
-//	 */ 
-//	public Account getAccount() {
-//		return account;
-//	}
-//
-//	public void setAccount(Account account) {
-//		this.account = account;
-//	}
+
+	public Long getVersion() {
+		// TODO Auto-generated method stub
+		return version;
+	}
+	@Override
+	public boolean equals(Object object) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		// TODO Auto-generated method stub
+		return super.clone();
+	}
+	 /**
+	 * @hibernate.id column="ID" generator-class="uuid.hex"  unsaved-value="null"
+	 * @return String
+	 */
+	public String getId() {
+		// TODO Auto-generated method stub
+		return this.id;
+	}
 	
 	   
 }

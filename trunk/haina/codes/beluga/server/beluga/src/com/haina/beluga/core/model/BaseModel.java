@@ -23,7 +23,7 @@ public abstract class BaseModel implements IModel {
 		    this.id = id;
 		}
 	}
-
+	
 	public abstract String getId();
 	
 	public boolean isNew() {
