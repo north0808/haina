@@ -10,6 +10,7 @@ import org.springframework.orm.hibernate3.SessionFactoryUtils;
 import org.springframework.orm.hibernate3.SessionHolder;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
+import com.haina.beluga.log.domain.Log;
 import com.haina.beluga.log.service.LogService;
 
 /**
@@ -30,8 +31,9 @@ public class LogDaoTest extends TestCase
 
         // Create
     	LogService logService = getLogService();
-//    	Log log = new Log();
-//    	logService.create(log);
+    	Log log = new Log();
+    	log.setVersion(new Long(0));
+    	logService.create(log);
 //
 //        assertNotNull(log.getId());
 //        String id = log.getId();

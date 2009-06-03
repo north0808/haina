@@ -10,7 +10,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.SessionFactoryUtils;
-import org.springframework.stereotype.Component;
 
 import com.haina.beluga.core.model.IModel;
 
@@ -21,13 +20,11 @@ import com.haina.beluga.core.model.IModel;
  * The finders are implemented through the executeFinder method. Normally called by the FinderIntroductionInterceptor
  */
 @SuppressWarnings("unchecked")
-@Component
 public class BaseDao<T extends IModel, PK extends Serializable>  implements IBaseDao<T, PK>
 {
 	@Autowired(required=true)
     private SessionFactory sessionFactory;
 	
-	@Autowired(required=true)
     private T type;
 
     public PK create(T o)
@@ -67,7 +64,7 @@ public class BaseDao<T extends IModel, PK extends Serializable>  implements IBas
 	public void deleteById(PK id) {
 		getSession().delete(read(id));
 	}
-
+	@Autowired(required=true)
 	@Override
 	public void setBaseModel(T t) {
 		type = t;
