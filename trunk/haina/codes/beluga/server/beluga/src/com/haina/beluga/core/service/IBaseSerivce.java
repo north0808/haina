@@ -15,14 +15,14 @@ public interface IBaseSerivce<D extends IBaseDao<T,PK>,T extends IModel,PK exten
 	
 	D getBaseDao();
 	
-	void create(T model);
-	void saveOrUpdate(T model);
-	void update(T model); 
-	void delete(T model);
-	void deleteById(PK id);
+	public void create(T model);
+	public void saveOrUpdate(T model);
+	public void update(T model); 
+	public void delete(T model);
+	public void deleteById(PK id);
 	// load from cache
-	T load(PK id);
-	T read(PK id);
-	List<T> findAll(boolean useCache);
-	Long findAllSize();
+	public T load(PK id);
+	public T read(PK id);
+	public List<T> findAll(boolean useCache);
+	public Long findAllSize();
 }
