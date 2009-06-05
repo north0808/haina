@@ -55,41 +55,41 @@ public class BaseDao<T extends IModel, PK extends Serializable>  implements IBas
     }
 
 
-	
+	@Override
 	public void saveOrUpdate(T newInstance) {
 		 getSession().saveOrUpdate(newInstance);
 	}
 	
-	
+	@Override
 	public void deleteById(PK id) {
 		getSession().delete(read(id));
 	}
 	@Autowired(required=true)
-	
+	@Override
 	public void setBaseModel(T t) {
 		type = t;
 		
 	}
 
-	
+	@Override
 	public T getBaseModel() {
 		return type;
 	}
 
-	
+	@Override
 	public List<T> getModels(boolean useCache) {
 		Criteria c=getSession().createCriteria(type.getClass());  
 		c.setCacheable(useCache);  
 		return c.list(); 
 	}
 
-	
+	@Override
 	public Long getModelSize() {
 		Query q = getSession().createSQLQuery("select count(*) from " + type.getClass().getSimpleName());  
 		return  ((BigInteger)q.list().get(0)).longValue(); 
 	}
 
-	
+	@Override
 	public T load(PK id) {
 		 return (T) getSession().load(type.getClass(), id);
 	}
