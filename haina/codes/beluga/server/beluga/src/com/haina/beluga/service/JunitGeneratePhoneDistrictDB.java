@@ -167,8 +167,8 @@ public class JunitGeneratePhoneDistrictDB extends TestCase
 					//save
 					phoneService.create(pd);
 					restartSession();
-				   }
 					isSave=true;
+				   }
 					//temp_start = 0;
 					temp_AreaCode  = null;
 					continue;
@@ -177,6 +177,7 @@ public class JunitGeneratePhoneDistrictDB extends TestCase
 			if(temp_AreaCode == null){
 				temp_AreaCode  = pm.getAreaCode();
 				temp_start = i;
+				isSave=false;
 				
 			}else if(!temp_AreaCode.equals(pm.getAreaCode())){
 				temp_AreaCode  = pm.getAreaCode();
@@ -200,7 +201,7 @@ public class JunitGeneratePhoneDistrictDB extends TestCase
 				//save
 				phoneService.create(pd);
 				restartSession();
-				
+//				isSave=false;
 				temp_start = i;
 				
 			}
@@ -236,15 +237,16 @@ public class JunitGeneratePhoneDistrictDB extends TestCase
    
     public void testGenerate130() throws Exception
     {
-    	generate(1333600,1400000);
-    	restartSession();
-    	generate(1500000,1540000);
-    	restartSession();
-    	generate(1550000,1570000);
-    	restartSession();
-    	generate(1580000,1600000);
-    	restartSession();
-    	generate(1880000,1900000);
+//    	generate(1333600,1400000);
+//    	restartSession();
+//    	generate(1534998,1540000);
+//    	restartSession();
+//    	generate(1550020,1570000);
+//    	restartSession();
+//    	generate(1580000,1600000);
+//    	restartSession();
+//    	generate(1882200,1900000);
+//    	generate(1880210,1890000);
     }
     
 //    public void testCache() throws Exception
