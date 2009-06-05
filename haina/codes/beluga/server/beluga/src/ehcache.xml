@@ -57,6 +57,7 @@
         timeToIdleSeconds="120"
         timeToLiveSeconds="120"
         overflowToDisk="true"
+        diskPersistent="false" 
         />
 
     <!--Predefined caches.  Add your cache configuration settings here.
@@ -93,6 +94,7 @@
         timeToIdleSeconds="300"
         timeToLiveSeconds="600"
         overflowToDisk="true"
+        
         />
 
     <!-- Sample cache named sampleCache2
@@ -107,5 +109,23 @@
         /> -->
 
     <!-- Place configuration for your caches following -->
-
+	<cache
+    name="com.haina.beluga.log.domain.Log"
+    maxElementsInMemory="10000"
+    eternal="false"
+    timeToIdleSeconds="300"
+    timeToLiveSeconds="600"
+    overflowToDisk="true"
+/>
+<cache
+    name="org.hibernate.cache.StandardQueryCache"
+    maxElementsInMemory="5"
+    eternal="false"
+    timeToLiveSeconds="120"
+    overflowToDisk="true"/>
+    <cache
+    name="org.hibernate.cache.UpdateTimestampsCache"
+    maxElementsInMemory="5000"
+    eternal="true"
+    overflowToDisk="true"/>
 </ehcache>

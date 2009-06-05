@@ -9,6 +9,7 @@ import com.haina.beluga.core.model.VersionalModel;
  * 只取角色名称不关联角色表，日志实时性考虑。
 *
  * @hibernate.class table="LOG"
+ * @hibernate.cache usage="read-write"
  */
  @Component
 public class Log extends VersionalModel{

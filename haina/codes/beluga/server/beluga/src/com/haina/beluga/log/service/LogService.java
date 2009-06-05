@@ -1,6 +1,5 @@
 package com.haina.beluga.log.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -21,23 +20,23 @@ public class LogService extends BaseSerivce<ILogDAO,Log,String> implements ILogS
 	//private ILogDao logdao;
 	
 	public List<Log> findByPaginate(LogCommand logc,int startIndex,int rowCount) {
-		List<Log>  list = new ArrayList<Log>();
-//		String[] parm = new String[]{logc.getUser(),logc.getRemark(),
-//				logc.getStartIp(),logc.getEndIp(),
-//				logc.getStartTime(),logc.getEndTime()};
-//		List<Log> dbList =  logdao.findlogbyParams(parm,startIndex,rowCount);
+//		List<Log>  list = new ArrayList<Log>();
+		String[] parm = new String[]{logc.getUser(),logc.getRemark(),
+				logc.getStartIp(),logc.getEndIp(),
+				logc.getStartTime(),logc.getEndTime()};
+		List<Log> dbList =  getBaseDao().findlogbyParams(parm,startIndex,rowCount);
 //		if(dbList == null || dbList.size()<0)
 //			return dbList;
 //		IPSeeker ipSeeker = IPSeeker.getInstance();
-		for(int i = 0 ; i < 20 ; i ++ ){
-			Log log = new Log();
-			log.setId(i+"");
+//		for(int i = 0 ; i < 20 ; i ++ ){
+//			Log log = new Log();
+//			log.setId(i+"");
 			
 //			String ip = dbList.get(i).getIp();
 //			dbList.get(i).setIp("("+ip+")"+ipSeeker.getAddress(ip));
-			list.add(log);
-		}
-		return list;
+//			list.add(log);
+//		}
+		return dbList;
 	}
 	
 
@@ -45,8 +44,7 @@ public class LogService extends BaseSerivce<ILogDAO,Log,String> implements ILogS
 		String[] parm = new String[]{logc.getUser(),logc.getRemark(),
 				logc.getStartIp(),logc.getEndIp(),
 				logc.getStartTime(),logc.getEndTime()};
-//		return logdao.getSizebyParams(parm);
-		return null;
+		return getBaseDao().getSizebyParams(parm);
 	}
 
 //	public void setLogdao(ILogDao logdao) {

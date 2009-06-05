@@ -11,6 +11,7 @@ import org.springframework.orm.hibernate3.SessionHolder;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import com.haina.beluga.log.domain.Log;
+import com.haina.beluga.log.mvc.LogCommand;
 import com.haina.beluga.log.service.LogService;
 
 /**
@@ -31,12 +32,24 @@ public class LogDaoTest extends TestCase
 
         // Create
     	LogService logService = getLogService();
-    	Log log = new Log();
-    	log.setVersion(new Long(0));
-    	logService.create(log);
-//
+//    	Log log = new Log();
+//    	log.setVersion(new Long(0));
+//    	log.set
+//    	logService.create(log);
+
 //        assertNotNull(log.getId());
 //        String id = log.getId();
+//        System.out.println(id);
+        
+//        restartSession();
+        
+//        logService.findAll(true);
+//       Log log1 =  logService.load("402881e721af68a00121af68a1b40001");
+//       System.out.println(log1.getHandle());
+//       logService.findAll(true);
+       logService.findByPaginate(new LogCommand(), 0, 20);
+//       logService.findByPaginate(new LogCommand(), 0, 20);
+//       System.out.println(log1.getHandle());
 //
 //        restartSession();
 //
@@ -61,7 +74,7 @@ public class LogDaoTest extends TestCase
 //      
 //        restartSession();
 //        // find size
-        Long size = logService.findAllSize();
+//        Long size = logService.findAllSize();
         //assertEquals(size.longValue(), 10);
     }
     

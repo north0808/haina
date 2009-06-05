@@ -82,6 +82,7 @@ public class BaseDao<T extends IModel, PK extends Serializable>  implements IBas
 		c.setCacheable(useCache);  
 		return c.list(); 
 	}
+	
 
 	@Override
 	public Long getModelSize() {
