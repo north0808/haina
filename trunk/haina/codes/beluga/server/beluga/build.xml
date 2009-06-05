@@ -58,7 +58,15 @@
     	-->
         <delete dir="${dist.dir}"/>
     </target>
-    
+	 <target name="clean_hbmxml" description="clean_hbmxml">
+	    	<!--  build.dir delete  comment-put (non compile.compiled-class use. )
+	    	<delete>
+	    		<fileset dir="${build.dir}" includes="**/*"/>
+	    	</delete>
+	    	-->
+	        <delete dir="${basedir}/resources/hbmxml"/>
+	    </target>
+	
 
     <!-- Compile -->
     <target name="compile" depends="init" description="Compile the src">
@@ -84,7 +92,7 @@
     <!-- The "hibernatedoclet" target generates Hibernate mapping files      -->
     <!-- based on XDoclet marked-up Plain Old Java Object (POJO)             -->
     <!-- =================================================================== -->
-    <target name="hibernatedoclet" depends="compile"
+    <target name="hibernatedoclet" depends="clean_hbmxml,compile"
         description="Generate Hibernate mapping files">
 
         <taskdef name="hibernatedoclet"
