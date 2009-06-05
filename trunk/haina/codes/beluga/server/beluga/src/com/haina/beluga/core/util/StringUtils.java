@@ -31,6 +31,10 @@ public class StringUtils {
 	        } 
 	        return sb.toString(); 
 	    }
+	    public static boolean isNull(String str)
+	    { 
+	        return (str==null || str.equals("") || str.equals("null"))?true:false; 
+	    }
 	    public static void main(String args[])
 	    {
 	        String res = getRandom(20);
