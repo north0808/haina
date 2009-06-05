@@ -63,7 +63,7 @@
     <!-- Compile -->
     <target name="compile" depends="init" description="Compile the src">
         <javac srcdir="${src.dir}" 
-        	fork="true" memoryinitialsize="256m" memorymaximumsize="256m" source="1.5"
+        	fork="true" memoryinitialsize="256m" memorymaximumsize="1024m" source="1.6"
             destdir="${build.dir}" debug="${compile.debug}"
             deprecation="${compile.deprecation}" 
             encoding="${compile.source.encoding}"
