@@ -103,7 +103,7 @@
         <hibernatedoclet destdir="${basedir}/resources/hbmxml"
             excludedtags="@version,@author" addedtags="@xdoclet-generated at ${TODAY}"
             force="${xdoclet.force}">
-            <fileset dir="${basedir}/src" includes="**/*.java"/>
+            <fileset dir="${basedir}/src" includes="**/domain/*.java"/>
             <hibernate validatexml="true" version="3.0"/>
         </hibernatedoclet>
     </target>
