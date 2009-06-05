@@ -59,12 +59,9 @@
         <delete dir="${dist.dir}"/>
     </target>
 	 <target name="clean_hbmxml" description="clean_hbmxml">
-	    	<!--  build.dir delete  comment-put (non compile.compiled-class use. )
 	    	<delete>
-	    		<fileset dir="${build.dir}" includes="**/*"/>
+	    		<fileset dir="${basedir}/resources/hbmxml" includes="**/*.xml"/>
 	    	</delete>
-	    	-->
-	        <delete dir="${basedir}/resources/hbmxml"/>
 	    </target>
 	
 
