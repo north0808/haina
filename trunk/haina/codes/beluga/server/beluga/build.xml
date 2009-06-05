@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="beluga" basedir="." default="setup">
+<project name="beluga" basedir="." default="compile">
     <!-- timestamp of the project -->
 
     <!-- Directory structure of the project -->
@@ -310,7 +310,8 @@
 	<target name="setup" depends="init, db-init, db-load"
 		description="setup env"/>
 
-
+	<target name="one-click" depends="hibernatedoclet, db-init, db-load"
+			description="一键搞定"/>
 
     <target name="package-web" depends="compile" description="Package WAR">
     	<mkdir dir="${dist.dir}"/>
