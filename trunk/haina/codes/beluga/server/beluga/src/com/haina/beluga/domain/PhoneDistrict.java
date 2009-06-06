@@ -3,6 +3,8 @@ package com.haina.beluga.domain;
 import org.springframework.stereotype.Component;
 
 import com.haina.beluga.core.model.VersionalModel;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 /**
 *
  * @hibernate.class table="PhoneDistrict"
@@ -17,7 +19,7 @@ public class PhoneDistrict extends VersionalModel {
 	private String feeType;
 	private String districtCity;
 	private String districtProvince;
-	private int updateFlg;
+	private Integer updateFlg;
 	private String pingyinCity;
 	private String weatherCityCode;
 	
@@ -84,12 +86,12 @@ public class PhoneDistrict extends VersionalModel {
 	}
 	/**
 	 * @hibernate.property column="updateFlg"
-	 * @return int
+	 * @return Integer
 	 */
-	public int getUpdateFlg() {
+	public Integer getUpdateFlg() {
 		return updateFlg;
 	}
-	public void setUpdateFlg(int updateFlg) {
+	public void setUpdateFlg(Integer updateFlg) {
 		this.updateFlg = updateFlg;
 	}
 	/**
@@ -114,37 +116,59 @@ public class PhoneDistrict extends VersionalModel {
 	}
 	@Override
 	public Long getVersion() {
-		// TODO Auto-generated method stub
 		return version;
 	}
-	@Override
-	public boolean equals(Object object) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	
 	/**
 	 * @hibernate.id column="ID" generator-class="uuid.hex"  unsaved-value="null"
 	 * @return String
 	 */
 	@Override
 	public String getId() {
-		// TODO Auto-generated method stub
 		return id;
 	}
-	@Override
-	public int hashCode() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	@Override
-	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 	@Override
 	protected Object clone() throws CloneNotSupportedException {
-		// TODO Auto-generated method stub
 		return super.clone();
+	}
+	
+	@Override
+	public String toString() {
+		return null;
+	}
+	
+	/**
+	 * @see java.lang.Object#equals(Object)
+	 */
+	@Override
+	public boolean equals(Object object) {
+		if (!(object instanceof PhoneDistrict)) {
+			return false;
+		}
+		PhoneDistrict rhs = (PhoneDistrict) object;
+		return new EqualsBuilder().append(
+				this.id, rhs.id).append(
+				this.districtNumber, rhs.districtNumber).append(
+				this.districtProvince, rhs.districtProvince).append(
+				this.rangeEnd, rhs.rangeEnd).append(this.pingyinCity,
+				rhs.pingyinCity).append(this.districtCity, rhs.districtCity)
+				.append(this.feeType, rhs.feeType).append(this.weatherCityCode,
+						rhs.weatherCityCode).append(this.rangeStart,
+						rhs.rangeStart).append(this.updateFlg, rhs.updateFlg).isEquals();
+	}
+	
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder(1464919849, -139111521)
+		.append(this.id).append(this.districtNumber).append(
+				this.districtProvince).append(this.rangeEnd).append(
+				this.pingyinCity).append(this.districtCity)
+				.append(this.feeType).append(this.weatherCityCode).append(
+						this.rangeStart).append(this.updateFlg).toHashCode();
 	}
 	
 	
