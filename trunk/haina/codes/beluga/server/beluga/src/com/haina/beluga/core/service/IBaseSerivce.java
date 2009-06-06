@@ -13,7 +13,7 @@ import com.haina.beluga.core.model.IModel;
  */
 public interface IBaseSerivce<D extends IBaseDao<T,PK>,T extends IModel,PK extends Serializable> {
 	
-	D getBaseDao();
+	public D getBaseDao();
 	
 	public void create(T model);
 	public void saveOrUpdate(T model);
