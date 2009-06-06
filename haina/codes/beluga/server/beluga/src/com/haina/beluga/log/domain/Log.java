@@ -3,6 +3,8 @@ package com.haina.beluga.log.domain;
 import org.springframework.stereotype.Component;
 
 import com.haina.beluga.core.model.VersionalModel;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
 
 /**
@@ -97,18 +99,7 @@ public class Log extends VersionalModel{
 		// TODO Auto-generated method stub
 		return version;
 	}
-	@Override
-	public boolean equals(Object object) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public int hashCode() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
+	
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
@@ -128,6 +119,34 @@ public class Log extends VersionalModel{
 		// TODO Auto-generated method stub
 		return this.id;
 	}
+
+	/**
+	 * @see java.lang.Object#equals(Object)
+	 */
+	@Override
+	public boolean equals(Object object) {
+		if (!(object instanceof Log)) {
+			return false;
+		}
+		Log rhs = (Log) object;
+		return new EqualsBuilder().append(this.id, rhs.id).append(
+				this.handle, rhs.handle).append(this.roleName, rhs.roleName)
+				.append(this.logTime, rhs.logTime).append(this.infoClass,
+						rhs.infoClass).append(this.remark, rhs.remark).append(
+						this.ip, rhs.ip).isEquals();
+	}
+
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder(-1712230407, 1374111269).append(
+				this.id).append(this.handle).append(this.roleName)
+				.append(this.logTime).append(this.infoClass)
+				.append(this.remark).append(this.ip)
+				.toHashCode();
+	}
 	
-	   
+	
 }
