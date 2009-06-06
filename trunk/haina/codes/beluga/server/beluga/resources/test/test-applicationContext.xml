@@ -44,14 +44,10 @@
 	</property>
 	<property name="hibernateProperties">
 		<props>
-			<prop key="hibernate.dialect">
-				org.hibernate.dialect.MySQLDialect 
-			</prop>
-			<prop key="hibernate.show_sql">
-				true
-			</prop>
-			 <prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheProvider</prop>
-        		<prop key="hibernate.cache.use_query_cache">true</prop>
+			<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialectt</prop>
+			<prop key="hibernate.show_sql">true</prop>
+			<prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheProvider</prop>
+        	<prop key="hibernate.cache.use_query_cache">true</prop>
 		</props>
 	</property> 
 	
