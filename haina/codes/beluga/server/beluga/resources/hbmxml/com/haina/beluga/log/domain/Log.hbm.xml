@@ -29,7 +29,9 @@
     </generator>
 
     </id>
-
+		
+		<version name="version"  column="VERSION"></version>
+		
         <property
             name="handle"
                     column="HANDLE"
@@ -77,14 +79,6 @@
         >
 
         </property>
-
-        <property
-            name="version"
-                    column="VERSION"
-        >
-
-        </property>
-
     </class>    
 
 </hibernate-mapping>
