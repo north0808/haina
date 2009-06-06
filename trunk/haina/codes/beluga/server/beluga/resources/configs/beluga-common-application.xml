@@ -18,7 +18,7 @@
     	<value>org.logicalcobwebs.proxool.ProxoolDriver</value>
     </property>
     <property name="url">
-    	<value>proxool.oucenterdb</value>
+    	<value>proxool.haina_beluga</value>
     </property>
    </bean>
 
