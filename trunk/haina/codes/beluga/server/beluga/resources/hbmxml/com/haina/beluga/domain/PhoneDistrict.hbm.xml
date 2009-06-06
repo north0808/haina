@@ -12,7 +12,7 @@
             name="com.haina.beluga.domain.PhoneDistrict"
             table="PhoneDistrict"
     >
-
+	
     <id
         name="id"
             column="ID"
@@ -25,7 +25,8 @@
     </generator>
 
     </id>
-
+	
+		<version name="version"  column="VERSION"></version>
         <property
             name="districtNumber"
                     column="districtNumber"
@@ -91,13 +92,6 @@
             name="weatherCityCode"
                     column="weatherCityCode"
                 length="20"
-        >
-
-        </property>
-
-        <property
-            name="version"
-                    column="VERSION"
         >
 
         </property>
