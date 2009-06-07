@@ -7,7 +7,7 @@
 	<!-- Spring业务加载配置文件-->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>/WEB-INF/classes/configs/*.xml</param-value>
+		<param-value>/WEB-INF/classes/configs/beluga-application.xml</param-value>
 	</context-param>
 	<servlet>
 		<servlet-name>contextConfigLocation</servlet-name>
