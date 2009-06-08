@@ -48,7 +48,7 @@ public class LogDaoTest extends TestCase
 //       System.out.println(log1.getHandle());
 //       logService.findAll(true);
        logService.findByPaginate(new LogCommand(), 0, 20);
-//       logService.findByPaginate(new LogCommand(), 0, 20);
+       logService.findByPaginate(new LogCommand(), 0, 20);
 //       System.out.println(log1.getHandle());
 //
 //        restartSession();

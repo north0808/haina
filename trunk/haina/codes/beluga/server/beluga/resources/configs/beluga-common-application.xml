@@ -41,7 +41,6 @@
 			<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
 			<prop key="hibernate.show_sql">true</prop>
 			<prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheProvider</prop>
-			<prop key="hibernate.cache.provider_configuration_file_resource_path">/ehcache.xml</prop>
         	<prop key="hibernate.cache.use_query_cache">true</prop>
 		</props>
 	</property> 

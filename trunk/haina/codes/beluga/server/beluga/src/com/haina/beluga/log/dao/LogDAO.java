@@ -13,6 +13,7 @@ import com.haina.beluga.log.domain.Log;
  * @author:付翔.
  * @createDate:2007-7-16.
  * @classInfo:
+ * 使用查询缓存时，需用hql对象查询，以便hibernate可以访问控制对象，不可用原生态SqlQuery。
  */
 @Component
 public class LogDAO extends BaseDao<Log,String> implements ILogDAO{
@@ -21,10 +22,10 @@ public class LogDAO extends BaseDao<Log,String> implements ILogDAO{
 	public List<Log> findlogbyParams( String[] param,final int startIndex,final int rowCount) {
 		final String hqlStr = toHql(param,false);
 		  Session session = getSession();
-		  Query query = session.createSQLQuery(hqlStr);  
+		  Query query = session.createQuery("from Log");  
 //          query.setFirstResult(startIndex).setMaxResults(rowCount);   
           query.setCacheable(true);
-          query.setCacheRegion("sampleCache1");
+          query.setCacheRegion("com.haina.beluga.log.domain.Log");
           return query.list(); 
 		 
 	}

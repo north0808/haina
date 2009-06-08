@@ -94,7 +94,10 @@ public class Log extends VersionalModel{
 	public void setRoleName(String roleName) {
 		this.roleName = roleName;
 	}
-
+	/**
+	 * @hibernate.property column="VERSION"
+	 * @return Long
+	 */
 	public Long getVersion() {
 		// TODO Auto-generated method stub
 		return version;
