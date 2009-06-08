@@ -119,7 +119,7 @@
 />
 <cache
     name="org.hibernate.cache.StandardQueryCache"
-    maxElementsInMemory="5"
+    maxElementsInMemory="50"
     eternal="false"
     timeToLiveSeconds="120"
     overflowToDisk="true"/>

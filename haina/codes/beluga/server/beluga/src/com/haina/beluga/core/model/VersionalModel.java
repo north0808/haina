@@ -13,10 +13,6 @@ package com.haina.beluga.core.model;
 public abstract class VersionalModel extends BaseModel {
 
 	protected Long version;
-	/**
-	 * @hibernate.property column="VERSION"
-	 * @return Long
-	 */
 	
 	public abstract Long getVersion();
 	
