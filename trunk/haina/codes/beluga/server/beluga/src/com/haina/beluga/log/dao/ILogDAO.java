@@ -13,6 +13,6 @@ import com.haina.beluga.log.domain.Log;
 
 public interface ILogDAO extends IBaseDao<Log, String> {
 	
-	List<Log> findlogbyParams( String[] param,int startIndex,int rowCount);
-	Long getSizebyParams( String[] param);
+	public List<Log> findlogbyParams( String[] param,int startIndex,int rowCount);
+	public Long getSizebyParams( String[] param);
 }
