@@ -9,7 +9,7 @@ public class Constant {
 	/*QQ在线*/
 	public static final int QQ_ONLINE = 0;
 	/*QQ不在线*/
-	public static final int QQ_OFFLINE = 0;
+	public static final int QQ_OFFLINE = 1;
 	
 	
 	/***
