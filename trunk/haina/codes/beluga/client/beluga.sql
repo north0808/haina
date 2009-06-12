@@ -58,8 +58,8 @@ GO
 
 create table cgroup(
     gid integer primary key autoincrement,
-    tid integer,
-    name varchar(64),
+    tid integer not null,
+    name varchar(64) not null,
     logo varchar(256),
     group_order smallint,
     delete_flag smallint,
@@ -71,7 +71,7 @@ GO
 
 create table tag(
     tid integer primary key autoincrement,
-    name varchar(64),
+    name varchar(64)  not null,
     logo varchar(256),
     tag_order smallint,
     delete_flag smallint);
@@ -106,7 +106,7 @@ GO
 
 create table recent_contact(
     rc_id integer primary key autoincrement,
-    cid integer,
+    cid integer  not null,
     event smallint,
     time timestamp);
 GO
@@ -116,13 +116,13 @@ GO
 
 create table message(
     mid integer primary key autoincrement,
-    type smallint,
-    status smallint,
-    time timestamp,
+    type smallint not null,
+    status smallint not null,
+    time timestamp not null,
     fromc varchar(256),
     toc varchar(256),
     gid integer,
-    mc_id integer,
+    mc_id integer not null,
     subject varchar(256),
     cc varchar(256),
     bcc varchar(256));
