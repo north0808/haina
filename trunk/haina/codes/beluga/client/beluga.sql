@@ -98,9 +98,9 @@ begin
 end;
 GO
 
-create trigger address_delete after delete on address
+create trigger contact_ext_delete after delete on contact_ext
 begin
-    delete from contact_ext where contact_ext.aid = old.aid;
+    delete from address where address.aid = old.comm_value;
 end;
 GO
 
