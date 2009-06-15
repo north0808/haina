@@ -1,5 +1,7 @@
 package com.haina.beluga.webservice;
 
-public interface IPriService {
+import java.io.Serializable;
+
+public interface IPriService extends Serializable{
 
 }

@@ -15,7 +15,7 @@ public class PhoneDistrictDao extends BaseDao<PhoneDistrict,String> implements I
 		  Query query = session.createQuery("select distinct p.weatherCityCode from PhoneDistrict p");  
 //         query.setFirstResult(startIndex).setMaxResults(rowCount);   
          query.setCacheable(true);
-         query.setCacheRegion("com.haina.beluga.log.domain.Log");
+         query.setCacheRegion("com.haina.beluga.domain.PhoneDistrict");
          return (String[]) query.list().toArray(new String[]{}); 
 	}
 

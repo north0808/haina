@@ -13,6 +13,10 @@
             table="Weather"
     >
 
+        <cache 
+            usage="read-write"
+        />
+
     <id
         name="id"
             column="ID"

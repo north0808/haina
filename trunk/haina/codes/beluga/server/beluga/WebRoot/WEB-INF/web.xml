@@ -53,16 +53,39 @@
 		</listener-class>
 	</listener>
 
+<!--公共服务-->
 	<servlet>
-		<servlet-name>OUcenter</servlet-name>
-		<servlet-class>com.oucenter.webservice.OUServlet</servlet-class>
+		<servlet-name>PUB</servlet-name>
+		<servlet-class>com.haina.beluga.webservice.OUServlet</servlet-class>
 		<init-param>
 			<param-name>service-class</param-name>
-			<param-value>test.TestServiceImpl</param-value>
+			<param-value>com.haina.beluga.webservice.PubService</param-value>
 		</init-param>
 		<init-param>
 			<param-name>service-api</param-name>
-			<param-value>test.ITestService</param-value>
+			<param-value>com.haina.beluga.webservice.IPubService</param-value>
+		</init-param>
+		<init-param>
+			<param-name>method</param-name>
+			<param-value>call</param-value>
+		</init-param>
+	</servlet>
+		
+	<servlet-mapping>
+		<servlet-name>PUB</servlet-name>
+		<url-pattern>/pub</url-pattern>
+	</servlet-mapping>
+		<!--个人服务-->
+<servlet>
+		<servlet-name>PRI</servlet-name>
+		<servlet-class>com.haina.beluga.webservice.OUServlet</servlet-class>
+		<init-param>
+			<param-name>service-class</param-name>
+			<param-value>com.haina.beluga.webservice.PriService</param-value>
+		</init-param>
+		<init-param>
+			<param-name>service-api</param-name>
+			<param-value>com.haina.beluga.webservice.IPriService</param-value>
 		</init-param>
 		<init-param>
 			<param-name>method</param-name>
@@ -70,6 +93,11 @@
 		</init-param>
 	</servlet>
 
+	<servlet-mapping>
+		<servlet-name>PRI</servlet-name>
+		<url-pattern>/pri</url-pattern>
+	</servlet-mapping>
+	<!-- test-->
 	<servlet>
 		<servlet-name>hello</servlet-name>
 		<servlet-class>
@@ -81,9 +109,5 @@
 		<servlet-name>hello</servlet-name>
 		<url-pattern>/hello</url-pattern>
 	</servlet-mapping>
-
-	<servlet-mapping>
-		<servlet-name>OUcenter</servlet-name>
-		<url-pattern>/oucenter</url-pattern>
-	</servlet-mapping>
+	
 </web-app>

@@ -6,6 +6,7 @@ import com.haina.beluga.core.model.VersionalModel;
 /**
 *
  * @hibernate.class table="Weather"
+ * @hibernate.cache usage="read-write"
  */
  @Component
 public class Weather extends VersionalModel{
