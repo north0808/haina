@@ -3,7 +3,7 @@ package com.haina.beluga.webservice;
 
 
 
-public class PubServiceImpl  implements IPubService {
+public class PubService  implements IPubService {
 
 	/**
 	 * 
