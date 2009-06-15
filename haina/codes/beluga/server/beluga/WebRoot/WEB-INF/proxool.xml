@@ -12,7 +12,7 @@
 		<house-keeping-sleep-time>100000</house-keeping-sleep-time>
 		<maximum-connection-count>200</maximum-connection-count>
 		<minimum-connection-count>20</minimum-connection-count>
-		<maximum-active-time>600000 </maximum-active-time> 
+		<maximum-active-time>1000000 </maximum-active-time> 
 		<prototype-count>50</prototype-count>
 		<simultaneous-build-throttle>20</simultaneous-build-throttle>
 		<house-keeping-test-sql>select CURRENT_DATE</house-keeping-test-sql>
