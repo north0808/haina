@@ -4,6 +4,7 @@ import junit.framework.TestCase;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.junit.Ignore;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.orm.hibernate3.SessionFactoryUtils;
@@ -12,6 +13,8 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 
 import com.haina.beluga.log.mvc.LogCommand;
 import com.haina.beluga.log.service.LogService;
+import com.haina.beluga.service.IWeatherService;
+import com.haina.beluga.service.WeatherService;
 
 /**
  * Simple test of the PersonDao
@@ -25,12 +28,12 @@ public class LogDaoTest extends TestCase
         super(s);
         factory = new ClassPathXmlApplicationContext("test/test-applicationContext.xml");
     }
-   
+    @Ignore
     public void testCrud() throws Exception
     {
 
         // Create
-    	LogService logService = getLogService();
+//    	LogService logService = getLogService();
 //    	Log log = new Log();
 //    	log.setVersion(new Long(0));
 //    	log.set
@@ -46,8 +49,8 @@ public class LogDaoTest extends TestCase
 //       Log log1 =  logService.load("402881e721af68a00121af68a1b40001");
 //       System.out.println(log1.getHandle());
 //       logService.findAll(true);
-       logService.findByPaginate(new LogCommand(), 0, 20);
-       logService.findByPaginate(new LogCommand(), 0, 20);
+//       logService.findByPaginate(new LogCommand(), 0, 20);
+//       logService.findByPaginate(new LogCommand(), 0, 20);
 //       System.out.println(log1.getHandle());
 //
 //        restartSession();
@@ -68,7 +71,7 @@ public class LogDaoTest extends TestCase
 //
 //        // Delete
 //        logService.deleteById(id);
-        restartSession();
+//        restartSession();
 //        assertNull(logService.read(id));
 //      
 //        restartSession();
@@ -83,7 +86,13 @@ public class LogDaoTest extends TestCase
 ////    	logService.findAll(true);
 ////    	logService.findAll(true);
 //    }
-
+    public void testWeather() throws Exception {
+//    	getWeatherService().getLiveWeather("112020");
+//    	getWeatherService().findAll(true);
+    	
+    	getWeatherService().get7Weatherdatas("112020");
+    	getWeatherService().get7Weatherdatas("112020");
+    }
     protected void setUp() throws Exception
     {
     	
@@ -127,5 +136,11 @@ public class LogDaoTest extends TestCase
     	LogService logService = (LogService) factory.getBean("logService");
     	
         return logService;
+    }
+    private IWeatherService getWeatherService()
+    {
+    	WeatherService weatherService = (WeatherService) factory.getBean("weatherService");
+    	
+        return weatherService;
     }
 }

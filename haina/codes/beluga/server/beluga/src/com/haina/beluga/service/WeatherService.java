@@ -1,23 +1,30 @@
 package com.haina.beluga.service;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import net.wxbug.api.ApiForecastData;
+import net.wxbug.api.LiveWeatherData;
 import net.wxbug.api.UnitType;
 import net.wxbug.api.WeatherBugWebServicesLocator;
 import net.wxbug.api.WeatherBugWebServicesSoap;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.InitBinder;
 
 import com.haina.beluga.core.service.BaseSerivce;
 import com.haina.beluga.dao.IPhoneDistrictDao;
 import com.haina.beluga.dao.IWeatherDao;
 import com.haina.beluga.domain.Weather;
+import com.haina.beluga.dto.WeatherDto;
 import com.haina.beluga.webservice.OUSkeleton;
 @Component
-public class WeatherService extends BaseSerivce<IWeatherDao,Weather,String> implements IWeatherService {
+public class WeatherService extends BaseSerivce<IWeatherDao,Weather,String> implements IWeatherService,InitializingBean {
 	@Autowired(required=true)
 	private IPhoneDistrictDao phoneDistrictDao;
 	private final static String ACode="A3432136345";
@@ -64,12 +71,49 @@ public class WeatherService extends BaseSerivce<IWeatherDao,Weather,String> impl
 			}
 			logger.info(cityCode+":in "+i++);
 		}
+		//所有更新后的天气加载到缓存
+		findAll(true);
 		logger.info("loadWeatherDatasByApi-complete");
+	}
+
+	@Override
+	public WeatherDto getLiveWeather(String cityCode) {
+		try {
+			LiveWeatherData livedata = weatherBugWebServicesSoap.getLiveWeatherByCityCode(cityCode, UnitType.Metric, ACode);
+			WeatherDto dto = new WeatherDto();
+			dto.setWeatherType(livedata.getCurrDesc());
+			dto.setLow(Integer.valueOf(livedata.getTemperatureLow()));
+			dto.setHigh(Integer.valueOf(livedata.getTemperatureHigh()));
+			return dto;
+			
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+		
+	}
+
+	@Override
+	public List<WeatherDto> get7Weatherdatas(String cityCode) {
+		List<WeatherDto> list = new ArrayList<WeatherDto>();
+		Iterator<Weather> iterator = getBaseDao().get7WeatherDatas(cityCode);
+		while(iterator.hasNext()){
+			Weather w = iterator.next();
+			list.add(WeatherDto.valueof(w));
+		}
+		return list;
+	}
+	
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		findAll(true);
+		
 	}
 
 	public void setPhoneDistrictDao(IPhoneDistrictDao phoneDistrictDao) {
 		this.phoneDistrictDao = phoneDistrictDao;
 	}
-
+	
 	
 }

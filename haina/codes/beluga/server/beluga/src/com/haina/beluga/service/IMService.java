@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import com.haina.beluga.webservice.Constant;
+import org.springframework.stereotype.Component;
 
+import com.haina.beluga.webservice.Constant;
+@Component
 public class IMService {
 
 	public static int getQQStatus(int qqCode){

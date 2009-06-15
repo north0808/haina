@@ -1,5 +1,7 @@
 package com.haina.beluga.webservice;
 
-public interface IPubService {
+import java.io.Serializable;
+
+public interface IPubService extends Serializable {
 
 }

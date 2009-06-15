@@ -88,11 +88,11 @@
         disk cache, which in this configuration will go to wherever java.io.tmp is
         defined on your system. On a standard Linux system this will be /tmp"
         -->
-    <cache name="sampleCache1"
-        maxElementsInMemory="10000"
-        eternal="false"
-        timeToIdleSeconds="300"
-        timeToLiveSeconds="600"
+    <cache name="com.haina.beluga.domain.Weather"
+        maxElementsInMemory="3000"
+        eternal="true"
+        timeToIdleSeconds="0"
+        timeToLiveSeconds="0"
         overflowToDisk="true"
         
         />
@@ -100,7 +100,7 @@
     <!-- Sample cache named sampleCache2
         This cache contains 1000 elements. Elements will always be held in memory.
         They are not expired. -->
-    <cache name="sampleCache2"
+    <cache name="com.haina.beluga.domain.PhoneDistrict"
         maxElementsInMemory="1000"
         eternal="true"
         timeToIdleSeconds="0"
