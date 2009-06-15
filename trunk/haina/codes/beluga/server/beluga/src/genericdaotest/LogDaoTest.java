@@ -1,5 +1,7 @@
 package genericdaotest;
 
+import java.util.List;
+
 import junit.framework.TestCase;
 
 import org.hibernate.Session;
@@ -11,7 +13,7 @@ import org.springframework.orm.hibernate3.SessionFactoryUtils;
 import org.springframework.orm.hibernate3.SessionHolder;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
-import com.haina.beluga.log.mvc.LogCommand;
+import com.haina.beluga.dto.WeatherDto;
 import com.haina.beluga.log.service.LogService;
 import com.haina.beluga.service.IWeatherService;
 import com.haina.beluga.service.WeatherService;
@@ -90,8 +92,11 @@ public class LogDaoTest extends TestCase
 //    	getWeatherService().getLiveWeather("112020");
 //    	getWeatherService().findAll(true);
     	
-    	getWeatherService().get7Weatherdatas("112020");
-    	getWeatherService().get7Weatherdatas("112020");
+    	List<WeatherDto> list = getWeatherService().get7Weatherdatas("112020");
+//    	getWeatherService().get7Weatherdatas("112020");
+    	for(WeatherDto  dto:list){
+    		System.out.println(dto.getDate()+":"+dto.getWeatherType()+":"+dto.getHigh());
+    	}
     }
     protected void setUp() throws Exception
     {

@@ -46,6 +46,7 @@ public class WeatherService extends BaseSerivce<IWeatherDao,Weather,String> impl
 
 	@Override
 	public void loadWeatherDatasByApi() {
+		long t1 = System.currentTimeMillis();
 		String[] codes = phoneDistrictDao.getWeatherCityCodes();
 		logger.info("loadWeatherDatasByApiSize:"+codes.length);
 		//先清空，后插入
@@ -73,7 +74,8 @@ public class WeatherService extends BaseSerivce<IWeatherDao,Weather,String> impl
 		}
 		//所有更新后的天气加载到缓存
 		findAll(true);
-		logger.info("loadWeatherDatasByApi-complete");
+		long t2 = System.currentTimeMillis();
+		logger.info("loadWeatherDatasByApi-complete:"+(t2-t1));
 	}
 
 	@Override
