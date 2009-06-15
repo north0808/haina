@@ -10,7 +10,7 @@ import com.haina.beluga.webservice.Constant;
 @Component
 public class IMService {
 
-	public static int getQQStatus(int qqCode){
+	public int getQQStatus(int qqCode){
 		if(qqCode <= 10000 || qqCode >1425000000)
 			return Constant.QQ_ARG_ERROE;
 		URL feedUrl;
