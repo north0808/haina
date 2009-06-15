@@ -34,5 +34,7 @@
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/commons-lang.jar"/>
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/commons-logging-1.1.jar"/>
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/antlr.jar"/>
+	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/rome-1.0.jar"/>
+	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/jdom.jar"/>
 	<classpathentry kind="output" path="WebRoot/WEB-INF/classes"/>
 </classpath>

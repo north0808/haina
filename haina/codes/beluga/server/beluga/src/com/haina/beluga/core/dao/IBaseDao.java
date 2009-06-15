@@ -17,7 +17,7 @@ public interface IBaseDao<T extends IModel, PK extends Serializable> {
 
 	public PK create(T newInstance);
 
-	public T read(PK id);
+	public T read(PK id) ;
 
 	// Load from cache
 	public T load(PK id);
@@ -26,7 +26,7 @@ public interface IBaseDao<T extends IModel, PK extends Serializable> {
 
 	public void update(T transientObject);
 
-	public void delete(T persistentObject);
+	public void delete( T persistentObject);
 
 	public void deleteById(PK id);
 

@@ -66,24 +66,67 @@
 				advice-ref="belugaAdvice"/>
 				<!-- security安全事务拦截 
 	<aop:advisor pointcut="execution(* com.soar.security.service.SecurityManager.*(..))" 
-	  			advice-ref="oucenterAdvice"/>  
-	   应用系统(App)事务拦截 
-	<aop:advisor pointcut="execution(* service.*.*(..))" 
-				advice-ref="oucenterAdvice"/>-->
+	  			advice-ref="belugaAdvice"/>  
+	   应用系统(App)事务拦截 -->
+	<aop:advisor pointcut="execution(* com.haina.beluga.service.*.*(..))" 
+				advice-ref="belugaAdvice"/>
 	  </aop:config>
 	     	
 	<!--基本事务定义,使用transactionManager作事务管理,默认的设置请参考Spring文档事务一章. -->
 	     <tx:advice id="belugaAdvice" transaction-manager="txManager">   
 	       <tx:attributes>       
-	         <tx:method name="save*" propagation="REQUIRES_NEW"/> 
-	         <tx:method name="creat*" propagation="REQUIRES_NEW"/>     
-	         <tx:method name="remove*" propagation="REQUIRES_NEW"/> 
-	         <tx:method name="del*" propagation="REQUIRES_NEW"/> 
-	         <tx:method name="up*" propagation="REQUIRES_NEW"/>  
-	         <tx:method name="*"/>  
+	         <tx:method name="save*" propagation="REQUIRED"/>
+	          <tx:method name="loadWeather*" propagation="REQUIRED"/> 
+	         <tx:method name="creat*" propagation="REQUIRED"/>     
+	         <tx:method name="remove*" propagation="REQUIRED"/> 
+	         <tx:method name="del*" propagation="REQUIRED"/> 
+	         <tx:method name="up*" propagation="REQUIRED"/>  
+	         <tx:method name="*" read-only="true"/>  
 	       </tx:attributes>
 	     </tx:advice> 
 
+
+<!-- 定义要调用的任务的实现类 -->
+
+ 
+
+<bean id="weatherQuartz" class="com.haina.beluga.service.WeatherService">
+
+ </bean>
+
+<!--调用实现类里面的某个方法 -->
+
+<bean id="loadWeatherDatasByApi"   class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+     <property name="targetObject">
+       <ref bean="weatherQuartz"/>
+     </property>
+     <property name="targetMethod">
+       <value>loadWeatherDatasByApi</value>
+     </property>
+   </bean>
+
+<!--定义调用任务的时间 -->
+   <bean id="loadWeatherDatasByApiTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+     <property name="jobDetail">
+       <ref bean="loadWeatherDatasByApi"/>
+     </property>
+     <property name="cronExpression">
+       <value>0 22 10 ? * *</value>
+     </property>
+   </bean>
+
+ 
+
+<!--管理触发器 -->
+
+<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+  <property name="triggers">
+   <list>
+
+      <ref local="loadWeatherDatasByApiTrigger"/>          
+   </list>
+  </property>
+   </bean>  
 </beans>
    
    

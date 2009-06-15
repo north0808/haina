@@ -8,6 +8,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 /**
 *
  * @hibernate.class table="PhoneDistrict"
+ * @hibernate.cache usage="read-write"
  */
  @Component
 public class PhoneDistrict extends VersionalModel {
@@ -114,6 +115,10 @@ public class PhoneDistrict extends VersionalModel {
 	public void setWeatherCityCode(String weatherCityCode) {
 		this.weatherCityCode = weatherCityCode;
 	}
+	/**
+	 * @hibernate.property column="VERSION"
+	 * @return Long
+	 */
 	@Override
 	public Long getVersion() {
 		return version;

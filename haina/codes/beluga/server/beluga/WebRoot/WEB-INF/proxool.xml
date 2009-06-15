@@ -9,14 +9,15 @@
 			<property name="password" value="root" />
 		</driver-properties>
 		
-		<house-keeping-sleep-time>60000</house-keeping-sleep-time>
-		<maximum-connection-count>20</maximum-connection-count>
-		<minimum-connection-count>2</minimum-connection-count>
-		<prototype-count>0</prototype-count>
+		<house-keeping-sleep-time>100000</house-keeping-sleep-time>
+		<maximum-connection-count>200</maximum-connection-count>
+		<minimum-connection-count>20</minimum-connection-count>
+		<maximum-active-time>600000 </maximum-active-time> 
+		<prototype-count>50</prototype-count>
 		<simultaneous-build-throttle>20</simultaneous-build-throttle>
 		<house-keeping-test-sql>select CURRENT_DATE</house-keeping-test-sql>
 		<statistics>15s,10m,1d</statistics>
-		<statistics-log-level>error</statistics-log-level>
+		<statistics-log-level>info</statistics-log-level>
 	</proxool>
 </proxool-config>
 
