@@ -34,7 +34,7 @@ public class OUServlet extends HttpServlet {
 	}
 
 	public String getServletInfo(){
-	    return "UUCenter - Servlet";
+	    return "OUCenter - Servlet";
 	 }
 	
 	public void init(ServletConfig config) throws ServletException{
@@ -49,7 +49,7 @@ public class OUServlet extends HttpServlet {
 	    	   init(serverImpl);
 	       }else {
 				if (getClass().equals(OUServlet.class))
-				  throw new ServletException("server must extend UUServlet");
+				  throw new ServletException("server must extend OUServlet");
 				serverImpl = this;
 	      }
 	      if (getInitParameter("service-api") != null) {
