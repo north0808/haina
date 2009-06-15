@@ -10,7 +10,6 @@ import org.springframework.orm.hibernate3.SessionFactoryUtils;
 import org.springframework.orm.hibernate3.SessionHolder;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
-import com.haina.beluga.log.domain.Log;
 import com.haina.beluga.log.mvc.LogCommand;
 import com.haina.beluga.log.service.LogService;
 
@@ -69,7 +68,7 @@ public class LogDaoTest extends TestCase
 //
 //        // Delete
 //        logService.deleteById(id);
-//        restartSession();
+        restartSession();
 //        assertNull(logService.read(id));
 //      
 //        restartSession();
