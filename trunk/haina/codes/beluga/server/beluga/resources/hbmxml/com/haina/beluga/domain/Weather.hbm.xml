@@ -71,7 +71,22 @@
         <property
             name="wind"
                     column="wind"
-                length="300"
+                length="30"
+        >
+
+        </property>
+
+        <property
+            name="icon"
+                    column="icon"
+                length="30"
+        >
+
+        </property>
+
+        <property
+            name="night"
+                    column="isNight"
         >
 
         </property>

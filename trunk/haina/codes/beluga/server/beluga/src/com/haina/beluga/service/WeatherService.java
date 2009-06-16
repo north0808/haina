@@ -15,7 +15,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.InitBinder;
 
 import com.haina.beluga.core.service.BaseSerivce;
 import com.haina.beluga.dao.IPhoneDistrictDao;
@@ -62,7 +61,9 @@ public class WeatherService extends BaseSerivce<IWeatherDao,Weather,String> impl
 					weather.setLow(Integer.valueOf(afd.getTempLow()));
 					weather.setWeatherCityCode(cityCode);
 					weather.setWeatherType(afd.getDescription());
-					weather.setWind(afd.getPrediction());
+					weather.setWind(getWindByStr(afd.getPrediction()));
+					weather.setIcon(getIcon(afd.getImage()));
+					weather.setNight(afd.isIsNight());
 					getBaseDao().create(weather);
 				}
 //				break;
@@ -84,8 +85,10 @@ public class WeatherService extends BaseSerivce<IWeatherDao,Weather,String> impl
 			LiveWeatherData livedata = weatherBugWebServicesSoap.getLiveWeatherByCityCode(cityCode, UnitType.Metric, ACode);
 			WeatherDto dto = new WeatherDto();
 			dto.setWeatherType(livedata.getCurrDesc());
-			dto.setLow(Integer.valueOf(livedata.getTemperatureLow()));
-			dto.setHigh(Integer.valueOf(livedata.getTemperatureHigh()));
+//			dto.setLow(Integer.valueOf(livedata.getTemperatureLow()));
+//			dto.setHigh(Integer.valueOf(livedata.getTemperatureHigh()));
+			dto.setTemperature(livedata.getTemperature());
+			dto.setIcon(livedata.getCurrIcon());
 			return dto;
 			
 		} catch (RemoteException e) {
@@ -116,6 +119,10 @@ public class WeatherService extends BaseSerivce<IWeatherDao,Weather,String> impl
 	public void setPhoneDistrictDao(IPhoneDistrictDao phoneDistrictDao) {
 		this.phoneDistrictDao = phoneDistrictDao;
 	}
-	
-	
+	private String getWindByStr(String str){
+		return str.split("Winds")[1].split(".  ")[0];
+	}
+	private String getIcon(String str){
+		return str.split("/")[6];
+	}
 }

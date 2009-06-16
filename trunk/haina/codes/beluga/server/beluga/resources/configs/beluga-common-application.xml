@@ -76,7 +76,7 @@
 	     <tx:advice id="belugaAdvice" transaction-manager="txManager">   
 	       <tx:attributes>       
 	         <tx:method name="save*" propagation="REQUIRED"/>
-	          <tx:method name="loadWeather*" propagation="REQUIRED"/> 
+	          <tx:method name="loadWeather*" propagation="REQUIRED" isolation="READ_COMMITTED"/> 
 	         <tx:method name="creat*" propagation="REQUIRED"/>     
 	         <tx:method name="remove*" propagation="REQUIRED"/> 
 	         <tx:method name="del*" propagation="REQUIRED"/> 
@@ -111,7 +111,7 @@
        <ref bean="loadWeatherDatasByApi"/>
      </property>
      <property name="cronExpression">
-       <value>0 0 2,13 ? * *</value>
+       <value>0 0 0/2 ? * *</value>
      </property>
    </bean>
 
