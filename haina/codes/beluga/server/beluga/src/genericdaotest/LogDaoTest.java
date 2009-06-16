@@ -89,7 +89,7 @@ public class LogDaoTest extends TestCase
 ////    	logService.findAll(true);
 //    }
     public void testWeather() throws Exception {
-//    	getWeatherService().getLiveWeather("112020");
+    	getWeatherService().getLiveWeather("56672");
 //    	getWeatherService().findAll(true);
     	
     	List<WeatherDto> list = getWeatherService().get7Weatherdatas("112020");

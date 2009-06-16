@@ -14,6 +14,9 @@ public class WeatherDto implements IDto{
 	private String date;/*天气日期*/ 
 	private String weatherCityCode; 
 	private String weatherType; 
+	private String wind; 
+	private String temperature;
+	private String icon;
 	private int high; 
 	private int low;
 	public String getDate() {
@@ -47,6 +50,26 @@ public class WeatherDto implements IDto{
 		this.low = low;
 	} 
 	
+	
+	public String getWind() {
+		return wind;
+	}
+	public void setWind(String wind) {
+		this.wind = wind;
+	}
+	public String getTemperature() {
+		return temperature;
+	}
+	public void setTemperature(String temperature) {
+		this.temperature = temperature;
+	}
+	
+	public String getIcon() {
+		return icon;
+	}
+	public void setIcon(String icon) {
+		this.icon = icon;
+	}
 	public static WeatherDto valueof(Weather w){
 		WeatherDto dto = new WeatherDto();
 		BeanUtil.copyPropertie(w, dto);

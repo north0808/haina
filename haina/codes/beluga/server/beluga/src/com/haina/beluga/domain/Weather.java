@@ -16,9 +16,11 @@ public class Weather extends VersionalModel{
 	private String date;/*天气日期*/ 
 	private String weatherCityCode; 
 	private String weatherType; 
+	private boolean isNight;
 	private int high; 
 	private int low; 
 	private String wind;
+	private String icon;
 
 	
 	 /**
@@ -77,7 +79,7 @@ public class Weather extends VersionalModel{
 		this.low = low;
 	}
 	 /**
-	 * @hibernate.property column="wind" length="300"
+	 * @hibernate.property column="wind" length="30"
 	 * @return String
 	 */
 	public String getWind() {
@@ -87,6 +89,29 @@ public class Weather extends VersionalModel{
 	public void setWind(String wind) {
 		this.wind = wind;
 	}
+	 /**
+	 * @hibernate.property column="icon" length="30"
+	 * @return String
+	 */
+	public String getIcon() {
+		return icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
+	}
+	/**
+	 * @hibernate.property column="isNight" 
+	 * @return boolean
+	 */
+	public boolean isNight() {
+		return isNight;
+	}
+
+	public void setNight(boolean isNight) {
+		this.isNight = isNight;
+	}
+
 	/**
 	 * @hibernate.property column="VERSION"
 	 * @return Long
