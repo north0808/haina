@@ -17,8 +17,11 @@ public class WeatherDto implements IDto{
 	private String wind; 
 	private String temperature;
 	private String icon;
+	private boolean isNight;
 	private int high; 
 	private int low;
+	private String issuetime;/*发布时间*/
+	
 	public String getDate() {
 		return date;
 	}
@@ -69,6 +72,20 @@ public class WeatherDto implements IDto{
 	}
 	public void setIcon(String icon) {
 		this.icon = icon;
+	}
+	
+	public boolean isNight() {
+		return isNight;
+	}
+	public void setNight(boolean isNight) {
+		this.isNight = isNight;
+	}
+	
+	public String getIssuetime() {
+		return issuetime;
+	}
+	public void setIssuetime(String issuetime) {
+		this.issuetime = issuetime;
 	}
 	public static WeatherDto valueof(Weather w){
 		WeatherDto dto = new WeatherDto();

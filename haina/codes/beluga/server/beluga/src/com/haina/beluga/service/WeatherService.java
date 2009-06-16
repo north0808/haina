@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.haina.beluga.core.service.BaseSerivce;
+import com.haina.beluga.core.util.MfTime;
 import com.haina.beluga.dao.IPhoneDistrictDao;
 import com.haina.beluga.dao.IWeatherDao;
 import com.haina.beluga.domain.Weather;
@@ -64,6 +65,7 @@ public class WeatherService extends BaseSerivce<IWeatherDao,Weather,String> impl
 					weather.setWind(getWindByStr(afd.getPrediction()));
 					weather.setIcon(getIcon(afd.getImage()));
 					weather.setNight(afd.isIsNight());
+					weather.setIssuetime(MfTime.toNow());
 					getBaseDao().create(weather);
 				}
 //				break;

@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import com.haina.beluga.core.util.MfTime;
 import com.sun.syndication.feed.synd.SyndEntryImpl;
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.io.FeedException;
@@ -18,9 +19,9 @@ import com.sun.syndication.io.SyndFeedInput;
 public class RomeTest {
 	
 	public static void main(String[] args){
-		for(int i =0;i<=176;i++)
-			getIconWeather(i);
-
+//		for(int i =0;i<=176;i++)
+//			getIconWeather(i);
+		System.out.println(MfTime.toNow());;
 	}
 	/**
 	 * 10000<QQ<=1425000000;
