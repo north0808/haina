@@ -92,6 +92,14 @@
         </property>
 
         <property
+            name="issuetime"
+                    column="issuetime"
+                length="10"
+        >
+
+        </property>
+
+        <property
             name="version"
                     column="VERSION"
         >

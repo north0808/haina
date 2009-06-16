@@ -98,7 +98,15 @@ public class MfTime {
     	String sMinute = minute < 10 ? "0" + minute : String.valueOf(minute);
        return sHour + ":" + sMinute;
     }
-   
+    public static String toNow() {
+    	Calendar c = Calendar.getInstance();
+         c.setTimeInMillis(System.currentTimeMillis());
+    	int hour = c.get(Calendar.HOUR_OF_DAY);
+    	int minute =  c.get(Calendar.MINUTE);
+    	String sHour = hour < 10 ? "0" + hour : String.valueOf(hour);
+    	String sMinute = minute < 10 ? "0" + minute : String.valueOf(minute);
+       return sHour + ":" + sMinute;
+    }
     public Boolean isAllZero() {
         return (this.getHour() == 0 && this.getMinute() == 0 && this
             .getSecond() == 0);

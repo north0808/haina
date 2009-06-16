@@ -21,6 +21,7 @@ public class Weather extends VersionalModel{
 	private int low; 
 	private String wind;
 	private String icon;
+	private String issuetime;/*发布时间*/
 
 	
 	 /**
@@ -111,6 +112,17 @@ public class Weather extends VersionalModel{
 	public void setNight(boolean isNight) {
 		this.isNight = isNight;
 	}
+	/**
+	 * @hibernate.property column="issuetime" length="10"
+	 * @return String
+	 */
+	public String getIssuetime() {
+		return issuetime;
+	}
+
+	public void setIssuetime(String issuetime) {
+		this.issuetime = issuetime;
+	}
 
 	/**
 	 * @hibernate.property column="VERSION"
@@ -121,7 +133,7 @@ public class Weather extends VersionalModel{
 		// TODO Auto-generated method stub
 		return version;
 	}
-
+	
 	@Override
 	public boolean equals(Object object) {
 		// TODO Auto-generated method stub
