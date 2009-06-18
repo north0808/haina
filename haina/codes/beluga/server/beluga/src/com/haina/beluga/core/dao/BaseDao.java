@@ -6,10 +6,9 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate3.SessionFactoryUtils;
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import com.haina.beluga.core.model.IModel;
 
@@ -20,42 +19,42 @@ import com.haina.beluga.core.model.IModel;
  * FinderIntroductionInterceptor
  */
 @SuppressWarnings("unchecked")
-public class BaseDao<T extends IModel, PK extends Serializable> implements
+public class BaseDao<T extends IModel, PK extends Serializable> extends HibernateDaoSupport implements
 		IBaseDao<T, PK> {
-	@Autowired(required = true)
+	
 	private SessionFactory sessionFactory;
 
 	private T type;
 
 	public PK create(T o) {
-		return (PK) getSession().save(o);
+		return (PK) getHibernateTemplate().save(o);
 	}
 
 	public T read(PK id) {
-		return (T) getSession().get(type.getClass(), id);
+		return (T) getHibernateTemplate().get(type.getClass(), id);
 	}
 
 	public void update(T o) {
-		getSession().update(o);
+		getHibernateTemplate().update(o);
 	}
 
 	public void delete(T o) {
-		getSession().delete(o);
+		getHibernateTemplate().delete(o);
 	}
 
-	public Session getSession() {
-		boolean allowCreate = true;
-		return SessionFactoryUtils.getSession(sessionFactory, allowCreate);
-	}
+//	public Session getSession() {
+//		boolean allowCreate = true;
+//		return SessionFactoryUtils.getSession(sessionFactory, allowCreate);
+//	}
 
 	@Override
 	public void saveOrUpdate(T newInstance) {
-		getSession().saveOrUpdate(newInstance);
+		getHibernateTemplate().saveOrUpdate(newInstance);
 	}
 
 	@Override
 	public void deleteById(PK id) {
-		getSession().delete(read(id));
+		getHibernateTemplate().delete(read(id));
 	}
 
 	@Autowired(required = true)
@@ -88,5 +87,12 @@ public class BaseDao<T extends IModel, PK extends Serializable> implements
 	public T load(PK id) {
 		return (T) getSession().load(type.getClass(), id);
 	}
+	
+	@Autowired(required = true)
+	public void setSessionFactory1(SessionFactory sessionFactory) {
+		super.setSessionFactory(sessionFactory);
+	}
+	
+	
 
 }

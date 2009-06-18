@@ -48,10 +48,9 @@ public class WeatherService extends BaseSerivce<IWeatherDao,Weather,String> impl
 	public void loadWeatherDatasByApi() {
 		long t1 = System.currentTimeMillis();
 		String[] codes = phoneDistrictDao.getWeatherCityCodes();
+		List<Weather> weatherList = new ArrayList<Weather>();
 		logger.info("loadWeatherDatasByApiSize:"+codes.length);
-		//先清空，后插入
 		int i = 0;
-		getBaseDao().delAll();
 		for(String cityCode:codes){
 			try {
 				ApiForecastData[] forecastDatas = weatherBugWebServicesSoap.getForecastByCityCode(cityCode, UnitType.Metric, ACode);
@@ -66,7 +65,8 @@ public class WeatherService extends BaseSerivce<IWeatherDao,Weather,String> impl
 					weather.setIcon(getIcon(afd.getImage()));
 					weather.setNight(afd.isIsNight());
 					weather.setIssuetime(MfTime.toNow());
-					getBaseDao().create(weather);
+					weatherList.add(weather);
+//					getBaseDao().create(weather);
 				}
 //				break;
 			} catch (RemoteException e) {
@@ -75,6 +75,7 @@ public class WeatherService extends BaseSerivce<IWeatherDao,Weather,String> impl
 			}
 			logger.info(cityCode+":in "+i++);
 		}
+		getBaseDao().saveAll(weatherList);
 		//所有更新后的天气加载到缓存
 		findAll(true);
 		long t2 = System.currentTimeMillis();
@@ -127,4 +128,5 @@ public class WeatherService extends BaseSerivce<IWeatherDao,Weather,String> impl
 	private String getIcon(String str){
 		return str.split("/")[6];
 	}
+	
 }
