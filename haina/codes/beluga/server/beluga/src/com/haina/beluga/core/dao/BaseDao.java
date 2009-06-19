@@ -18,7 +18,7 @@ import com.haina.beluga.core.model.IModel;
  * through the executeFinder method. Normally called by the
  * FinderIntroductionInterceptor
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings("unchecked")//
 public class BaseDao<T extends IModel, PK extends Serializable> extends HibernateDaoSupport implements
 		IBaseDao<T, PK> {
 	
