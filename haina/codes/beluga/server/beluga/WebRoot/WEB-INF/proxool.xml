@@ -2,10 +2,10 @@
 <proxool-config>
 	<proxool>
 		<alias>haina_beluga</alias>
-		<driver-url>jdbc:mysql://localhost:3306/haina_beluga?useUnicode=true&amp;characterEncoding=utf8</driver-url>
-		<driver-class>com.mysql.jdbc.Driver</driver-class>
+		<driver-url>jdbc:postgresql://127.0.0.1:5432/haina_beluga:utf8</driver-url>
+		<driver-class>org.postgresql.Driver</driver-class>
 		<driver-properties>
-			<property name="user" value="root" />
+			<property name="user" value="postgres" />
 			<property name="password" value="root" />
 		</driver-properties>
 		
