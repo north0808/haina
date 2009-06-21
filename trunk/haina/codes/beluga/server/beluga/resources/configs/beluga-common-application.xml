@@ -38,7 +38,7 @@
 	</property>
 	<property name="hibernateProperties">
 		<props>
-			<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
+			<prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
 			<prop key="hibernate.show_sql">true</prop>
 			<prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheProvider</prop>
         	<prop key="hibernate.cache.use_query_cache">true</prop>
@@ -111,7 +111,7 @@
        <ref bean="loadWeatherDatasByApi"/>
      </property>
      <property name="cronExpression">
-       <value>0 0 0/2 ? * *</value>
+       <value>0 42 11 ? * *</value>
      </property>
    </bean>
 
