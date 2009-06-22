@@ -22,7 +22,9 @@ import com.haina.beluga.dao.IPhoneDistrictDao;
 import com.haina.beluga.dao.IWeatherDao;
 import com.haina.beluga.domain.Weather;
 import com.haina.beluga.dto.WeatherDto;
+import com.haina.beluga.webservice.Constant;
 import com.haina.beluga.webservice.OUSkeleton;
+import com.haina.beluga.webservice.data.hessian.HessianRemoteReturning;
 @Component
 public class WeatherService extends BaseSerivce<IWeatherDao,Weather,String> implements IWeatherService,InitializingBean {
 	@Autowired(required=true)
@@ -83,7 +85,8 @@ public class WeatherService extends BaseSerivce<IWeatherDao,Weather,String> impl
 	}
 
 	@Override
-	public WeatherDto getLiveWeather(String cityCode) {
+	public HessianRemoteReturning getLiveWeather(String cityCode) {
+		HessianRemoteReturning hrr = new HessianRemoteReturning();
 		try {
 			LiveWeatherData livedata = weatherBugWebServicesSoap.getLiveWeatherByCityCode(cityCode, UnitType.Metric, ACode);
 			WeatherDto dto = new WeatherDto();
@@ -92,25 +95,27 @@ public class WeatherService extends BaseSerivce<IWeatherDao,Weather,String> impl
 //			dto.setHigh(Integer.valueOf(livedata.getTemperatureHigh()));
 			dto.setTemperature(livedata.getTemperature());
 			dto.setIcon(livedata.getCurrIcon());
-			return dto;
-			
+			hrr.setValue(dto);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return null;
+			hrr.setStatusCode(Constant.NO_LIVEDATA);
 		}
-		
+		return hrr;
 	}
 
 	@Override
-	public List<WeatherDto> get7Weatherdatas(String cityCode) {
-		List<WeatherDto> list = new ArrayList<WeatherDto>();
+	public HessianRemoteReturning get7Weatherdatas(String cityCode) {
+		ArrayList<WeatherDto> list = new ArrayList<WeatherDto>();
 		Iterator<Weather> iterator = getBaseDao().get7WeatherDatas(cityCode);
 		while(iterator.hasNext()){
 			Weather w = iterator.next();
 			list.add(WeatherDto.valueof(w));
 		}
-		return list;
+		HessianRemoteReturning hrr = new HessianRemoteReturning(list);
+		if(list.size()==0)
+			hrr.setStatusCode(Constant.NO_7WEATHERDATA);
+		return hrr;
 	}
 	
 	@Override
