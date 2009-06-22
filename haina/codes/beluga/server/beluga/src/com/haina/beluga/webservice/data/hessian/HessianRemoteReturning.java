@@ -66,7 +66,10 @@ public class HessianRemoteReturning extends AbstractRemoteReturning {
 		super();
 		this.value=value;
 	}
-	
+	public HessianRemoteReturning() {
+		super();
+//		this.value=value;
+	}
 	public Integer getHttpStatusCode() {
 		return httpStatusCode;
 	}

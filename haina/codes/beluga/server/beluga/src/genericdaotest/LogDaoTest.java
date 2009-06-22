@@ -92,11 +92,11 @@ public class LogDaoTest extends TestCase
     	getWeatherService().getLiveWeather("56672");
 //    	getWeatherService().findAll(true);
     	
-    	List<WeatherDto> list = getWeatherService().get7Weatherdatas("112020");
+//    	List<WeatherDto> list = getWeatherService().get7Weatherdatas("112020");
 //    	getWeatherService().get7Weatherdatas("112020");
-    	for(WeatherDto  dto:list){
-    		System.out.println(dto.getDate()+":"+dto.getWeatherType()+":"+dto.getHigh());
-    	}
+//    	for(WeatherDto  dto:list){
+//    		System.out.println(dto.getDate()+":"+dto.getWeatherType()+":"+dto.getHigh());
+//    	}
     }
     protected void setUp() throws Exception
     {
