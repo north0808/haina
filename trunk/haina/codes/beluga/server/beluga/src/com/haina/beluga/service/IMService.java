@@ -7,29 +7,34 @@ import java.net.URL;
 import org.springframework.stereotype.Component;
 
 import com.haina.beluga.webservice.Constant;
+import com.haina.beluga.webservice.data.hessian.HessianRemoteReturning;
 @Component
 public class IMService {
 
-	public int getQQStatus(int qqCode){
-		if(qqCode <= 10000 || qqCode >1425000000)
-			return Constant.QQ_ARG_ERROE;
+	public HessianRemoteReturning getQQStatus(int qqCode){
+		HessianRemoteReturning hrr = new HessianRemoteReturning();
+		if(qqCode <= 10000 || qqCode >1425000000){
+			hrr.setStatusCode(Constant.QQ_ARG_ERROE);
+			return hrr;
+		}
 		URL feedUrl;
 		try {
 			feedUrl = new URL("http://wpa.qq.com/pa?p=1:"+qqCode+":4");
 			java.awt.image.BufferedImage bi = javax.imageio.ImageIO.read(feedUrl);
 			if(bi.getWidth()==Constant.QQ_OFFLINE_WIDTH)
-				return Constant.QQ_OFFLINE;
+				hrr.setValue(Constant.QQ_OFFLINE) ;
 			else
-				return Constant.QQ_ONLINE;
+				hrr.setValue(Constant.QQ_ONLINE) ;
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
-			return Constant.NETWORK_ERROR;
+			hrr.setStatusCode(Constant.QQ_NETWORK_ERROR) ;
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
-			return Constant.NETWORK_ERROR;
+			hrr.setStatusCode(Constant.QQ_NETWORK_ERROR) ;
 		}catch (IOException e) {
 			e.printStackTrace();
-			return Constant.NETWORK_ERROR;
+			hrr.setStatusCode(Constant.QQ_NETWORK_ERROR) ;
 		}
+		return hrr;
 	}
 }
