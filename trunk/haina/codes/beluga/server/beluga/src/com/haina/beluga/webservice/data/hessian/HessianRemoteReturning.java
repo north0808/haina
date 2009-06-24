@@ -19,10 +19,10 @@ public class HessianRemoteReturning extends AbstractRemoteReturning {
 	private static final long serialVersionUID = 442552256316220328L;
 	
 	/*HTTP协议状态码。*/
-	protected Integer httpStatusCode;
+//	protected Integer httpStatusCode;
 
 	/*Hessian协议自身的状态码*/
-	protected Integer hessianStatusCode;
+//	protected Integer hessianStatusCode;
 	
 	
 	public HessianRemoteReturning(Integer statusCode,Integer operationCode,
@@ -31,8 +31,8 @@ public class HessianRemoteReturning extends AbstractRemoteReturning {
 		this.statusCode=statusCode;
 		this.operationCode=operationCode;
 		this.value=value;
-		this.httpStatusCode = httpStatusCode;
-		this.hessianStatusCode = hessianStatusCode;
+//		this.httpStatusCode = httpStatusCode;
+//		this.hessianStatusCode = hessianStatusCode;
 	}
 	
 	public HessianRemoteReturning(Integer statusCode,String statusText,Integer operationCode,
@@ -42,24 +42,24 @@ public class HessianRemoteReturning extends AbstractRemoteReturning {
 		this.statusText=statusText;
 		this.operationCode=operationCode;
 		this.value=value;
-		this.httpStatusCode = httpStatusCode;
-		this.hessianStatusCode = hessianStatusCode;
+//		this.httpStatusCode = httpStatusCode;
+//		this.hessianStatusCode = hessianStatusCode;
 	}
 	
 	public HessianRemoteReturning(Serializable value,
 			Integer httpStatusCode, Integer hessianStatusCode) {
 		super();
 		this.value=value;
-		this.httpStatusCode = httpStatusCode;
-		this.hessianStatusCode = hessianStatusCode;
+//		this.httpStatusCode = httpStatusCode;
+//		this.hessianStatusCode = hessianStatusCode;
 	}
 	
 	
 	public HessianRemoteReturning(Integer httpStatusCode,
 			Integer hessianStatusCode) {
 		super();
-		this.httpStatusCode = httpStatusCode;
-		this.hessianStatusCode = hessianStatusCode;
+//		this.httpStatusCode = httpStatusCode;
+//		this.hessianStatusCode = hessianStatusCode;
 	}
 
 	public HessianRemoteReturning(Serializable value) {
@@ -70,21 +70,21 @@ public class HessianRemoteReturning extends AbstractRemoteReturning {
 		super();
 //		this.value=value;
 	}
-	public Integer getHttpStatusCode() {
-		return httpStatusCode;
-	}
+//	public Integer getHttpStatusCode() {
+//		return httpStatusCode;
+//	}
 
-	public void setHttpStatusCode(Integer httpStatusCode) {
-		this.httpStatusCode = httpStatusCode;
-	}
-
-	public Integer getHessianStatusCode() {
-		return hessianStatusCode;
-	}
-
-	public void setHessianStatusCode(Integer hessianStatusCode) {
-		this.hessianStatusCode = hessianStatusCode;
-	}
+//	public void setHttpStatusCode(Integer httpStatusCode) {
+//		this.httpStatusCode = httpStatusCode;
+//	}
+//
+//	public Integer getHessianStatusCode() {
+//		return hessianStatusCode;
+//	}
+//
+//	public void setHessianStatusCode(Integer hessianStatusCode) {
+//		this.hessianStatusCode = hessianStatusCode;
+//	}
 
 	/**
 	 * @see java.lang.Object#equals(Object)
@@ -95,8 +95,8 @@ public class HessianRemoteReturning extends AbstractRemoteReturning {
 		}
 		HessianRemoteReturning rhs = (HessianRemoteReturning) object;
 		return new EqualsBuilder().appendSuper(super.equals(object)).append(
-				this.value, rhs.value).append(this.hessianStatusCode,
-				rhs.hessianStatusCode).append(this.httpStatusCode, rhs.httpStatusCode)
+				this.value, rhs.value)/*.append(this.hessianStatusCode,
+				rhs.hessianStatusCode).append(this.httpStatusCode, rhs.httpStatusCode)*/
 				.isEquals();
 	}
 
@@ -105,9 +105,9 @@ public class HessianRemoteReturning extends AbstractRemoteReturning {
 	 */
 	public int hashCode() {
 		return new HashCodeBuilder(478403855, -827019439).appendSuper(
-				super.hashCode()).append(this.value).append(
+				super.hashCode()).append(this.value)/*.append(
 				this.hessianStatusCode).append(
-				this.httpStatusCode).toHashCode();
+				this.httpStatusCode)*/.toHashCode();
 	}
 
 }
