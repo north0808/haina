@@ -125,7 +125,7 @@ public class PhoneDistrict extends VersionalModel {
 	}
 	
 	/**
-	 * @hibernate.id column="ID" generator-class="uuid.hex"  unsaved-value="null"
+	 * @hibernate.id column="ID" generator-class="uuid"  unsaved-value="null"
 	 * @return String
 	 */
 	@Override

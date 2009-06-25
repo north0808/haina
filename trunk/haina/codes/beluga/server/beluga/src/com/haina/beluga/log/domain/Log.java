@@ -115,7 +115,7 @@ public class Log extends VersionalModel{
 		return super.clone();
 	}
 	 /**
-	 * @hibernate.id column="ID" generator-class="uuid.hex"  unsaved-value="null"
+	 * @hibernate.id column="ID" generator-class="uuid"  unsaved-value="null"
 	 * @return String
 	 */
 	public String getId() {
