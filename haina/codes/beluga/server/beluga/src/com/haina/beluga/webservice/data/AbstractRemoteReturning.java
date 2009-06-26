@@ -1,6 +1,5 @@
 package com.haina.beluga.webservice.data;
 
-import java.io.Serializable;
 
 /**
  * 远程调用返回值的基类。<br/>
@@ -12,13 +11,13 @@ import java.io.Serializable;
 public abstract class AbstractRemoteReturning extends AbstractRemoteData {
 
 	/*返回值。*/
-	protected Serializable value;
+	protected Object value;
 
-	public Serializable getValue() {
+	public Object getValue() {
 		return value;
 	}
 
-	public void setValue(Serializable value) {
+	public void setValue(Object value) {
 		this.value = value;
 	}
 }
