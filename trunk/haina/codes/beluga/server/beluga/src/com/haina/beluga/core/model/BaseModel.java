@@ -18,7 +18,7 @@ public abstract class BaseModel implements IModel {
 	
 	protected String id;
 
-	public void setId(String id) {
+	public final void setId(String id) {
 		if(isNew()) {
 		    this.id = id;
 		}
