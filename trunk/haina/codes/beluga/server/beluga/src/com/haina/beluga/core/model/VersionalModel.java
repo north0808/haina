@@ -17,7 +17,7 @@ public abstract class VersionalModel extends BaseModel {
 	public abstract Long getVersion();
 	
 
-	public void setVersion(Long version) {
+	public final void setVersion(Long version) {
 		this.version = version;
 	}
 
