@@ -597,6 +597,8 @@ public class JSONSerializer {
                     boolean firstField = true;
                     for (PropertyDescriptor prop : props) {
                         String name = prop.getName();
+                        /*去掉json中的class属性*/
+                        if("class".equals(name)) continue;
                         path.enqueue( name );
                         Method accessor = prop.getReadMethod();
                         if (accessor != null && isIncluded( prop ) ) {
