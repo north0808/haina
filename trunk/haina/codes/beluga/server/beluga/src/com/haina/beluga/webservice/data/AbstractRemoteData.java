@@ -12,13 +12,13 @@ import com.haina.beluga.core.dto.IDto;
 public abstract class AbstractRemoteData implements IDto {
 	
 	/*状态码。*/
-	protected Integer statusCode;
+	protected int statusCode;
 	
 	/*状态文字。*/
 	protected String statusText;
 	
 	/*操作码。*/
-	protected Integer operationCode;
+	protected int operationCode;
 
 	public Integer getStatusCode() {
 		return statusCode;
