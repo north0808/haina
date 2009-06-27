@@ -95,7 +95,7 @@ public class Log extends VersionalModel{
 		this.roleName = roleName;
 	}
 	/**
-	 * @hibernate.property column="VERSION"
+	 * @hibernate.version column="VERSION"
 	 * @return Long
 	 */
 	public Long getVersion() {
