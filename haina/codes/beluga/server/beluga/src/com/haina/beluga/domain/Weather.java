@@ -19,9 +19,9 @@ public class Weather extends VersionalModel {
 	private String date;/* 天气日期 */
 	private String weatherCityCode;
 	private String weatherType;
-	private boolean isNight;
-	private int high;
-	private int low;
+	private Boolean isNight;
+	private Integer high;
+	private Integer low;
 	private String wind;
 	private String icon;
 	private String issuetime;/* 发布时间 */
@@ -66,11 +66,11 @@ public class Weather extends VersionalModel {
 	 * @hibernate.property column="high"
 	 * @return int
 	 */
-	public int getHigh() {
+	public Integer getHigh() {
 		return high;
 	}
 
-	public void setHigh(int high) {
+	public void setHigh(Integer high) {
 		this.high = high;
 	}
 
@@ -114,11 +114,11 @@ public class Weather extends VersionalModel {
 	 * @hibernate.property column="isNight"
 	 * @return boolean
 	 */
-	public boolean isNight() {
+	public Boolean getNight() {
 		return isNight;
 	}
 
-	public void setNight(boolean isNight) {
+	public void setNight(Boolean isNight) {
 		this.isNight = isNight;
 	}
 
@@ -188,7 +188,7 @@ public class Weather extends VersionalModel {
 				this.weatherCityCode).append("icon", this.icon).append(
 				"issuetime", this.issuetime).append("low", this.low).append(
 				"date", this.date).append("wind", this.wind).append("night",
-				this.isNight()).append("weatherType", this.weatherType).append(
+				this.getNight()).append("weatherType", this.weatherType).append(
 				"high", this.high).append("id", this.getId()).toString();
 	}
 
