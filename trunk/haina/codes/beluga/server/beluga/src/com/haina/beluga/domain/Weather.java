@@ -125,7 +125,7 @@ public class Weather extends VersionalModel{
 	}
 
 	/**
-	 * @hibernate.property column="VERSION"
+	 * @hibernate.version column="VERSION"
 	 * @return Long
 	 */
 	@Override
