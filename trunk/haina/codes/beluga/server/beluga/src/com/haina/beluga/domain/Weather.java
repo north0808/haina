@@ -145,7 +145,7 @@ public class Weather extends VersionalModel {
 	}
 
 	/**
-	 * @hibernate.id column="ID" unsaved-value="null"
+	 * @hibernate.id column="ID" unsaved-value="null" length="32"
 	 * @hibernate.generator class="uuid.hex"
 	 * @return String
 	 */
