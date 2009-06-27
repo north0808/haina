@@ -159,8 +159,8 @@ public class JunitGeneratePhoneDistrictDB extends TestCase
 					pd.setDistrictNumber(pm.getAreaCode());
 					pd.setDistrictProvince(priv);
 					pd.setFeeType(fee);
-					pd.setRangeStart(new Long(temp_start));
-					pd.setRangeEnd(new Long(i-1));
+//					pd.setRangeStart(new Long(temp_start));
+//					pd.setRangeEnd(new Long(i-1));
 					pd.setPingyinCity(city_py);
 					pd.setUpdateFlg(1);
 					pd.setWeatherCityCode(weather_city_code);
@@ -193,8 +193,8 @@ public class JunitGeneratePhoneDistrictDB extends TestCase
 				pd.setDistrictNumber(pm.getAreaCode());
 				pd.setDistrictProvince(priv);
 				pd.setFeeType(fee);
-				pd.setRangeStart(new Long(temp_start));
-				pd.setRangeEnd(new Long(i-1));
+//				pd.setRangeStart(new Long(temp_start));
+//				pd.setRangeEnd(new Long(i-1));
 				pd.setPingyinCity(city_py);
 				pd.setUpdateFlg(1);
 				pd.setWeatherCityCode(weather_city_code);
@@ -219,8 +219,8 @@ public class JunitGeneratePhoneDistrictDB extends TestCase
 				pd.setDistrictNumber(pm.getAreaCode());
 				pd.setDistrictProvince(priv);
 				pd.setFeeType(fee);
-				pd.setRangeStart(new Long(temp_start));
-				pd.setRangeEnd(new Long(i));
+//				pd.setRangeStart(new Long(temp_start));
+//				pd.setRangeEnd(new Long(i));
 				pd.setPingyinCity(city_py);
 				pd.setUpdateFlg(1);
 				pd.setWeatherCityCode(weather_city_code);

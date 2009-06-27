@@ -116,8 +116,8 @@
              classpathref="local.lib.classpath"/>
 
         <schemaexport quiet="no" text="no" drop="no" delimiter=";" 
-            properties="${src.dir}/database.properties" output="create-tables.sql">
-            <fileset dir="${basedir}/resources/hbmxml" includes="**/*.hbm.xml" excludes="**/PhoneDistrict.hbm.xml"/>
+            properties="${src.dir}/database.properties" ><!--output="create-tables.sql"-->
+            <fileset dir="${basedir}/resources/hbmxml" includes="**/*.hbm.xml"/>
         </schemaexport>
     </target>
 
@@ -126,7 +126,7 @@
         <taskdef name="dbunit" classname="org.dbunit.ant.DbUnitTask" classpathref="local.lib.classpath"/>
         <dbunit driver="${hibernate.connection.driver_class}" url="${hibernate.connection.url}"
             userid="${hibernate.connection.username}" password="${hibernate.connection.password}">
-            <export dest="db-export.xls" format="xls"/>
+            <export dest="db-export" format="csv"/>
         </dbunit>
     </target>
 
@@ -159,71 +159,18 @@
         </condition>
 
 
-        <property name="file-part1"     value="db-insert.xls"     />
+        <property name="file-part1"     value="db-export"     />
     	
         <dbunit driver="${hibernate.connection.driver_class}"
             supportBatchStatement="false" url="${hibernate.connection.url}"
             userid="${hibernate.connection.username}" password="${hibernate.connection.password}" schema="${database.schema}">
 
-        	<operation type="${operation}" src="${file-part1}"     format="xls"/>
+        	<operation type="${operation}" src="${file-part1}"     format="csv"/>
      
         </dbunit>
     	
     </target>
-	
-	<target name="db-update" depends="compile"
-	        description="update the database with sample data">
-	        <taskdef name="dbunit" classname="org.dbunit.ant.DbUnitTask" classpathref="local.lib.classpath"/>
-		 	<property name="operation"     value="UPDATE"     />
-			<!--
-	        <property name="file-part1"     value="${data.dir}/sql/system-data-part1.xls"     />
-	    	<property name="file-part2"     value="${data.dir}/sql/system-data-part2.xls"     />
-			-->
-			<property name="file-part3"     value="${data.dir}/sql/system-data-part3.xls"     />
-			
-	    	<property name="file-part4"     value="${data.dir}/sql/system-data-part4.xls"     />
-		<!--
-	    	<property name="file-bpmlabel"     value="${data.dir}/sql/system-data-bpmlabel.xls"     /> 
-	        <property name="file_address"  value="${data.dir}/sql/system_date_address.xls"  />
-	    	<property name="file_help"       value="${data.dir}/sql/sample-data-help.xls"      />
-	    	-->
-	        
-	        <dbunit driver="${hibernate.connection.driver_class}"
-	            supportBatchStatement="false" url="${hibernate.connection.url}"
-	            userid="${hibernate.connection.username}" password="${hibernate.connection.password}" schema="${database.schema}">
-							
-				<!--
-	        	<operation type="${operation}" src="${file-part1}"     format="xls"/>
-	        	<operation type="${operation}" src="${file-part2}"     format="xls"/>
-				-->
-				<operation type="${operation}" src="${file-part3}"     format="xls"/>				
-	        	<operation type="${operation}" src="${file-part4}"     format="xls"/>
-	        	<!--
-	        	<operation type="${operation}" src="${file-bpmlabel}"     format="xls"/> 
-	            <operation type="${operation}" src="${file_address}"  format="xls"/>
-	        	<operation type="${operation}" src="${file_help}"       format="xls"/>
-	        	-->
-	        </dbunit>        
-	    </target>
-	
-	<target name="db-insert" depends="compile"
-		        description="insert the database with sample data">
-		        <taskdef name="dbunit" classname="org.dbunit.ant.DbUnitTask" classpathref="local.lib.classpath"/>
-			 	<property name="operation"     value="MSSQL_INSERT"     />
-			
-		    	<property name="insert-data"       value="${basedir}/db-insert.xls"      />
-		        
-		        <dbunit driver="${hibernate.connection.driver_class}"
-		            supportBatchStatement="false" url="${hibernate.connection.url}"
-		            userid="${hibernate.connection.username}" password="${hibernate.connection.password}" schema="${database.schema}">
-								
-					
-		        	<operation type="${operation}" src="${insert-data}"       format="xls"/>
-		        </dbunit>        
-		    </target>
-	
 
-    
 
 	<target name="db-load-sample" description="Loads the database with additional sample data">
 		<taskdef name="dbunit" classname="org.dbunit.ant.DbUnitTask" classpathref="local.lib.classpath"/>

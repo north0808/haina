@@ -30,6 +30,12 @@
 
     </id>
 
+        <version
+            name="version"
+            column="VERSION"
+            type="java.lang.Long"
+        />
+
         <property
             name="date"
                     column="date"
@@ -95,13 +101,6 @@
             name="issuetime"
                     column="issuetime"
                 length="10"
-        >
-
-        </property>
-
-        <property
-            name="version"
-                    column="VERSION"
         >
 
         </property>

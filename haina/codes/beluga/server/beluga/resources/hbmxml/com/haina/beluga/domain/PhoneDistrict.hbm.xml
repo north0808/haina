@@ -30,6 +30,12 @@
 
     </id>
 
+        <version
+            name="version"
+            column="VERSION"
+            type="java.lang.Long"
+        />
+
         <property
             name="districtNumber"
                     column="districtNumber"
@@ -39,15 +45,9 @@
         </property>
 
         <property
-            name="rangeStart"
-                    column="rangeStart"
-        >
-
-        </property>
-
-        <property
-            name="rangeEnd"
-                    column="rangeEnd"
+            name="range"
+                    column="range"
+                length="45000"
         >
 
         </property>
@@ -95,13 +95,6 @@
             name="weatherCityCode"
                     column="weatherCityCode"
                 length="20"
-        >
-
-        </property>
-
-        <property
-            name="version"
-                    column="VERSION"
         >
 
         </property>
