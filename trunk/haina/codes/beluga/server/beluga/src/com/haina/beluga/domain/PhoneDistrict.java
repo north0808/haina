@@ -17,8 +17,7 @@ public class PhoneDistrict extends VersionalModel {
 
 	private static final long serialVersionUID = -8573934053645649408L;
 	private String districtNumber;
-	private Long rangeStart;
-	private Long rangeEnd;
+	private String range;
 	private String feeType;
 	private String districtCity;
 	private String districtProvince;
@@ -39,27 +38,16 @@ public class PhoneDistrict extends VersionalModel {
 	}
 
 	/**
-	 * @hibernate.property column="rangeStart"
-	 * @return Long
+	 * @hibernate.property column="range" length="45000"
+	 * @return String
 	 */
-	public Long getRangeStart() {
-		return rangeStart;
+	public String getRange() {
+		return range;
 	}
 
-	public void setRangeStart(Long rangeStart) {
-		this.rangeStart = rangeStart;
-	}
+	public void setRange(String range) {
+		this.range = range;
 
-	/**
-	 * @hibernate.property column="rangeEnd"
-	 * @return Long
-	 */
-	public Long getRangeEnd() {
-		return rangeEnd;
-	}
-
-	public void setRangeEnd(Long rangeEnd) {
-		this.rangeEnd = rangeEnd;
 	}
 
 	/**
@@ -169,12 +157,10 @@ public class PhoneDistrict extends VersionalModel {
 		return new EqualsBuilder().append(this.id, rhs.id).append(
 				this.districtNumber, rhs.districtNumber).append(
 				this.districtProvince, rhs.districtProvince).append(
-				this.rangeEnd, rhs.rangeEnd).append(this.pingyinCity,
+				this.range, rhs.range).append(this.pingyinCity,
 				rhs.pingyinCity).append(this.districtCity, rhs.districtCity)
 				.append(this.feeType, rhs.feeType).append(this.weatherCityCode,
-						rhs.weatherCityCode).append(this.rangeStart,
-						rhs.rangeStart).append(this.updateFlg, rhs.updateFlg)
-				.isEquals();
+						rhs.weatherCityCode).append(this.updateFlg, rhs.updateFlg).isEquals();
 	}
 
 	/**
@@ -182,12 +168,12 @@ public class PhoneDistrict extends VersionalModel {
 	 */
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder(1464919849, -139111521).append(this.id)
-				.append(this.districtNumber).append(this.districtProvince)
-				.append(this.rangeEnd).append(this.pingyinCity).append(
-						this.districtCity).append(this.feeType).append(
-						this.weatherCityCode).append(this.rangeStart).append(
-						this.updateFlg).toHashCode();
+		return new HashCodeBuilder(1464919849, -139111521)
+		.append(this.id).append(this.districtNumber).append(
+				this.districtProvince).append(this.range).append(
+				this.pingyinCity).append(this.districtCity)
+				.append(this.feeType).append(this.weatherCityCode).append(this.updateFlg).toHashCode();
+
 	}
 
 	/**
@@ -199,9 +185,8 @@ public class PhoneDistrict extends VersionalModel {
 						"districtCity", this.districtCity).append(
 						"districtProvince", this.districtProvince).append(
 						"districtNumber", this.districtNumber).append(
-						"pingyinCity", this.pingyinCity).append("rangeEnd",
-						this.rangeEnd).append("feeType", this.feeType).append(
-						"rangeStart", this.rangeStart).append("id",
+						"pingyinCity", this.pingyinCity).append("range",
+						this.range).append("feeType", this.feeType).append("id",
 						this.getId()).toString();
 	}
 
