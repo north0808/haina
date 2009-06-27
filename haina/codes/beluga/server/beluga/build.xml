@@ -117,7 +117,7 @@
 
         <schemaexport quiet="no" text="no" drop="no" delimiter=";" 
             properties="${src.dir}/database.properties" output="create-tables.sql">
-            <fileset dir="${basedir}/resources/hbmxml" includes="**/*.hbm.xml" />
+            <fileset dir="${basedir}/resources/hbmxml" includes="**/*.hbm.xml" excludes="**/PhoneDistrict.hbm.xml"/>
         </schemaexport>
     </target>
 

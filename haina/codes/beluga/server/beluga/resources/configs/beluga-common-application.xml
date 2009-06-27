@@ -86,19 +86,19 @@
 	     </tx:advice> 
 
 
-<!-- 定义要调用的任务的实现类 -->
+<!-- 定义要调用的任务的实现类 
 
  
 
 <bean id="weatherQuartz" class="com.haina.beluga.service.WeatherService">
 
  </bean>
-
+-->
 <!--调用实现类里面的某个方法 -->
 
 <bean id="loadWeatherDatasByApi"   class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
      <property name="targetObject">
-       <ref bean="weatherQuartz"/>
+       <ref bean="weatherService"/>
      </property>
      <property name="targetMethod">
        <value>loadWeatherDatasByApi</value>

@@ -2,6 +2,8 @@ package test;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.haina.beluga.webservice.data.hessian.HessianRemoteReturning;
+
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 
@@ -32,14 +34,17 @@ public class Test {
 		person.setAddr(add1);
 		person.setAddrList(adds);
 		JSONSerializer serializer = new JSONSerializer(); 
-		//
-		List<Person> pes = new ArrayList<Person>();
-		pes.add(person);
-		pes.add(person);
-		String s = serializer.deepSerialize(pes);
+//		//
+//		List<Person> pes = new ArrayList<Person>();
+//		pes.add(person);
+//		pes.add(person);
+		HessianRemoteReturning h = 	new HessianRemoteReturning();
+		h.setValue(10000);
+		String s = serializer.deepSerialize( h);
+		
 		System.out.println(s);
-		List<Person> person1 = new JSONDeserializer<List<Person>>()
-		.deserialize(s);
+//		List<Person> person1 = new JSONDeserializer<List<Person>>()
+//		.deserialize(s);
 //		{"a":12,"b":true,"c":"hello"}
 //		
 		} 

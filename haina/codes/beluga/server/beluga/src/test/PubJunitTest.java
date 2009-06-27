@@ -1,10 +1,4 @@
-package genericdaotest;
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+package test;
 
 import junit.framework.TestCase;
 
@@ -17,22 +11,15 @@ import org.springframework.orm.hibernate3.SessionFactoryUtils;
 import org.springframework.orm.hibernate3.SessionHolder;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
-import com.haina.beluga.dao.PhoneDistrictDao;
-import com.haina.beluga.dao.Phone_DistrictDao;
-import com.haina.beluga.domain.PhoneDistrict;
-import com.haina.beluga.domain.Phone_District;
 import com.haina.beluga.log.service.LogService;
 import com.haina.beluga.service.IWeatherService;
 import com.haina.beluga.service.WeatherService;
 
-/**
- * Simple test of the PersonDao
- */
-public class LogDaoTest extends TestCase
+public class PubJunitTest  extends TestCase
 {
     private ApplicationContext factory;
  
-    public LogDaoTest(String s)
+    public PubJunitTest(String s)
     {
         super(s);
         factory = new ClassPathXmlApplicationContext("test/test-applicationContext.xml");
@@ -96,7 +83,7 @@ public class LogDaoTest extends TestCase
 ////    	logService.findAll(true);
 //    }
     public void testWeather() throws Exception {
-//    	getWeatherService().getLiveWeather("56672");
+    	getWeatherService().getLiveWeather("56672");
 //    	getWeatherService().findAll(true);
     	
 //    	List<WeatherDto> list = getWeatherService().get7Weatherdatas("112020");
@@ -104,56 +91,6 @@ public class LogDaoTest extends TestCase
 //    	for(WeatherDto  dto:list){
 //    		System.out.println(dto.getDate()+":"+dto.getWeatherType()+":"+dto.getHigh());
 //    	}
-    }
-    public void testGenPhones() throws Exception {
-    	Map<String, Phone_District> map = new HashMap<String, Phone_District>();
-    	List<PhoneDistrict> list = getPhoneDistrictDao().getModels(true);
-    	for(PhoneDistrict pd : list){
-    		if(null == map.get(pd.getDistrictCity())){
-    			String rs = ranges(pd);
-    			Phone_District p_d = new Phone_District();
-    			p_d.setRange(rs);
-    			p_d.setDistrictCity(pd.getDistrictCity());
-    			p_d.setDistrictNumber(pd.getDistrictNumber());
-    			p_d.setDistrictProvince(pd.getDistrictProvince());
-    			p_d.setFeeType(pd.getFeeType());
-    			p_d.setPingyinCity(pd.getPingyinCity());
-    			p_d.setUpdateFlg(pd.getUpdateFlg());
-    			p_d.setWeatherCityCode(pd.getWeatherCityCode());
-    			
-    			map.put(pd.getDistrictCity(), p_d);
-    		}else{
-    			Phone_District p_d = map.get(pd.getDistrictCity());
-    			
-    			p_d.setRange(p_d.getRange()+ranges(pd));
-    			p_d.setDistrictCity(pd.getDistrictCity());
-    			p_d.setDistrictNumber(pd.getDistrictNumber());
-    			p_d.setDistrictProvince(pd.getDistrictProvince());
-    			p_d.setFeeType(pd.getFeeType());
-    			p_d.setPingyinCity(pd.getPingyinCity());
-    			p_d.setUpdateFlg(pd.getUpdateFlg());
-    			p_d.setWeatherCityCode(pd.getWeatherCityCode());
-//    			getPhone_DistrictDao().create(p_d);
-    			map.put(pd.getDistrictCity(), p_d);
-    		}
-    	}
-    	Collection<Phone_District>  p_dList =  map.values();
-//    	getPhone_DistrictDao().saveAll(p_dList);
-    	for   (Iterator<Phone_District>   iter   =   p_dList.iterator();   iter.hasNext();) {
-    		getPhone_DistrictDao().create(iter.next());
-//    		break;
-    	}
-    }
-    private String ranges(PhoneDistrict pd){
-    	if(pd.getRangeStart().equals(pd.getRangeEnd())){
-    		return pd.getRangeEnd().toString()+",";
-    	}else{
-    		StringBuffer s = new StringBuffer();
-    		for(long i = pd.getRangeStart(); i<=pd.getRangeEnd();  i ++ ){
-    			s.append(i+",");
-    		}
-    		return s.toString();
-    	}
     }
     protected void setUp() throws Exception
     {
@@ -196,18 +133,6 @@ public class LogDaoTest extends TestCase
     private LogService getLogService()
     {
     	LogService logService = (LogService) factory.getBean("logService");
-    	
-        return logService;
-    }
-    private Phone_DistrictDao getPhone_DistrictDao()
-    {
-    	Phone_DistrictDao logService = (Phone_DistrictDao) factory.getBean("phone_DistrictDao");
-    	
-        return logService;
-    }
-    private PhoneDistrictDao getPhoneDistrictDao()
-    {
-    	PhoneDistrictDao logService = (PhoneDistrictDao) factory.getBean("phoneDistrictDao");
     	
         return logService;
     }

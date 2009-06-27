@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import com.haina.beluga.webservice.Constant;
 import com.haina.beluga.webservice.data.hessian.HessianRemoteReturning;
 @Component
-public class IMService {
+public class IMService implements IIMService{
 
 	public HessianRemoteReturning getQQStatus(int qqCode){
 		HessianRemoteReturning hrr = new HessianRemoteReturning();

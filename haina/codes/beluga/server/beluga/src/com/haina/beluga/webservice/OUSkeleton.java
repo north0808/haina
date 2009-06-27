@@ -66,10 +66,13 @@ public class OUSkeleton extends AbstractSkeleton {
 	    	long t1 = System.currentTimeMillis();
 	    	Object result = _method.invoke(service, values);
 			long t2 = System.currentTimeMillis();
+			String rs=new JSONSerializer().deepSerialize(result);
+			out.writeString(rs);
+			logger.info("JSON:"+rs);
 			logger.info(_method.getName() + ":" + (t2 - t1));
-			out.writeString(new JSONSerializer().deepSerialize(result));
+//			System.out.println(rs);
 	    } catch (Throwable e) {
-	    	e.fillInStackTrace();
+	    	e.printStackTrace();
 	      return;
 	    }
    
