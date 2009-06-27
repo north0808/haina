@@ -116,7 +116,7 @@ public class PhoneDistrict extends VersionalModel {
 		this.weatherCityCode = weatherCityCode;
 	}
 	/**
-	 * @hibernate.property column="VERSION"
+	 * @hibernate.version column="VERSION"
 	 * @return Long
 	 */
 	@Override
