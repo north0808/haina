@@ -30,6 +30,12 @@
 
     </id>
 
+        <version
+            name="version"
+            column="VERSION"
+            type="java.lang.Long"
+        />
+
         <property
             name="handle"
                     column="HANDLE"
@@ -74,13 +80,6 @@
             name="roleName"
                     column="ROLENAME"
                 length="20"
-        >
-
-        </property>
-
-        <property
-            name="version"
-                    column="VERSION"
         >
 
         </property>
