@@ -1,5 +1,7 @@
 package genericdaotest;
 
+import java.util.Iterator;
+
 import junit.framework.TestCase;
 
 import org.hibernate.Session;
@@ -12,6 +14,8 @@ import org.springframework.orm.hibernate3.SessionHolder;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import com.haina.beluga.dao.PhoneDistrictDao;
+import com.haina.beluga.domain.PhoneDistrict;
+import com.haina.beluga.dto.PhoneDistrictDto;
 import com.haina.beluga.log.service.LogService;
 import com.haina.beluga.service.IWeatherService;
 import com.haina.beluga.service.WeatherService;
@@ -95,6 +99,15 @@ public class LogDaoTest extends TestCase
 //    	for(WeatherDto  dto:list){
 //    		System.out.println(dto.getDate()+":"+dto.getWeatherType()+":"+dto.getHigh());
 //    	}
+    }
+    public void testPD() throws Exception {
+    	getPhoneDistrictDao().getModels(true);
+    	Iterator<PhoneDistrict> iterator = getPhoneDistrictDao().getPhoneDistrictsByUpdateFlg(0);
+    	int i = 0;
+    	while(iterator.hasNext()){
+			PhoneDistrict w = iterator.next();
+			System.out.println(w.getDistrictCity()+i++);
+		}
     }
 
     protected void setUp() throws Exception

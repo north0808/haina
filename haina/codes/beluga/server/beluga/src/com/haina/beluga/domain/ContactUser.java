@@ -19,6 +19,10 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * @hibernate.cache usage="read-write"
  */
 
+/**
+ * @author Administrator
+ *
+ */
 @Component
 public class ContactUser extends VersionalModel {
 
@@ -117,6 +121,10 @@ public class ContactUser extends VersionalModel {
 		return remark;
 	}
 	
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+
 	/**
 	 * @see java.lang.Object#equals(Object)
 	 */
