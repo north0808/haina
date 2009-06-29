@@ -21,6 +21,8 @@ public class Constant {
 	public static final int NO_7WEATHERDATA = 10004;
 	/*无法获得Live天气数据*/
 	public static final int NO_LIVEDATA = 10005;
+	/*没有归属地更新数据*/
+	public static final int NO_PD_UPDATEDATA = 10006;
 	
 	
 	/***

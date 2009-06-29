@@ -18,6 +18,12 @@ public interface IPubService extends Serializable {
 	 * IM
 	 */
 	public HessianRemoteReturning getQQStatus(int qqCode);
+	/**
+	 * 手机归属地更新
+	 * @param updateFlg
+	 * @return
+	 */
+	public HessianRemoteReturning getOrUpdatePD(int updateFlg);
 	
 
 }

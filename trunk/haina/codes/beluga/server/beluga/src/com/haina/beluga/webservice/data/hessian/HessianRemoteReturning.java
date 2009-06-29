@@ -26,7 +26,7 @@ public class HessianRemoteReturning extends AbstractRemoteReturning {
 	
 	
 	public HessianRemoteReturning(Integer statusCode,Integer operationCode,
-			Serializable value,Integer httpStatusCode,Integer hessianStatusCode) {
+			Object value,Integer httpStatusCode,Integer hessianStatusCode) {
 		super();
 		this.statusCode=statusCode;
 		this.operationCode=operationCode;
@@ -36,7 +36,7 @@ public class HessianRemoteReturning extends AbstractRemoteReturning {
 	}
 	
 	public HessianRemoteReturning(Integer statusCode,String statusText,Integer operationCode,
-			Serializable value,Integer httpStatusCode,Integer hessianStatusCode) {
+			Object value,Integer httpStatusCode,Integer hessianStatusCode) {
 		super();
 		this.statusCode=statusCode;
 		this.statusText=statusText;
@@ -46,7 +46,7 @@ public class HessianRemoteReturning extends AbstractRemoteReturning {
 //		this.hessianStatusCode = hessianStatusCode;
 	}
 	
-	public HessianRemoteReturning(Serializable value,
+	public HessianRemoteReturning(Object value,
 			Integer httpStatusCode, Integer hessianStatusCode) {
 		super();
 		this.value=value;
@@ -62,7 +62,7 @@ public class HessianRemoteReturning extends AbstractRemoteReturning {
 //		this.hessianStatusCode = hessianStatusCode;
 	}
 
-	public HessianRemoteReturning(Serializable value) {
+	public HessianRemoteReturning(Object value) {
 		super();
 		this.value=value;
 	}
