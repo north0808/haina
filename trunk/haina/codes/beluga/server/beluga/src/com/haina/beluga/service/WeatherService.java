@@ -23,14 +23,13 @@ import com.haina.beluga.dao.IWeatherDao;
 import com.haina.beluga.domain.Weather;
 import com.haina.beluga.dto.WeatherDto;
 import com.haina.beluga.webservice.Constant;
-import com.haina.beluga.webservice.OUSkeleton;
 import com.haina.beluga.webservice.data.hessian.HessianRemoteReturning;
 @Component
 public class WeatherService extends BaseSerivce<IWeatherDao,Weather,String> implements IWeatherService,InitializingBean {
 	@Autowired(required=true)
 	private IPhoneDistrictDao phoneDistrictDao;
 	private final static String ACode="A3432136345";
-	 static Logger logger = Logger.getLogger(OUSkeleton.class.getName());
+	 static Logger logger = Logger.getLogger(WeatherService.class.getName());
 	 private static WeatherBugWebServicesSoap   weatherBugWebServicesSoap ;
 		static{
 			try{
