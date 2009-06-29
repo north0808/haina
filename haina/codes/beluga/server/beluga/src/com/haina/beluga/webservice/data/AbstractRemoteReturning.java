@@ -1,7 +1,5 @@
 package com.haina.beluga.webservice.data;
 
-import com.haina.beluga.core.dto.IDto;
-
 
 /**
  * 远程调用返回值的基类。<br/>
@@ -13,13 +11,13 @@ import com.haina.beluga.core.dto.IDto;
 public abstract class AbstractRemoteReturning extends AbstractRemoteData {
 
 	/*返回值。*/
-	protected IDto value;
+	protected Object value;
 
-	public IDto getValue() {
+	public Object getValue() {
 		return value;
 	}
 
-	public void setValue(IDto value) {
+	public void setValue(Object value) {
 		this.value = value;
 	}
 }
