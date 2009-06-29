@@ -11,8 +11,8 @@
     <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
     	<property name="basenames">
     		<list>
-    			<value>config.message</value>
-    			<value>config.label</value>
+    			<value>i18nres.message</value>
+    			<value>i18nres.label</value>
     		</list>
     	</property>
     	<property name="useCodeAsDefaultMessage">
