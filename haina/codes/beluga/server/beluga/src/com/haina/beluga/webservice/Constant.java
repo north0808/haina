@@ -17,12 +17,8 @@ public class Constant {
 	public static final int QQ_ARG_ERROE = 10002;
 	/*网络错误*/
 	public static final int QQ_NETWORK_ERROR = 10003;
-	/*没有七天天气数据*/
-	public static final int NO_7WEATHERDATA = 10004;
 	/*无法获得Live天气数据*/
-	public static final int NO_LIVEDATA = 10005;
-	/*没有归属地更新数据*/
-	public static final int NO_PD_UPDATEDATA = 10006;
+	public static final int NO_LIVEDATA_REMOTEERR = 10004;
 	
 	
 	/***

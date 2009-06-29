@@ -12,14 +12,14 @@ public class WeatherDto implements IDto{
 	private static final long serialVersionUID = -4673967747869811297L;
 	
 	private String date;/*天气日期*/ 
-	private String weatherCityCode; 
-	private String weatherType; 
-	private String wind; 
-	private String temperature;
-	private String icon;
-	private boolean isNight;
-	private int high; 
-	private int low;
+	private String weatherCityCode; /*城市代码*/
+	private String weatherType; /*天气类型*/
+	private String wind; /*风速*/
+	private String temperature;/*实时温度*/
+	private String icon;/*天气图片URI*/
+	private boolean isNight;/*是否夜里*/
+	private int high; /*最高气温*/
+	private int low;/*最低气温*/
 	private String issuetime;/*发布时间*/
 	
 	public String getDate() {
