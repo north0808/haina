@@ -115,6 +115,8 @@ public class WeatherService extends BaseSerivce<IWeatherDao,Weather,String> impl
 		HessianRemoteReturning hrr = new HessianRemoteReturning(list);
 		if(list.size()==0)
 			hrr.setStatusCode(Constant.NO_7WEATHERDATA);
+		else
+			hrr.setValue(list);
 		return hrr;
 	}
 	
