@@ -3,7 +3,6 @@ package com.haina.beluga.webservice.data.hessian;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
-import com.haina.beluga.core.dto.IDto;
 import com.haina.beluga.webservice.data.AbstractRemoteReturning;
 
 /**
@@ -25,7 +24,7 @@ public class HessianRemoteReturning extends AbstractRemoteReturning {
 	
 	
 	public HessianRemoteReturning(Integer statusCode,Integer operationCode,
-			IDto value,Integer httpStatusCode,Integer hessianStatusCode) {
+			Object value,Integer httpStatusCode,Integer hessianStatusCode) {
 		super();
 		this.statusCode=statusCode;
 		this.operationCode=operationCode;
@@ -35,7 +34,7 @@ public class HessianRemoteReturning extends AbstractRemoteReturning {
 	}
 	
 	public HessianRemoteReturning(Integer statusCode,String statusText,Integer operationCode,
-			IDto value,Integer httpStatusCode,Integer hessianStatusCode) {
+			Object value,Integer httpStatusCode,Integer hessianStatusCode) {
 		super();
 		this.statusCode=statusCode;
 		this.statusText=statusText;
@@ -45,7 +44,7 @@ public class HessianRemoteReturning extends AbstractRemoteReturning {
 //		this.hessianStatusCode = hessianStatusCode;
 	}
 	
-	public HessianRemoteReturning(IDto value,
+	public HessianRemoteReturning(Object value,
 			Integer httpStatusCode, Integer hessianStatusCode) {
 		super();
 		this.value=value;
@@ -61,7 +60,7 @@ public class HessianRemoteReturning extends AbstractRemoteReturning {
 //		this.hessianStatusCode = hessianStatusCode;
 	}
 
-	public HessianRemoteReturning(IDto value) {
+	public HessianRemoteReturning(Object value) {
 		super();
 		this.value=value;
 	}
