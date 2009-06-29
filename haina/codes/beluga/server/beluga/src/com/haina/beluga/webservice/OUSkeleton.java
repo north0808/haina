@@ -72,7 +72,7 @@ public class OUSkeleton extends AbstractSkeleton {
 			logger.info(_method.getName() + ":" + (t2 - t1));
 //			System.out.println(rs);
 	    } catch (Throwable e) {
-	    	e.printStackTrace();
+	    	logger.error(e);
 	      return;
 	    }
    
