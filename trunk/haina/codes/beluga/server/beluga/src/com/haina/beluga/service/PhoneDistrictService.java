@@ -24,9 +24,6 @@ public class PhoneDistrictService extends BaseSerivce<IPhoneDistrictDao,PhoneDis
 			list.add(PhoneDistrictDto.valueof(w));
 		}
 		HessianRemoteReturning hrr = new HessianRemoteReturning(list);
-		if(list.size()==0)
-			hrr.setStatusCode(Constant.NO_PD_UPDATEDATA);
-		else
 			hrr.setValue(list);
 		return hrr;
 		

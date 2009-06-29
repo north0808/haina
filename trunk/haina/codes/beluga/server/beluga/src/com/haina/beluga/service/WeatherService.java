@@ -98,8 +98,8 @@ public class WeatherService extends BaseSerivce<IWeatherDao,Weather,String> impl
 			hrr.setValue(dto);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-			hrr.setStatusCode(Constant.NO_LIVEDATA);
+			logger.error(e);
+			hrr.setStatusCode(Constant.NO_LIVEDATA_REMOTEERR);
 		}
 		return hrr;
 	}
@@ -113,9 +113,6 @@ public class WeatherService extends BaseSerivce<IWeatherDao,Weather,String> impl
 			list.add(WeatherDto.valueof(w));
 		}
 		HessianRemoteReturning hrr = new HessianRemoteReturning(list);
-		if(list.size()==0)
-			hrr.setStatusCode(Constant.NO_7WEATHERDATA);
-		else
 			hrr.setValue(list);
 		return hrr;
 	}
