@@ -31,14 +31,14 @@ public class WeatherService extends BaseSerivce<IWeatherDao,Weather,String> impl
 	private IPhoneDistrictDao phoneDistrictDao;
 	private final static String ACode="A3432136345";
 	 static Logger logger = Logger.getLogger(OUSkeleton.class.getName());
-		public static WeatherBugWebServicesSoap   weatherBugWebServicesSoap ;
+	 private static WeatherBugWebServicesSoap   weatherBugWebServicesSoap ;
 		static{
 			try{
 			WeatherBugWebServicesLocator   weatherBugWebServicesLocator   =   new   WeatherBugWebServicesLocator();  
 			logger.info("the Web Service:"+weatherBugWebServicesLocator.getWeatherBugWebServicesSoapAddress());  
 	           weatherBugWebServicesSoap  =  weatherBugWebServicesLocator.getWeatherBugWebServicesSoap(); 
 			}catch(Exception   e){  
-		        System.out.println(e);  
+				logger.error(e);  
 		    }  
 		}
 	
