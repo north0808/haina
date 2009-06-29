@@ -18,11 +18,6 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * @hibernate.class table="ContactUser"
  * @hibernate.cache usage="read-write"
  */
-
-/**
- * @author Administrator
- *
- */
 @Component
 public class ContactUser extends VersionalModel {
 
@@ -38,6 +33,7 @@ public class ContactUser extends VersionalModel {
 	
 	private String lastLoginIp;
 	
+	/*数据库手动修改记录。*/
 	private String remark;
 	
 	/**
@@ -137,7 +133,9 @@ public class ContactUser extends VersionalModel {
 		return new EqualsBuilder().append(
 				this.lastLoginIp, rhs.lastLoginIp).append(this.lastLoginTime,
 				rhs.lastLoginTime).append(this.registerTime, rhs.registerTime)
-				.append(this.logingName, rhs.logingName).append(this.mobile, rhs.mobile).isEquals();
+				.append(this.logingName, rhs.logingName).append(this.mobile, rhs.mobile)
+				.append(this.id, rhs.id).isEquals()
+				;
 	}
 
 	/**
@@ -147,7 +145,7 @@ public class ContactUser extends VersionalModel {
 	public int hashCode() {
 		return new HashCodeBuilder(1134122519, -1554226803).append(this.lastLoginIp).append(
 				this.lastLoginTime).append(this.registerTime).append(
-				this.logingName).append(this.mobile)
+				this.logingName).append(this.mobile).append(this.id)
 				.toHashCode();
 	}
 
