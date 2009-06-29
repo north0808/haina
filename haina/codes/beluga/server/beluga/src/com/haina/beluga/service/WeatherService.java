@@ -106,7 +106,7 @@ public class WeatherService extends BaseSerivce<IWeatherDao,Weather,String> impl
 
 	@Override
 	public HessianRemoteReturning get7Weatherdatas(String cityCode) {
-		ArrayList<WeatherDto> list = new ArrayList<WeatherDto>();
+		List<WeatherDto> list = new ArrayList<WeatherDto>();
 		Iterator<Weather> iterator = getBaseDao().get7WeatherDatas(cityCode);
 		while(iterator.hasNext()){
 			Weather w = iterator.next();

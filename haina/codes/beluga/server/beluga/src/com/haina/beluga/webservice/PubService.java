@@ -34,7 +34,10 @@ public class PubService  implements IPubService {
 	public HessianRemoteReturning getQQStatus(int qqCode) {
 		return iMservice.getQQStatus(qqCode);
 	}
-	
+	@Override
+	public HessianRemoteReturning getOrUpdatePD(int updateFlg) {
+		return phoneDistrictService.getOrUpdatePhoneDistricts(updateFlg);
+	}
 	
 
 }
