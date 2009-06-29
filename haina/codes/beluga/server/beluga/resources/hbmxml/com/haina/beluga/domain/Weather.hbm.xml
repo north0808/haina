@@ -20,6 +20,7 @@
     <id
         name="id"
             column="ID"
+            length="32"
             unsaved-value="null"
     >
 
