@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping
+
+>
+
+    <class
+            name="com.haina.beluga.domain.ContactTag"
+            table="ContactTag"
+    >
+
+        <cache 
+            usage="read-write"
+        />
+
+    <id
+        name="id"
+            column="id"
+                type="java.lang.String"
+            length="32"
+            unsaved-value="null"
+    >
+
+    <generator
+        class="uuid.hex"
+    >
+
+    </generator>
+
+    </id>
+
+        <version
+            name="version"
+            column="version"
+            type="java.lang.Long"
+        />
+
+        <property
+            name="name"
+                    type="java.lang.String"
+                    column="name"
+                length="64"
+                not-null="true"
+        >
+
+        </property>
+
+        <property
+            name="logo"
+                    type="java.lang.String"
+                    column="logo"
+                length="128"
+                not-null="true"
+        >
+
+        </property>
+
+        <property
+            name="ceateUser"
+                    type="java.lang.String"
+                    column="ceateUser"
+                length="64"
+                not-null="true"
+        >
+
+        </property>
+
+        <property
+            name="createTime"
+                    type="java.util.Date"
+                    column="createTime"
+                not-null="true"
+        >
+
+        </property>
+
+        <property
+            name="tagOrder"
+                    type="java.lang.Integer"
+                    column="tagOrder"
+                not-null="true"
+        >
+
+        </property>
+
+        <property
+            name="deleteFlag"
+                    type="java.lang.Boolean"
+                    column="deleteFlag"
+                not-null="true"
+        >
+
+        </property>
+
+        <property
+            name="remark"
+                    type="java.lang.String"
+                    column="remark"
+                length="2000"
+        >
+
+        </property>
+
+    </class>    
+
+</hibernate-mapping>
+
