@@ -13,6 +13,7 @@ public class PhoneDistrictDto implements IDto {
 	
 	private String districtNumber;/*区号*/
 	private String range;/*手机前7位范围*/
+	/**1-中国电信CDMA、2-中国电信天翼、3-中国联通GSM、4-中国移动GSM、5-中国移动TD-SCDMA*/
 	private String feeType;/*资费类型*/
 	private String districtCity;/*城市*/
 	private String districtProvince;/*省份*/
