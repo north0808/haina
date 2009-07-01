@@ -38,11 +38,13 @@ public class OUServiceExporter implements HttpRequestHandler,InitializingBean {
 	@Override
 	public void handleRequest(HttpServletRequest req,
 			HttpServletResponse res) throws ServletException, IOException {
+		req.setCharacterEncoding("UTF-8");
+		res.setCharacterEncoding("UTF-8");
 		if (!"POST".equals(req.getMethod())) {
 		  res.setStatus(500);
 	      PrintWriter out = res.getWriter();
 	      res.setContentType("text/html");
-	      out.println("<h1>OUCenter - Requires POST</h1>");
+	      out.println("<h1>OUCenter -OU中心 Requires POST</h1>");
 	      return;
 		}
 		InputStream is = req.getInputStream();
@@ -51,77 +53,10 @@ public class OUServiceExporter implements HttpRequestHandler,InitializingBean {
 	   MicroHessianInput hessianInput = new MicroHessianInput(is);
 	  // hessianInput.readString();
 	   MicroHessianOutput hessianOutput = new MicroHessianOutput(os);
+	   
 	   uuSkeleton.invoke(_method, hessianInput, hessianOutput);
 		
 	}
-
-
-
-//	public String getServletInfo(){
-//	    return "OUCenter - Servlet";
-//	 }
-	
-//	public void init(ServletConfig config) throws ServletException{
-//    
-//		super.init(config);
-//		WebApplicationContext wac = WebApplicationContextUtils
-//        .getRequiredWebApplicationContext(getServletContext());
-//	    try {
-//	       if (getInitParameter("service-class") != null) {
-//	    	   String className = getInitParameter("service-class");
-//	    	   Class<?> homeClass = loadClass(className);
-//	    	   serverImpl = homeClass.newInstance();
-//	    	   init(serverImpl);
-//	       }else {
-//				if (getClass().equals(OUServlet.class))
-//				  throw new ServletException("server must extend OUServlet");
-//				serverImpl = this;
-//	      }
-//	      if (getInitParameter("service-api") != null) {
-//	    	  String className = getInitParameter("service-api");
-//	    	  serverAPI = loadClass(className);
-//	      }
-//	      method_def = getInitParameter("method");
-//	      uuSkeleton = new OUSkeleton(serverImpl, serverAPI);
-//
-//	    } catch (ServletException e) {
-//	      throw e;
-//	    } catch (Exception e) {
-//	      throw new ServletException(e);
-//	    }
-//	}
-//	@Override
-//	protected void doPost(HttpServletRequest req, HttpServletResponse res)
-//			throws ServletException, IOException {
-//		InputStream is = req.getInputStream();
-//		OutputStream os = res.getOutputStream();
-//	   String method = req.getParameter(method_def);
-//	   MicroHessianInput hessianInput = new MicroHessianInput(is);
-//	  // hessianInput.readString();
-//	   MicroHessianOutput hessianOutput = new MicroHessianOutput(os);
-//	   uuSkeleton.invoke(method, hessianInput, hessianOutput);
-//	}
-//
-//	@Override
-//	protected void doGet(HttpServletRequest req, HttpServletResponse res)
-//			throws ServletException, IOException {
-//		      res.setStatus(500);
-//		      PrintWriter out = res.getWriter();
-//		      res.setContentType("text/html");
-//		      out.println("<h1>OUCenter - Requires POST</h1>");
-//		      return;
-//	}
-//	@Override
-//	public void service(ServletRequest req, ServletResponse res)
-//			throws ServletException, IOException {
-//		InputStream is = req.getInputStream();
-//		OutputStream os = res.getOutputStream();
-//	   String method = req.getParameter(method_def);
-//	   MicroHessianInput hessianInput = new MicroHessianInput(is);
-//	  // hessianInput.readString();
-//	   MicroHessianOutput hessianOutput = new MicroHessianOutput(os);
-//	   uuSkeleton.invoke(method, hessianInput, hessianOutput);
-//	}
 
 	private Class<?> loadClass(String className)throws ClassNotFoundException{
 	    
@@ -131,16 +66,6 @@ public class OUServiceExporter implements HttpRequestHandler,InitializingBean {
 	    else
 	      return Class.forName(className);
 	  }
-
-//	  private void init(Object service)throws ServletException{
-//		  
-//	    if (! this.getClass().equals(OUServlet.class)) {
-//	    }
-//	    else if (service instanceof Service)
-//	      ((Service) service).init(getServletConfig());
-//	    else if (service instanceof Servlet)
-//	      ((Servlet) service).init(getServletConfig());
-//	  }	
 	
 	public OUSkeleton getUuSkeleton() {
 		return uuSkeleton;
