@@ -11,6 +11,7 @@
     <class
             name="com.haina.beluga.domain.ContactUser"
             table="ContactUser"
+            optimistic-lock="version"
     >
 
         <cache 
@@ -25,7 +26,7 @@
     >
 
             <column
-                name="" 
+                name="id" 
                 sql-type="char(32)"
             />
 
@@ -40,7 +41,7 @@
         <version
             name="version"
             column="version"
-            type="java.lang.Long"
+            type="long"
         />
 
         <property
@@ -56,10 +57,14 @@
 
         <property
             name="registerTime"
-                    type="java.util.Date"
-                    column="registerTime"
+                    type="timestamp"
                 not-null="true"
         >
+
+            <column
+                name="registerTime" 
+                sql-type="timestamp"
+            />
 
         </property>
 
@@ -76,9 +81,13 @@
 
         <property
             name="lastLoginTime"
-                    type="java.util.Date"
-                    column="lastLoginTime"
+                    type="timestamp"
         >
+
+            <column
+                name="lastLoginTime" 
+                sql-type="timestamp"
+            />
 
         </property>
 
@@ -93,7 +102,6 @@
 
         <set
             name="contactTags"
-            access="property"
             table="ContactTag"
             lazy="true"
             inverse="false"

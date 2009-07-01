@@ -11,6 +11,7 @@
     <class
             name="com.haina.beluga.domain.ContactTag"
             table="ContactTag"
+            optimistic-lock="version"
     >
 
         <cache 
@@ -25,7 +26,7 @@
     >
 
             <column
-                name="" 
+                name="id" 
                 sql-type="char(32)"
             />
 
@@ -40,7 +41,7 @@
         <version
             name="version"
             column="version"
-            type="java.lang.Long"
+            type="long"
         />
 
         <property
@@ -66,9 +67,13 @@
         <property
             name="createTime"
                     type="java.util.Date"
-                    column="createTime"
                 not-null="true"
         >
+
+            <column
+                name="createTime" 
+                sql-type="timestamp"
+            />
 
         </property>
 
@@ -92,9 +97,6 @@
 
         <many-to-one
             name="contactUser"
-               access="property"
-                    class="com.haina.beluga.domain.ContactUser"
-                    column="createUser"
                 not-null="true"
                 cascade="save-update"
                 outer-join="true"
@@ -102,6 +104,10 @@
                 update="false"
                 lazy="false"
         >
+
+            <column
+                name="createUser" 
+            />
 
         </many-to-one>
 
