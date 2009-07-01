@@ -1,6 +1,7 @@
 package com.haina.beluga.domain;
 
 import java.util.Date;
+import java.util.Set;
 
 import org.springframework.stereotype.Component;
 
@@ -33,11 +34,15 @@ public class ContactUser extends VersionalModel {
 	
 	private String lastLoginIp;
 	
+	/*用户的联系人标签。*/
+	private Set<ContactTag> contactTags;
+	
 	/*数据库手动修改记录。*/
 	private String remark;
 	
 	/**
 	 * @hibernate.id column="id"  unsaved-value="null" type = "java.lang.String" length="32"
+	 * @hibernate.column sql-type="char(32)"
 	 * @hibernate.generator class="uuid.hex"
 	 */
 	@Override
@@ -101,13 +106,28 @@ public class ContactUser extends VersionalModel {
 	}
 
 	/**
-	 * @hibernate.version column="version" type = "java.lang.Long"
+	 * @hibernate.version
+	 * @hibernate.column name="version" sql-type="int8 default 1" type="java.lang.Long"
 	 */
 	@Override
 	public Long getVersion() {
 		return version;
 	}
 
+	/**
+	 * 用户的联系人标签。<br/>
+	 * @hibernate.set name="contactTags" table="ContactTag" lazy="true" outer-join="false" access="property" inverse="false" cascade="all" order-by="tagOrder"
+	 * @hibernate.key column="createUser"
+	 * @hibernate.one-to-many class="com.haina.beluga.domain.ContactTag"
+	 * @return
+	 */
+	public Set<ContactTag> getContactTags() {
+		return contactTags;
+	}
+
+	public void setContactTags(Set<ContactTag> contactTags) {
+		this.contactTags = contactTags;
+	}
 	
 	/**
 	 * 数据库手动修改记录。
@@ -161,5 +181,4 @@ public class ContactUser extends VersionalModel {
 						"registerTime", this.registerTime).append("id",
 						this.getId()).toString();
 	}
-	
 }
