@@ -19,11 +19,15 @@
 
     <id
         name="id"
-            column="id"
                 type="java.lang.String"
             length="32"
             unsaved-value="null"
     >
+
+            <column
+                name="" 
+                sql-type="char(32)"
+            />
 
     <generator
         class="uuid.hex"
@@ -86,6 +90,29 @@
         >
 
         </property>
+
+        <set
+            name="contactTags"
+            access="property"
+            table="ContactTag"
+            lazy="true"
+            inverse="false"
+            cascade="all"
+            order-by="tagOrder"
+            outer-join="false"
+        >
+
+            <key
+                column="createUser"
+            >
+
+            </key>          
+
+            <one-to-many
+                class="com.haina.beluga.domain.ContactTag"
+            />
+
+        </set>
 
         <property
             name="remark"
