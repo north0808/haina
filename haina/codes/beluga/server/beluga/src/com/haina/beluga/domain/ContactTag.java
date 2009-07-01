@@ -157,7 +157,7 @@ public class ContactTag extends VersionalModel {
 		return remark;
 	}
 
-	public void setRemark(String remark) {
+	private void setRemark(String remark) {
 		this.remark = remark;
 	}
 
