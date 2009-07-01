@@ -10,7 +10,6 @@ import com.haina.beluga.core.service.BaseSerivce;
 import com.haina.beluga.dao.IPhoneDistrictDao;
 import com.haina.beluga.domain.PhoneDistrict;
 import com.haina.beluga.dto.PhoneDistrictDto;
-import com.haina.beluga.webservice.Constant;
 import com.haina.beluga.webservice.data.hessian.HessianRemoteReturning;
 @Component
 public class PhoneDistrictService extends BaseSerivce<IPhoneDistrictDao,PhoneDistrict,String> implements IPhoneDistrictService {
@@ -24,7 +23,7 @@ public class PhoneDistrictService extends BaseSerivce<IPhoneDistrictDao,PhoneDis
 			list.add(PhoneDistrictDto.valueof(w));
 		}
 		HessianRemoteReturning hrr = new HessianRemoteReturning(list);
-			hrr.setValue(list);
+			hrr.setValue("中国");
 		return hrr;
 		
 	}
