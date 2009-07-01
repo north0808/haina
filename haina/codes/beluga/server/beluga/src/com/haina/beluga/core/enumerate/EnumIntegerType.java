@@ -45,18 +45,14 @@ public abstract class EnumIntegerType implements UserType {
 		if (value == null) {
 			return null;
 		} else {
-			return StringEnumHelper.valueOf(getEnumClass(), value);
+			return IntegerEnumHelper.valueOf(getEnumClass(), value);
 		}
 
 	}
 
 	public void nullSafeSet(PreparedStatement st, Object value, int index)
 			throws HibernateException, SQLException {
-		if (value == null) {
-			st.setString(index, null);
-		} else {
-			st.setString(index, StringEnumHelper.getEnumName(value));
-		}
+		st.setInt(index, value == null ? -1: IntegerEnumHelper.getEnumName(value).intValue());
 
 	}
 
