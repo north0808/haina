@@ -12,12 +12,12 @@ package com.haina.beluga.core.model;
  */
 public abstract class VersionalModel extends BaseModel {
 
-	protected Long version;
+	protected long version=0;
 	
-	public abstract Long getVersion();
+	public abstract long getVersion();
 	
 
-	public void setVersion(Long version) {
+	private void setVersion(long version) {
 		this.version = version;
 	}
 
