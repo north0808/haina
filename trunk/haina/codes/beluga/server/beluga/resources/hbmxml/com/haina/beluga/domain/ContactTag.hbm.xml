@@ -19,11 +19,15 @@
 
     <id
         name="id"
-            column="id"
                 type="java.lang.String"
             length="32"
             unsaved-value="null"
     >
+
+            <column
+                name="" 
+                sql-type="char(32)"
+            />
 
     <generator
         class="uuid.hex"
@@ -60,16 +64,6 @@
         </property>
 
         <property
-            name="ceateUser"
-                    type="java.lang.String"
-                    column="ceateUser"
-                length="64"
-                not-null="true"
-        >
-
-        </property>
-
-        <property
             name="createTime"
                     type="java.util.Date"
                     column="createTime"
@@ -95,6 +89,21 @@
         >
 
         </property>
+
+        <many-to-one
+            name="contactUser"
+               access="property"
+                    class="com.haina.beluga.domain.ContactUser"
+                    column="createUser"
+                not-null="true"
+                cascade="save-update"
+                outer-join="true"
+                insert="true"
+                update="false"
+                lazy="false"
+        >
+
+        </many-to-one>
 
         <property
             name="remark"
