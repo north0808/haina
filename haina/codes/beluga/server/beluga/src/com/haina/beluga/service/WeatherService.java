@@ -66,7 +66,7 @@ public class WeatherService extends BaseSerivce<IWeatherDao,Weather,String> impl
 					weather.setIcon(getIcon(afd.getImage()));
 					weather.setNight(afd.isIsNight());
 					weather.setIssuetime(MfTime.toNow());
-					weather.setVersion(new Long(1));
+					//weather.setVersion((long)1);
 					weatherList.add(weather);
 //					getBaseDao().create(weather);
 				}
