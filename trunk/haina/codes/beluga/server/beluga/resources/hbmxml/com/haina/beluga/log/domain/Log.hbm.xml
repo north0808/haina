@@ -33,7 +33,7 @@
         <version
             name="version"
             column="VERSION"
-            type="java.lang.Long"
+            type="long"
         />
 
         <property
