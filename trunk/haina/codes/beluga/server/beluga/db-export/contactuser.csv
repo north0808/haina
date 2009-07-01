@@ -1,1 +1,1 @@
-id, logingName, registerTime, mobile, lastLoginTime, version, remark
+id, version, logingname, registertime, mobile, lastlogintime, lastloginip, remark
