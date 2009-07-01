@@ -96,10 +96,9 @@ public class Log extends VersionalModel{
 	}
 	/**
 	 * @hibernate.version column="VERSION"
-	 * @return Long
+	 * @return long
 	 */
-	public Long getVersion() {
-		// TODO Auto-generated method stub
+	public long getVersion() {
 		return version;
 	}
 	
