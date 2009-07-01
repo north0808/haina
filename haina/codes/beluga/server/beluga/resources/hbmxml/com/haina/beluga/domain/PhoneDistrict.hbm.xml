@@ -19,10 +19,14 @@
 
     <id
         name="id"
-            column="ID"
             length="32"
             unsaved-value="null"
     >
+
+            <column
+                name="" 
+                sql-type="char(32)"
+            />
 
     <generator
         class="uuid.hex"
