@@ -53,7 +53,18 @@
 	
 </bean>
     
-
+    <!-- I18N config -->
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+    	<property name="basenames">
+    		<list>
+    			<value>res.com.haina.beluga.i18n.message</value>
+    			<value>res.com.haina.beluga.i18n.label</value>
+    		</list>
+    	</property>
+    	<property name="useCodeAsDefaultMessage">
+    		<value>true</value>
+    	</property>
+    </bean>
 </beans>
    
    

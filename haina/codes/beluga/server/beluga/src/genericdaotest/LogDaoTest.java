@@ -17,7 +17,9 @@ import com.haina.beluga.dao.PhoneDistrictDao;
 import com.haina.beluga.domain.PhoneDistrict;
 import com.haina.beluga.dto.PhoneDistrictDto;
 import com.haina.beluga.log.service.LogService;
+import com.haina.beluga.service.IPhoneDistrictService;
 import com.haina.beluga.service.IWeatherService;
+import com.haina.beluga.service.PhoneDistrictService;
 import com.haina.beluga.service.WeatherService;
 
 /**
@@ -101,13 +103,14 @@ public class LogDaoTest extends TestCase
 //    	}
     }
     public void testPD() throws Exception {
-    	getPhoneDistrictDao().getModels(true);
-    	Iterator<PhoneDistrict> iterator = getPhoneDistrictDao().getPhoneDistrictsByUpdateFlg(0);
-    	int i = 0;
-    	while(iterator.hasNext()){
-			PhoneDistrict w = iterator.next();
-			System.out.println(w.getDistrictCity()+i++);
-		}
+//    	getPhoneDistrictDao().getModels(true);
+//    	Iterator<PhoneDistrict> iterator = getPhoneDistrictDao().getPhoneDistrictsByUpdateFlg(0);
+//    	int i = 0;
+//    	while(iterator.hasNext()){
+//			PhoneDistrict w = iterator.next();
+//			System.out.println(w.getDistrictCity()+i++);
+//		}
+    	getPhoneDistrictService().getOrUpdatePhoneDistricts(1);
     }
 
     protected void setUp() throws Exception
@@ -166,5 +169,11 @@ public class LogDaoTest extends TestCase
     	WeatherService weatherService = (WeatherService) factory.getBean("weatherService");
     	
         return weatherService;
+    }
+    private IPhoneDistrictService getPhoneDistrictService()
+    {
+    	PhoneDistrictService phoneDistrictService = (PhoneDistrictService) factory.getBean("phoneDistrictService");
+    	
+        return phoneDistrictService;
     }
 }

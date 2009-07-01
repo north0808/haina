@@ -127,6 +127,38 @@
    </list>
   </property>
    </bean>  
+   
+<!--Hessian调用 -->  
+    <bean name="/pub" class="com.haina.beluga.webservice.OUServiceExporter">  
+   
+        <property name="method">  
+			<value>call</value>   
+        </property>  
+   
+        <property name="serverAPI">  
+            <value>com.haina.beluga.webservice.IPubService</value>  
+        </property> 
+        
+         <property name="serverImpl">  
+            <ref bean="pubService"/>
+        </property>   
+   
+     </bean>   
+      <bean name="/pri" class="com.haina.beluga.webservice.OUServiceExporter">  
+   
+        <property name="method">  
+			<value>call</value>   
+        </property>  
+   
+        <property name="serverAPI">  
+            <value>com.haina.beluga.webservice.IPriService</value>  
+        </property> 
+        
+         <property name="serverImpl">  
+            <ref bean="priService"/>
+        </property>   
+   
+     </bean>    
 </beans>
    
    
