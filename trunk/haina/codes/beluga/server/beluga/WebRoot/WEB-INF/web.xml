@@ -10,17 +10,23 @@
 	</context-param>
 	
 	<!-- Spring业务加载配置文件-->
-	<context-param>
-		<param-name>contextConfigLocation</param-name>
-		<param-value>/WEB-INF/classes/configs/beluga-application.xml</param-value>
-	</context-param>
+
+	
 	<servlet>
-		<servlet-name>contextConfigLocation</servlet-name>
-		<servlet-class>
-			org.springframework.web.context.ContextLoaderServlet
-		</servlet-class>
-		<load-on-startup>2</load-on-startup>
+		<servlet-name>OUCENTER</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>
+			/WEB-INF/classes/configs/beluga-application.xml
+			</param-value>
+		</init-param>
+		<load-on-startup>3</load-on-startup>
 	</servlet>
+	<servlet-mapping>
+		<servlet-name>OUCENTER</servlet-name>
+		<url-pattern>/*</url-pattern>
+	</servlet-mapping>
 	
 	<!-- proxool连接池-->
 	<servlet>
@@ -58,51 +64,6 @@
 		</listener-class>
 	</listener>
 
-<!--公共服务-->
-	<servlet>
-		<servlet-name>PUB</servlet-name>
-		<servlet-class>com.haina.beluga.webservice.OUServlet</servlet-class>
-		<init-param>
-			<param-name>service-class</param-name>
-			<param-value>com.haina.beluga.webservice.PubService</param-value>
-		</init-param>
-		<init-param>
-			<param-name>service-api</param-name>
-			<param-value>com.haina.beluga.webservice.IPubService</param-value>
-		</init-param>
-		<init-param>
-			<param-name>method</param-name>
-			<param-value>call</param-value>
-		</init-param>
-	</servlet>
-		
-	<servlet-mapping>
-		<servlet-name>PUB</servlet-name>
-		<url-pattern>/pub</url-pattern>
-	</servlet-mapping>
-	
-	<!--个人服务-->
-	<servlet>
-		<servlet-name>PRI</servlet-name>
-		<servlet-class>com.haina.beluga.webservice.OUServlet</servlet-class>
-		<init-param>
-			<param-name>service-class</param-name>
-			<param-value>com.haina.beluga.webservice.PriService</param-value>
-		</init-param>
-		<init-param>
-			<param-name>service-api</param-name>
-			<param-value>com.haina.beluga.webservice.IPriService</param-value>
-		</init-param>
-		<init-param>
-			<param-name>method</param-name>
-			<param-value>call</param-value>
-		</init-param>
-	</servlet>
-
-	<servlet-mapping>
-		<servlet-name>PRI</servlet-name>
-		<url-pattern>/pri</url-pattern>
-	</servlet-mapping>
 	<!-- test-->
 	<servlet>
 		<servlet-name>hello</servlet-name>
