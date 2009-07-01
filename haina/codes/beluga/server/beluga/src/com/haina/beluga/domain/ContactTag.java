@@ -29,8 +29,8 @@ public class ContactTag extends VersionalModel {
 	/*标签图标存储路径。*/
 	private String logo;
 	
-	/*创建人登录名。*/
-	private String ceateUser;
+//	/*创建人登录名。*/
+//	private String ceateUser;
 	
 	private Date createTime;
 	
@@ -39,6 +39,9 @@ public class ContactTag extends VersionalModel {
 	
 	/*是否可以被删除。*/
 	private Boolean deleteFlag;
+	
+	/*标签所属用户。*/
+	private ContactUser contactUser;
 	
 	/*数据库手动修改记录。*/
 	private String remark;
@@ -54,6 +57,7 @@ public class ContactTag extends VersionalModel {
 
 	/**
 	 * @hibernate.id column="id"  unsaved-value="null" type = "java.lang.String" length="32"
+	 * @hibernate.column sql-type="char(32)"
 	 * @hibernate.generator class="uuid.hex"
 	 */
 	@Override
@@ -84,17 +88,17 @@ public class ContactTag extends VersionalModel {
 		this.logo = logo;
 	}
 
-	/**
-	 * 创建人登录名。<br/>
-	 * @hibernate.property column="ceateUser" type="java.lang.String" length="64" not-null="true"
-	 */
-	public String getCeateUser() {
-		return ceateUser;
-	}
-
-	public void setCeateUser(String ceateUser) {
-		this.ceateUser = ceateUser;
-	}
+//	/**
+//	 * 创建人登录名。<br/>
+//	 * @hibernate.property column="ceateUser" type="java.lang.String" length="64" not-null="true"
+//	 */
+//	public String getCeateUser() {
+//		return ceateUser;
+//	}
+//
+//	public void setCeateUser(String ceateUser) {
+//		this.ceateUser = ceateUser;
+//	}
 
 	/**
 	 * @hibernate.property column="createTime" type="java.util.Date" not-null="true"
@@ -132,6 +136,19 @@ public class ContactTag extends VersionalModel {
 	}
 
 	/**
+	 * 标签所属用户。<br/>
+	 * @hibernate.many-to-one column="createUser" class="com.haina.beluga.domain.ContactUser" name="contactUser" not-null="true" access="property" insert="true" update="false" cascade="save-update" lazy="false" outer-join="true"
+	 * @return
+	 */
+	public ContactUser getContactUser() {
+		return contactUser;
+	}
+
+	public void setContactUser(ContactUser contactUser) {
+		this.contactUser = contactUser;
+	}
+	
+	/**
 	 * 数据库手动修改记录。<br/>
 	 * @hibernate.property column="remark" length="2000" type = "java.lang.String"
 	 */
@@ -153,7 +170,7 @@ public class ContactTag extends VersionalModel {
 		ContactTag rhs = (ContactTag) object;
 		return new EqualsBuilder().append(this.id, rhs.id).append(
 				this.createTime, rhs.createTime).append(this.logo, rhs.logo)
-				.append(this.ceateUser,rhs.ceateUser).append(this.name, rhs.name).append(
+				.append(this.contactUser,rhs.contactUser).append(this.name, rhs.name).append(
 						this.tagOrder, rhs.tagOrder).append(this.deleteFlag,
 						rhs.deleteFlag)
 				.isEquals();
@@ -164,7 +181,7 @@ public class ContactTag extends VersionalModel {
 	 */
 	public int hashCode() {
 		return new HashCodeBuilder(-995632337, -1369080159).append(this.createTime).append(this.logo)
-				.append(this.ceateUser).append(this.name).append(this.id)
+				.append(this.contactUser).append(this.name).append(this.id)
 				.append(this.tagOrder).append(this.deleteFlag).toHashCode();
 	}
 
@@ -175,9 +192,7 @@ public class ContactTag extends VersionalModel {
 		return new ToStringBuilder(this).append("logo", this.logo).append(
 				"tagOrder", this.tagOrder).append(
 				"createTime", this.createTime).append("name", this.name)
-				.append("ceateUser", this.ceateUser).append("deleteFlag",
+				.append("ceateUser", this.contactUser).append("deleteFlag",
 						this.deleteFlag).append("id", this.getId()).toString();
 	}
-	
-	
 }
