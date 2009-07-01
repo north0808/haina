@@ -15,7 +15,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * @version 1.0
  * @since 1.0
  * @date 2009-06-26
- * @hibernate.class table="ContactTag"
+ * @hibernate.class table="ContactTag" optimistic-lock="version"
  * @hibernate.cache usage="read-write"
  */
 
@@ -47,17 +47,16 @@ public class ContactTag extends VersionalModel {
 	private String remark;
 
 	/**
-	 * @hibernate.version column="version" type = "java.lang.Long"
+	 * @hibernate.version column="version" type="long"
 	 */
 	@Override
-	public Long getVersion() {
-		// TODO Auto-generated method stub
-		return null;
+	public long getVersion() {
+		return this.version;
 	}
 
 	/**
-	 * @hibernate.id column="id"  unsaved-value="null" type = "java.lang.String" length="32"
-	 * @hibernate.column sql-type="char(32)"
+	 * @hibernate.id unsaved-value="null" type = "java.lang.String" length="32"
+	 * @hibernate.column name="id" sql-type="char(32)"
 	 * @hibernate.generator class="uuid.hex"
 	 */
 	@Override
@@ -101,7 +100,8 @@ public class ContactTag extends VersionalModel {
 //	}
 
 	/**
-	 * @hibernate.property column="createTime" type="java.util.Date" not-null="true"
+	 * @hibernate.property type="java.util.Date" not-null="true"
+	 * @hibernate.column name="createTime" sql-type="timestamp"
 	 */
 	public Date getCreateTime() {
 		return createTime;
@@ -137,7 +137,8 @@ public class ContactTag extends VersionalModel {
 
 	/**
 	 * 标签所属用户。<br/>
-	 * @hibernate.many-to-one column="createUser" class="com.haina.beluga.domain.ContactUser" name="contactUser" not-null="true" access="property" insert="true" update="false" cascade="save-update" lazy="false" outer-join="true"
+	 * @hibernate.many-to-one not-null="true" insert="true" update="false" cascade="save-update" lazy="false" outer-join="true"
+	 * @hibernate.column name="createUser"
 	 * @return
 	 */
 	public ContactUser getContactUser() {

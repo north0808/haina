@@ -16,7 +16,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * @version 1.0
  * @since 1.0
  * @date 2009-06-26
- * @hibernate.class table="ContactUser"
+ * @hibernate.class table="ContactUser" optimistic-lock="version"
  * @hibernate.cache usage="read-write"
  */
 @Component
@@ -41,8 +41,8 @@ public class ContactUser extends VersionalModel {
 	private String remark;
 	
 	/**
-	 * @hibernate.id column="id"  unsaved-value="null" type = "java.lang.String" length="32"
-	 * @hibernate.column sql-type="char(32)"
+	 * @hibernate.id unsaved-value="null" type = "java.lang.String" length="32"
+	 * @hibernate.column name="id" sql-type="char(32)"
 	 * @hibernate.generator class="uuid.hex"
 	 */
 	@Override
@@ -62,7 +62,8 @@ public class ContactUser extends VersionalModel {
 	}
 
 	/**
-	 * @hibernate.property column="registerTime" not-null="true"  type = "java.util.Date"
+	 * @hibernate.property not-null="true" type="timestamp"
+	 * @hibernate.column name="registerTime" sql-type="timestamp"
 	 */
 	public Date getRegisterTime() {
 		return registerTime;
@@ -84,7 +85,8 @@ public class ContactUser extends VersionalModel {
 	}
 
 	/**
-	 * @hibernate.property column="lastLoginTime" type = "java.util.Date"
+	 * @hibernate.property type="timestamp"
+	 * @hibernate.column name="lastLoginTime" sql-type="timestamp"
 	 */
 	public Date getLastLoginTime() {
 		return lastLoginTime;
@@ -107,16 +109,16 @@ public class ContactUser extends VersionalModel {
 
 	/**
 	 * @hibernate.version
-	 * @hibernate.column name="version" sql-type="int8 default 1" type="java.lang.Long"
+	 * @hibernate.column name="version" type="long"
 	 */
 	@Override
-	public Long getVersion() {
+	public long getVersion() {
 		return version;
 	}
 
 	/**
 	 * 用户的联系人标签。<br/>
-	 * @hibernate.set name="contactTags" table="ContactTag" lazy="true" outer-join="false" access="property" inverse="false" cascade="all" order-by="tagOrder"
+	 * @hibernate.set name="contactTags" table="ContactTag" lazy="true" outer-join="false" inverse="false" cascade="all" order-by="tagOrder"
 	 * @hibernate.key column="createUser"
 	 * @hibernate.one-to-many class="com.haina.beluga.domain.ContactTag"
 	 * @return

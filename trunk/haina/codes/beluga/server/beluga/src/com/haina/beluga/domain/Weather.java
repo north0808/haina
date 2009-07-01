@@ -135,18 +135,18 @@ public class Weather extends VersionalModel {
 	}
 
 	/**
-	 * @hibernate.version column="VERSION"
-	 * @return Long
+	 * @hibernate.version column="VERSION" type="long"
+	 * @return long
 	 */
 	@Override
-	public Long getVersion() {
+	public long getVersion() {
 		// TODO Auto-generated method stub
 		return version;
 	}
 
 	/**
-	 * @hibernate.id column="ID" unsaved-value="null" length="32"
-	 * @hibernate.column sql-type="char(32)"
+	 * @hibernate.id unsaved-value="null" length="32"
+	 * @hibernate.column name="id" sql-type="char(32)"
 	 * @hibernate.generator class="uuid.hex"
 	 * @return String
 	 */
