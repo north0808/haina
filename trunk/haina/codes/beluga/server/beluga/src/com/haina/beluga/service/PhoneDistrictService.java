@@ -23,7 +23,7 @@ public class PhoneDistrictService extends BaseSerivce<IPhoneDistrictDao,PhoneDis
 			list.add(PhoneDistrictDto.valueof(w));
 		}
 		HessianRemoteReturning hrr = new HessianRemoteReturning(list);
-			hrr.setValue("中国");
+			hrr.setValue(list);
 		return hrr;
 		
 	}
