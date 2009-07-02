@@ -1,0 +1,992 @@
+/*
+ ============================================================================
+ Name		: CContactDb.cpp
+ Author	  : shaochuan.yang
+ Copyright   : haina
+ Description : Contact Database
+ ============================================================================
+ */
+
+#include <string.h>
+#include <stdlib.h>
+#include <time.h>
+#include "CContact.h"
+#include "CPhoneContact.h"
+#include "CContactDb.h"
+#include "CContactIterator.h"
+#include "CTag.h"
+
+
+static void insert_contact_ext_row(gpointer key, gpointer value, gpointer user_data)
+	{
+	char sql[128] = {0};
+	guint32 nContactId = 0;
+	CPhoneContact * contact = (CPhoneContact*)user_data;
+	contact->GetEntityDb()->GetMaxId(&nContactId);
+	
+	sprintf(sql, "insert into contact_ext values(NULL, %d, %d, %s);", 
+			nContactId, (guint32)*key, (char*)value);
+	
+	contact->GetEntityDb()->GetDatabase().execDML(sql);
+	}
+
+static void update_contact_ext_row(gpointer key, gpointer value, gpointer user_data)
+	{
+	char sql[128] = {0};
+	GString * fieldValue = NULL;
+	CPhoneContact * contact = (CPhoneContact*)user_data;
+	contact->GetFieldValue(ContactField_Id, &fieldValue);
+	
+	sprintf(sql, "insert into contact_ext values(NULL, %d, %d, %s);", 
+			atoi(fieldValue->str), (guint32)*key, (char*)value);
+	g_string_free(fieldValue, TRUE);
+	contact->GetEntityDb()->GetDatabase().execDML(sql);
+	}
+
+
+CContactDb::CContactDb()
+	{
+	m_nDbErrCode = ECode_No_Error;
+	}
+    
+CContactDb::~CContactDb()
+	{
+	}
+    
+EXPORT_C gint32 CContactDb::InitEntityDb() /* fill fields name */
+	{
+	OpenDatabase();
+	CppSQLite3Table contactTable = m_dbBeluga.getTable("select * from contact limit 1;");
+	m_pFieldsName = g_ptr_array_sized_new(contactTable.numFields());
+	if (!m_pFieldsName)
+		{
+		CloseDatabase();
+		return ERROR(ESide_Client, EModule_Db, ECode_No_Memory);
+		}
+			
+	for (int i=0; i<contactTable.numFields(); i++)
+		g_ptr_array_add(m_pFieldsName, g_string_new((gchar*)contactTable.fieldName(i)));
+	
+	CloseDatabase();
+	return 0;
+	}
+
+EXPORT_C gint32 CContactDb::GetMaxId(guint32 * nMaxId)
+	{
+	OpenDatabase();
+	*nMaxId = m_dbBeluga.execScalar("select max(cid) from contact;");
+	CloseDatabase();
+	return 0;
+	}
+    
+EXPORT_C gint32 CContactDb::GetEntityById(guint32 nId, CDbEntity** ppEntity)
+	{
+	char sql[128] = {0};
+	*ppEntity = NULL;
+	
+	OpenDatabase();
+	sprintf(sql, "select * from contact where cid = %d;", nId);
+	CppSQLite3Query query = m_dbBeluga.execQuery(sql);
+	
+	if (!query.numFields())
+		{
+		CloseDatabase();
+		return ERROR(ESide_Client, EModule_Db, ECode_Not_Exist);
+		}
+	
+	switch (query.getIntField(ContactField_Type))
+		{
+		case ContactType_Phone:
+			*ppEntity = new CPhoneContact(this);
+			break;
+		case ContactType_QQ:
+			*ppEntity = new CQQContact(this);
+			break;
+		case ContactType_MSN:
+			*ppEntity = new CMSNContact(this);
+			break;
+		default:
+			break;
+		}
+	if (NULL == *ppEntity)
+		{
+		CloseDatabase();
+		return ERROR(ESide_Client, EModule_Db, ECode_No_Memory);
+		}
+	
+	for (int i=0; i<query.numFields(); i++)
+		(*ppEntity)->SetFieldValue(i, g_string_new(query.fieldValue(i)));
+		
+	CloseDatabase();
+	return 0;
+	}
+    
+EXPORT_C gint32 CContactDb::SaveEntity(CDbEntity * pEntity)
+	{
+	int i;
+	char sql[256] = {0};
+	OpenDatabase();
+	try 
+		{
+		m_dbBeluga.execDML("begin transaction;");
+		/* insert contact entity */
+		strcpy(sql, "insert into contact values(NULL");
+		for (i=0; i<ContactField_EndFlag - 1; i++)
+			strcat(sql, ", ?");
+		strcat(sql, ");");
+		
+		CppSQLite3Statement statement = m_dbBeluga.compileStatement(sql);
+		for (i=1; i<ContactField_EndFlag; i++)
+			{
+			GString * fieldValue = NULL;
+			if (ECode_No_Error == pEntity->GetFieldValue(i, &fieldValue))
+				{
+				statement.bind(i, fieldValue->str);
+				g_string_free(fieldValue, TRUE);
+				}
+			else
+				statement.bindNull(i);
+			}
+		statement.execDML();
+		statement.reset();
+		
+		/* insert contact_ext entity */
+		CContact * contact = (CContact*)pEntity;
+		GString * fieldValue = NULL;
+		contact->GetFieldValue(ContactField_Type, &fieldValue);
+		if (ContactType_Phone == atoi(fieldValue->str))
+			{
+			CPhoneContact * phonecontact = (CPhoneContact*)pEntity;
+			/* insert phones */
+			GHashTable * phones = NULL;
+			phonecontact->GetAllPhones(&phones);
+			g_hash_table_foreach(phones, insert_contact_ext_row, phonecontact);
+			g_hash_table_destroy(phones);
+			
+			/* insert emails */
+			GHashTable * emails = NULL;
+			phonecontact->GetAllEmails(&emails);
+			g_hash_table_foreach(emails, insert_contact_ext_row, phonecontact);
+			g_hash_table_destroy(emails);
+			
+			/* insert ims */
+			GHashTable * ims = NULL;
+			phonecontact->GetAllIMs(&ims);
+			g_hash_table_foreach(ims, insert_contact_ext_row, phonecontact);
+			g_hash_table_destroy(ims);
+			
+			/* insert addresses */
+			GPtrArray * addresses = NULL;
+			phonecontact->GetAllIMs(&addresses);
+			for (int j=0; j<addresses->len; j++)
+				{
+				guint32 nContactId = 0;
+				memset(sql, 0, sizeof(sql));
+				GetMaxId(&nContactId);
+				stAddress * addr = g_ptr_array_index(addresses, j);
+				sprintf(sql, "insert into address values(NULL, %d, %s, %s %s, %s, %s, %s);", 
+									addr->atype, addr->block, addr->street, addr->district,
+									addr->city, addr->state, addr->country, addr->postcode);
+				m_dbBeluga.execDML(sql);
+				
+				guint32 nAddrId = m_dbBeluga.execScalar("select max(aid) from address;");
+				memset(sql, 0, sizeof(sql));
+				sprintf(sql, "insert into contact_ext values(NULL, %d, %d, %d);", 
+									nContactId, addr->atype, nAddrId);
+				m_dbBeluga.execDML(sql);
+				}
+			freeAddressArray(addresses);
+			}
+		g_string_free(fieldValue, TRUE);		
+		
+		m_dbBeluga.execDML("commit transaction;");
+		delete pEntity;
+		pEntity = NULL;
+		CloseDatabase();
+		return 0;
+		}
+	catch(CppSQLite3Exception& e)
+		{
+		m_dbBeluga.execDML("rollback transaction;");
+		delete pEntity;
+		pEntity = NULL;
+		CloseDatabase();
+		return ERROR(ESide_Client, EModule_Db, ECode_Insert_Failed);
+		}
+	
+	return 0;
+	}
+    
+EXPORT_C gint32 CContactDb::DeleteEntity(guint32 nEntityId)
+	{
+	char sql[128] = {0};
+	OpenDatabase();
+	sprintf(sql, "delete from contact where cid = %d;", nEntityId);
+	m_dbBeluga.execDML(sql);
+	CloseDatabase();
+	return 0;
+	}
+    
+EXPORT_C gint32 CContactDb::UpdateEntity(CDbEntity * pEntity)
+	{
+	int i;
+	char sql[256] = {0};
+	OpenDatabase();
+	
+	try 
+		{
+		m_dbBeluga.execDML("begin transaction;");
+		/* update contact entity */
+		strcpy(sql, "update contact set "); 
+		for (i=1; i<ContactField_EndFlag; i++)
+			{
+			GString * fieldName = g_ptr_array_index(m_pFieldsName, i);
+			strcat(sql, fieldName->str);
+			strcat(sql, " = ?");
+			if (i != ContactField_EndFlag - 1)
+				strcat(sql, ", ");
+			}
+		strcat(sql, "where cid = ?;");
+		
+		CppSQLite3Statement statement = m_dbBeluga.compileStatement(sql);
+		for (i=1; i<ContactField_EndFlag; i++)
+			{
+			GString * fieldValue = NULL;
+			if (ECode_No_Error == pEntity->GetFieldValue(i, &fieldValue))
+				{
+				statement.bind(i, fieldValue->str);
+				g_string_free(fieldValue, TRUE);
+				}
+			else
+				statement.bindNull(i);
+			}
+		statement.execDML();
+		statement.reset();
+		
+		/* update contact_ext entity */
+		CContact * contact = (CContact*)pEntity;
+		GString * fieldValue = NULL;
+		contact->GetFieldValue(ContactField_Type, &fieldValue);
+		if (ContactType_Phone == atoi(fieldValue->str))
+			{
+			CPhoneContact * phonecontact = (CPhoneContact*)pEntity;
+			GString * fieldId = NULL;
+			phonecontact->GetFieldValue(ContactField_Id, &fieldId);
+			memset(sql, 0, sizeof(sql));
+			sprintf(sql, "delete from contact_ext where cid = %d;", atoi(fieldId->str));
+			m_dbBeluga.execDML(sql);
+			
+			/* insert phones */
+			GHashTable * phones = NULL;
+			phonecontact->GetAllPhones(&phones);
+			g_hash_table_foreach(phones, update_contact_ext_row, phonecontact);
+			g_hash_table_destroy(phones);
+			
+			/* insert emails */
+			GHashTable * emails = NULL;
+			phonecontact->GetAllEmails(&emails);
+			g_hash_table_foreach(emails, update_contact_ext_row, phonecontact);
+			g_hash_table_destroy(emails);
+			
+			/* insert ims */
+			GHashTable * ims = NULL;
+			phonecontact->GetAllIMs(&ims);
+			g_hash_table_foreach(ims, update_contact_ext_row, phonecontact);
+			g_hash_table_destroy(ims);
+			
+			/* insert addresses */
+			GPtrArray * addresses = NULL;
+			phonecontact->GetAllIMs(&addresses);
+			for (int j=0; j<addresses->len; j++)
+				{
+				memset(sql, 0, sizeof(sql));
+				stAddress * addr = g_ptr_array_index(addresses, j);
+				sprintf(sql, "insert into address values(NULL, %d, %s, %s %s, %s, %s, %s);", 
+									addr->atype, addr->block, addr->street, addr->district,
+									addr->city, addr->state, addr->country, addr->postcode);
+									
+				guint32 nAddrId = m_dbBeluga.execScalar("select max(aid) from address;");
+				memset(sql, 0, sizeof(sql));
+				sprintf(sql, "insert into contact_ext values(NULL, %d, %d, %d);", 
+									atoi(fieldId->str), addr->atype, nAddrId);
+				m_dbBeluga.execDML(sql);
+				}
+			freeAddressArray(addresses);
+			g_string_free(fieldId, TRUE);
+			}
+		g_string_free(fieldValue, TRUE);
+		
+		m_dbBeluga.execDML("commit transaction;");
+		delete pEntity;
+		pEntity = NULL;
+		CloseDatabase();
+		return 0;
+		}
+	catch(CppSQLite3Exception& e)
+		{
+		m_dbBeluga.execDML("rollback transaction;");
+		delete pEntity;
+		pEntity = NULL;
+		CloseDatabase();
+		return ERROR(ESide_Client, EModule_Db, ECode_Update_Failed);
+		}
+		
+	return 0;
+	}
+    
+EXPORT_C gint32 CContactDb::DeleteAllContactsByTag(guint32 nTagId)
+	{
+	char sql[256] = {0};
+	OpenDatabase();
+	sprintf(sql, "delete from contact where cid in (select cid from r_contact_group where gid in "\
+				 "(select gid from cgroup where tid= %d)); ", nTagId);
+	m_dbBeluga.execDML(sql);
+	CloseDatabase();
+	return 0;
+	}
+    
+EXPORT_C gint32 CContactDb::ReleaseContactGroupRelation(CContact * pContact, CGroup * pGroup)
+	{
+	GString * ContactId = NULL;
+	GString * GroupId = NULL;
+	pContact->GetFieldValue(ContactField_Id, &ContactId);
+	pGroup->GetFieldValue(GroupField_Id, &GroupId);
+	ReleaseContactGroupRelation(atoi(ContactId->str), atoi(GroupId->str));
+	g_string_free(ContactId, TRUE);
+	g_string_free(GroupId, TRUE);
+	return 0;
+	}
+    
+EXPORT_C gint32 CContactDb::ReleaseContactGroupRelation(guint32 nContactId, guint32 nGroupId)
+	{
+	char sql[128] = {0};
+	OpenDatabase();
+	sprintf(sql, "delete from r_contact_group where cid = %d and gid = %d;", nContactId, nGroupId);
+	m_dbBeluga.execDML(sql);
+	CloseDatabase();
+	return 0;
+	}
+    
+EXPORT_C gint32 CContactDb::ReleaseContactAllRelations(guint32 nContactId)
+	{
+	char sql[128] = {0};
+	OpenDatabase();
+	sprintf(sql, "delete from r_contact_group where cid = %d;", nContactId);
+	m_dbBeluga.execDML(sql);
+	CloseDatabase();
+	return 0;
+	}
+    
+EXPORT_C gint32 CContactDb::ReleaseContactAllRelations(CContact * pContact)
+	{
+	GString * ContactId = NULL;
+	pContact->GetFieldValue(ContactField_Id, &ContactId);
+	ReleaseContactAllRelations(atoi(ContactId->str));
+	g_string_free(ContactId, TRUE);
+	return 0;
+	}
+
+EXPORT_C gint32 CContactDb::CreateContactGroupRelation(CContact * pContact, CGroup * pGroup)
+	{
+	GString * ContactId = NULL;
+	GString * GroupId = NULL;
+	pContact->GetFieldValue(ContactField_Id, &ContactId);
+	pGroup->GetFieldValue(GroupField_Id, &GroupId);
+	CreateContactGroupRelation(atoi(ContactId->str), atoi(GroupId->str));
+	g_string_free(ContactId, TRUE);
+	g_string_free(GroupId, TRUE);
+	return 0;
+	}
+    
+EXPORT_C gint32 CContactDb::CreateContactGroupRelation(guint32 nContactId, guint32 nGroupId)
+	{
+	char sql[128] = {0};
+	OpenDatabase();
+	sprintf(sql, "insert into r_contact_group values(%d, %d);", nContactId, nGroupId);
+	m_dbBeluga.execDML(sql);
+	CloseDatabase();
+	return 0;
+	}
+
+EXPORT_C gint32 CContactDb::SearchContactsByTag(guint32 nTagId, GArray * fieldsIndex, GPtrArray * fieldsValue, 
+							gboolean onlyPref, CContactIterator ** ppContactIterator)
+	{
+	char sql[512] = {0};
+	OpenDatabase();
+	
+	if (onlyPref || nTagId != ContactType_Phone)
+		strcpy(sql, "select * from contact c where ");
+	else
+		strcpy(sql, "select c.*, ext.* from contact c "\
+					"left join (select ce.cid ,ce.comm_key, ce.comm_value, a.* from contact_ext ce "\
+					"left join address a on ce.comm_value = a.aid) ext "\
+					"on c.cid = ext.cid where ");
+		
+	for (int i=0; i<fieldsIndex->len; i++)
+		for (int j=ContactField_UserId; j<ContactField_EndFlag; j++)
+			{
+			if (g_array_index(fieldsIndex, guint32, i) == j)
+				{
+				strcat(sql, g_ptr_array_index(m_pFieldsName, j)->str));
+				strcat(sql, " like '%");
+				strcat(sql, g_ptr_array_index(fieldsValue, i)->str));
+				strcat(sql, "%' and");				
+				}
+			}
+	
+	strcat(sql, "c.cid >= 0 ");
+	
+	if (-1 != m_nSortFieldIndex)
+		{
+		strcat(sql, "order by c.");
+		strcat(sql, g_ptr_array_index(m_pFieldsName, m_nSortFieldIndex)->str));
+		strcat(sql, " asc;");
+		}
+		
+	m_dbQuery = m_dbBeluga.execQuery(sql);
+	*ppContactIterator = NULL;
+	*ppContactIterator = new CContactIterator(this);
+	if (NULL == *ppContactIterator)
+		{
+		CloseDatabase();
+		return ERROR(ESide_Client, EModule_Db, ECode_No_Memory);
+		}
+
+	CloseDatabase();
+	return 0;
+	}
+    
+EXPORT_C gint32 CContactDb::SearchPhoneContactsByPhoneOrEmail(gchar * commValue, 
+							gboolean onlyPref, CContactIterator ** ppContactIterator)
+	{
+	char sql[512] = {0};
+	OpenDatabase();
+	
+	if (onlyPref)
+		strcpy(sql, "select * from contact c where cid in (select cid from contact_ext where comm_value like '%");
+	else
+		strcpy(sql, "select c.*, ext.* from contact c "\
+					"left join (select ce.cid ,ce.comm_key, ce.comm_value, a.* from contact_ext ce "\
+					"left join address a on ce.comm_value = a.aid) ext "\
+					"on c.cid = ext.cid where c.cid in (select cid from contact_ext where comm_value like '%");
+	
+	strcat(sql, commValue);
+	strcat(sql, "%') order by c.name_spell asc;");				
+		
+	m_dbQuery = m_dbBeluga.execQuery(sql);
+	*ppContactIterator = NULL;
+	*ppContactIterator = new CContactIterator(this);
+	if (NULL == *ppContactIterator)
+		{
+		CloseDatabase();
+		return ERROR(ESide_Client, EModule_Db, ECode_No_Memory);
+		}
+
+	CloseDatabase();
+	return 0;
+	}
+
+EXPORT_C gint32 SearchContactsByName(guint32 nTagId, gchar* name, gboolean onlyPref, 
+											CContactIterator ** ppContactIterator)
+	{
+	char sql[512] = {0};
+	OpenDatabase();
+	
+	if (nTagId != ContactType_Phone)
+		sprintf(sql, "select * from contact where nickname_spell like '\%%s\%' order by nikename_spell asc;", name);
+	else if (onlyPref)
+		sprintf(sql, "select * from contact where name_spell like '\%%s\%' order by name_spell asc;", name);
+	else
+		sprintf(sql, "select c.*, ext.* from contact c "\
+					"left join (select ce.cid ,ce.comm_key, ce.comm_value, a.* from contact_ext ce "\
+					"left join address a on ce.comm_value = a.aid) ext "\
+					"on c.cid = ext.cid where name_spell like '\%%s\%' order by name_spell asc;", name);
+							
+	m_dbQuery = m_dbBeluga.execQuery(sql);
+	*ppContactIterator = NULL;
+	*ppContactIterator = new CContactIterator(this);
+	if (NULL == *ppContactIterator)
+		{
+		CloseDatabase();
+		return ERROR(ESide_Client, EModule_Db, ECode_No_Memory);
+		}
+
+	CloseDatabase();
+	return 0;	
+	}
+/*
+EXPORT_C gint32 SearchContactsByWordsFirstLetter(guint32 nTagId, gchar* nameLetters, gboolean onlyPref, 
+    											CContactIterator ** ppContactIterator)
+	{
+	char sql[512] = {0};
+	OpenDatabase();
+	
+	if (nTagId != ContactType_Phone)
+		sprintf(sql, "select * from contact where nickname_spell like '\%%s\%' order by nickname_spell asc;", nameLetters);
+	else if (onlyPref)
+		sprintf(sql, "select * from contact where name_spell like '\%%s\%' order by name_spell asc;", nameLetters);
+	else
+		sprintf(sql, "select c.*, ext.* from contact c "\
+					"left join (select ce.cid ,ce.comm_key, ce.comm_value, a.* from contact_ext ce "\
+					"left join address a on ce.comm_value = a.aid) ext "\
+					"on c.cid = ext.cid where name_spell like '\%%s\%' order by name_spell asc;", nameLetters);
+		
+	m_dbQuery = m_dbBeluga.execQuery(sql);
+	*ppContactIterator = NULL;
+	*ppContactIterator = new CContactIterator(this);
+	if (NULL == *ppContactIterator)
+		{
+		CloseDatabase();
+		return ERROR(ESide_Client, EModule_Db, ECode_No_Memory);
+		}
+
+	CloseDatabase();
+	return 0;
+	}   
+    
+EXPORT_C gint32 CContactDb::GetMostMatchingContactByTag(guint32 nTagId, GArray * fieldsIndex, GPtrArray * fieldsValue, 
+									gboolean onlyPref, CContact ** ppContact)
+	{
+	char sql[512] = {0};
+	OpenDatabase();
+	
+	if (onlyPref || nTagId != ContactType_Phone)
+		strcpy(sql, "select * from contact where ");
+	else
+		strcpy(sql, "select c.*, ext.* from contact c "\
+					"left join (select ce.cid ,ce.comm_key, ce.comm_value, a.* from contact_ext ce "\
+					"left join address a on ce.comm_value = a.aid) ext "\
+					"on c.cid = ext.cid where ");
+		
+	for (int i=0; i<fieldsIndex->len; i++)
+		for (int j=ContactField_UserId; j<ContactField_EndFlag; j++)
+			{
+			if (g_array_index(fieldsIndex, guint32, i) == j)
+				{
+				strcat(sql, g_ptr_array_index(m_pFieldsName, j)->str));
+				strcat(sql, " like '%");
+				strcat(sql, g_ptr_array_index(fieldsValue, i)->str));
+				strcat(sql, "%' and");				
+				}
+			}
+	
+	strcat(sql, "c.cid >= 0 ");
+	
+	if (-1 != m_nSortFieldIndex)
+		{
+		strcat(sql, "order by c.");
+		strcat(sql, g_ptr_array_index(m_pFieldsName, m_nSortFieldIndex)->str));
+		strcat(sql, " asc;");
+		}
+		
+	m_dbQuery = m_dbBeluga.execQuery(sql);
+	*ppContactIterator = NULL;
+	*ppContactIterator = new CContactIterator(this);
+	if (NULL == *ppContactIterator)
+		{
+		CloseDatabase();
+		return ERROR(ESide_Client, EModule_Db, ECode_No_Memory);
+		}
+
+	CloseDatabase();
+	return 0;	
+	}
+*/
+EXPORT_C gint32 CContactDb::GetMostMatchingPhoneContactByPhoneOrEmail(gchar * commValue, 
+									CContact ** ppContact)
+	{
+	gint32 ret;
+	guint32 nContactId;
+	guint32 nMostMatchingId;
+	guint8 nBaseLen = 7, nLimitLen = 12;
+	guint8 nMatchingBit = CONTACT_PHONE_PREF_LEN;
+	char sql[512] = {0};
+	
+	OpenDatabase();
+	
+	char * email = strrchr(commValue, '@'); /* simply check commValue is email */
+	if (email != NULL) /* email */
+		{
+		strcpy(sql, "select c.cid, ext.comm_value from contact c left join contact_ext ext on c.cid = ext.cid "\
+						"where ext.comm_key & 32 = 32 and ext.comm_value like '");
+		strcat(sql, commValue);
+		strcat(sql, "' order by c.name_spell asc;");	
+		}
+	else   /* phone */
+		{
+		guint8 nPhoneLen = strlen(commValue);
+		strcpy(sql, "select c.cid, ext.comm_value from contact c left join contact_ext ext on c.cid = ext.cid "\
+						"where (ext.comm_key & 16 = 16) and (ext.comm_value like '");
+		if (nPhoneLen < nBaseLen)
+			strcat(sql, commValue);
+		else
+			{
+			guint8 i = 0;
+			strcat(sql, "%");
+
+			gchar* tmp = commValue;
+			if (nPhoneLen > nLimitLen) 
+				{
+				tmp = commValue + nPhoneLen - nLimitLen;
+				nPhoneLen = nLimitLen;
+				}
+
+			strcat(sql, tmp + i);
+			i++;
+
+			while (i < nPhoneLen - nBaseLen) 
+				{
+				strcat(sql, "' or ext.comm_value like '%");
+				strcat(sql, tmp + i);
+				i++;
+				}
+			}
+		strcat(sql, "') order by c.name_spell asc;");
+		}
+			
+	CppSQLite3Query query = m_dbBeluga.execQuery(sql);
+	while (!query.eof())
+		{
+		nContactId = query.getIntField(0);
+		gchar * fieldValue = query.getStringField(1);
+		
+		if (NULL == fieldValue)  /* query error */
+			break; 
+		
+		/* get the most matching contact */
+		char * email = strrchr(commValue, '@'); /* simply check commValue is email */
+		if (email != NULL) /* email */
+			{
+			if (0 == strcmp(commValue, fieldValue)) /* email equal */
+				{
+				nMostMatchingId = nContactId;
+				break;
+				}
+			}
+		else   /* phone */
+			{
+			guint32 i = strlen(commValue);
+			guint32 j = strlen(fieldValue);
+			
+			while (i && j && (commValue[i - 1] == fieldValue[j - 1]) 
+				{
+				i--; j--;
+				
+				if (0 == j && 0 == i) /* perfect same phone .*/
+					{ 
+					nMostMatchingId = nContactId;
+					break;
+					}
+				
+				if (i < nMatchingBit) /* i left less, matching most */
+					{ 
+					nMatchingBit = i;
+					nMostMatchingId = nContactId; /* record the most matching contact id */
+					}
+				}
+			
+				if (0 == j && 0 == i) /* perfect same tel */
+					break; 
+			}			        
+		
+		query.nextRow();
+		}
+	
+	ret = GetEntityById(nMostMatchingId, ppContact);
+
+	CloseDatabase();	
+	return ret;
+	}
+    
+EXPORT_C gint32 CContactDb::GetAllContactsByTag(guint32 nTagId, gboolean onlyPref, CContactIterator ** ppContactIterator)
+	{
+	char sql[512] = {0};
+	OpenDatabase();
+	
+	if (onlyPref || nTagId != ContactType_Phone)
+		sprintf(sql, "select * from contact c where c.type = %d ", nTagId);
+	else
+		sprintf(sql, "select c.*, ext.* from contact c "\
+					"left join (select ce.cid ,ce.comm_key, ce.comm_value, a.* from contact_ext ce "\
+					"left join address a on ce.comm_value = a.aid) ext "\
+					"on c.cid = ext.cid where c.type = %d ", nTagId);
+	
+	if (-1 != m_nSortFieldIndex)
+		{
+		strcat(sql, "order by c.");
+		strcat(sql, g_ptr_array_index(m_pFieldsName, m_nSortFieldIndex)->str));
+		strcat(sql, " asc;");
+		}
+		
+	m_dbQuery = m_dbBeluga.execQuery(sql);
+	*ppContactIterator = NULL;
+	*ppContactIterator = new CContactIterator(this);
+	if (NULL == *ppContactIterator)
+		{
+		CloseDatabase();
+		return ERROR(ESide_Client, EModule_Db, ECode_No_Memory);
+		}
+
+	CloseDatabase();
+	return 0;
+	}
+    
+EXPORT_C gint32 CContactDb::GetAllContactsNotInGroupByTag(guint32 nTagId, gboolean onlyPref, CContactIterator ** ppContactIterator)
+	{
+	char sql[512] = {0};
+	OpenDatabase();
+	
+	if (onlyPref || nTag != ContactType_Phone)
+		sprintf(sql, "select * from contact c where c.cid not in (select cid from r_contact_group) and c.type = %d ", nTagId);
+	else
+		sprintf(sql, "select c.*, ext.* from contact c "\
+					"left join (select ce.cid ,ce.comm_key, ce.comm_value, a.* from contact_ext ce "\
+					"left join address a on ce.comm_value = a.aid) ext "\
+					"on c.cid = ext.cid where c.cid not in (select cid from r_contact_group) and c.type = %d ", nTagId);
+		
+	if (-1 != m_nSortFieldIndex)
+		{
+		strcat(sql, "order by c.");
+		strcat(sql, g_ptr_array_index(m_pFieldsName, m_nSortFieldIndex)->str));
+		strcat(sql, " asc;");
+		}
+		
+	m_dbQuery = m_dbBeluga.execQuery(sql);
+	*ppContactIterator = NULL;
+	*ppContactIterator = new CContactIterator(this);
+	if (NULL == *ppContactIterator)
+		{
+		CloseDatabase();
+		return ERROR(ESide_Client, EModule_Db, ECode_No_Memory);
+		}
+
+	CloseDatabase();
+	return 0;
+	}
+
+EXPORT_C gint32 CContactDb::GetAllContactsByGroup(guint32 nGroupId, gboolean onlyPref, CContactIterator ** ppContactIterator)
+	{
+	char sql[512] = {0};
+	OpenDatabase();
+	
+	if (onlyPref || !CheckGroupInTag(nGroupId, ContactType_Phone))
+		sprintf(sql, "select * from contact c, r_contact_group r where r.gid = %d and ", nGroupId);
+	else
+		sprintf(sql, "select c.*, ext.* from contact c, r_contact_group r "\
+					"left join (select ce.cid ,ce.comm_key, ce.comm_value, a.* from contact_ext ce "\
+					"left join address a on ce.comm_value = a.aid) ext "\
+					"on c.cid = ext.cid where r.gid = %d and ", nGroupId);
+	
+	strcat(sql, "c.cid = r.cid ");
+	if (-1 != m_nSortFieldIndex)
+		{
+		strcat(sql, "order by c.");
+		strcat(sql, g_ptr_array_index(m_pFieldsName, m_nSortFieldIndex)->str));
+		strcat(sql, " asc;");
+		}
+		
+	m_dbQuery = m_dbBeluga.execQuery(sql);
+	*ppContactIterator = NULL;
+	*ppContactIterator = new CContactIterator(this);
+	if (NULL == *ppContactIterator)
+		{
+		CloseDatabase();
+		return ERROR(ESide_Client, EModule_Db, ECode_No_Memory);
+		}
+
+	CloseDatabase();
+	return 0;
+	}
+
+EXPORT_C gint32 CContactDb::GetContactsTotalityByTag(guint32 nTagId, guint32 * totality)
+	{
+	char sql[128] = {0};
+	*totality = 0;
+	OpenDatabase();
+	
+	sprintf(sql, "select count(*) from contact where type = %d;", nTagId);
+	*totality = m_dbBeluga.execScalar(sql);
+	CloseDatabase();
+	
+	return 0;
+	}
+    
+EXPORT_C gint32 CContactDb::GetContactsTotalityByGroup(guint32 nGroupId, guint32 * totality)
+	{
+	char sql[128] = {0};
+	*totality = 0;
+	OpenDatabase();
+	
+	sprintf(sql, "select count(*) from contact c, r_contact_group r where r.gid = %d and c.cid = r.cid;", nGroupId);
+	*totality = m_dbBeluga.execScalar(sql);
+	CloseDatabase();
+	
+	return 0;
+	}
+    
+EXPORT_C gint32 CContactDb::GetPhoneDistrict(gchar* phoneNumber, gchar ** districtNumber, gchar ** districtName, guint32 * feeType)
+	{
+	char sql[256] = {0};
+	OpenDatabase();
+	
+	sprintf(sql, "select * from phone_district where %s >= range_start and %s <= rang_end;", phoneNumber, phoneNumber);
+	CppSQLite3Query query = m_dbBeluga.execQuery(sql);
+	
+	*districtNumber = NULL;
+	*districtNumber =  g_strdup(query.getStringField(1));
+	if (NULL == *districtNumber)
+		{
+		CloseDatabase();
+		return ERROR(ESide_Client, EModule_Db, ECode_No_Memory);
+		}
+	
+	*districtName = NULL;
+	*districtNumber =  g_strdup(query.getStringField(2));
+	if (NULL == *districtNumber)
+		{
+		CloseDatabase();
+		g_free(*districtNumber);
+		*districtNumber = NULL;
+		return ERROR(ESide_Client, EModule_Db, ECode_No_Memory);
+		}
+	
+	*feeType = NULL;
+	*feeType =  query.getStringField(5);
+		
+	CloseDatabase();
+	return 0;
+	}
+    
+EXPORT_C gint32 CContactDb::GetRecentContacts(GPtrArray ** pContacts)
+	{
+	char sql[64] = {0};
+	char time[20] = {0};
+	time_t t;
+	
+	t = time(NULL); 
+	*pContacts = NULL;
+	*pContacts = g_ptr_array_new();
+	if (*pContacts == NULL)
+		{
+		return ERROR(ESide_Client, EModule_Db, ECode_No_Memory);
+		}
+	
+	OpenDatabase();
+	strcpy(sql, "select * from recent_contact;");
+	CppSQLite3Query query = m_dbBeluga.execQuery(sql);
+	while (!query.eof())
+		{
+		stRecentContact * recentContact = (stRecentContact*)g_malloc0(sizeof(stRecentContact));
+		if (recentContact == NULL)
+			{
+			CloseDatabase();
+			return ERROR(ESide_Client, EModule_Db, ECode_No_Memory);
+			}
+		
+		recentContact->nContactId = query.getIntField(1);
+		recentContact->event = query.getIntField(2);
+		strcpy(recentContact->eventCommInfo, query.getStringField(3));
+		strcpy(time, query.getStringField(4));  /* exp: 2009-6-30 21:51:23 */
+ 		recentContact->time = localtime(&t); 
+		char * tmp = strrchr(time, '-');
+		recentContact->time->tm_mon = atoi(tmp+1);
+		tmp = strrchr(tmp, '-');
+		recentContact->time->tm_mday = atoi(tmp+1);
+		tmp = strrchr(tmp, ' ');
+		recentContact->time->tm_hour = atoi(tmp+1);
+		tmp = strrchr(tmp, ':');
+		recentContact->time->tm_min = atoi(tmp+1);
+		tmp = strrchr(tmp, ':');
+		recentContact->time->tm_sec = atoi(tmp+1);
+		
+		g_ptr_array_add(*pContacts, recentContact);
+		query.nextRow();
+		}
+	
+	CloseDatabase();
+	return 0;
+	}
+    
+EXPORT_C gint32 CContactDb::SaveRecentContact(stRecentContact * contact)
+	{
+	char sql[256] = {0};
+	OpenDatabase();
+	if (m_dbBeluga.execScalar("select count(*) from recent_contact;") > MAX_RECENT_CONTACT_NUM)
+		{
+		m_dbBeluga.execDML("delete from recent_contact where time = (select max(time) from recent_contact);");
+		}
+
+	sprintf(sql, "insert into recent_contact values(null, %d, %d, %s, %d-%d-%d %02d:%02d:%02d);", 
+				contact->nContactId, contact->event, contact->eventCommInfo,
+				contact->time->tm_year, contact->time->tm_mon, contact->time->tm_mday,
+				contact->time->tm_hour, contact->time->tm_min, contact->time->tm_sec);
+	m_dbBeluga.execDML(sql);	
+	CloseDatabase();
+	return 0;
+	}
+    
+gint32 GetContactCommInfo(CPhoneContact * pContact)
+	{
+	char sql[128] = {0};
+	GHashTable * hashTable = pContact->createHashTable();
+	GPtrArray * ptrArray = pContact->createPtrArray();
+	
+	GString * CidField = NULL;
+	OpenDatabase();
+	pContact->GetFieldValue(ContactField_Id, &CidField);
+	sprintf(sql, "select * from contact_ext where cid = %s;", CidField->str);
+	CppSQLite3Query query = m_dbBeluga.execQuery(sql);
+	while (!query.eof())
+		{
+		stRecentContact * recentContact = (stRecentContact*)g_malloc0(sizeof(stRecentContact));
+		if (recentContact == NULL)
+			{
+			CloseDatabase();
+			return ERROR(ESide_Client, EModule_Db, ECode_No_Memory);
+			}
+		
+		recentContact->nContactId = query.getIntField(1);
+		recentContact->event = query.getIntField(2);
+		strcpy(recentContact->eventCommInfo, query.getStringField(3));
+		strcpy(time, query.getStringField(4));  /* exp: 2009-6-30 21:51:23 */
+		recentContact->time = localtime(&t); 
+		char * tmp = strrchr(time, '-');
+		recentContact->time->tm_mon = atoi(tmp+1);
+		tmp = strrchr(tmp, '-');
+		recentContact->time->tm_mday = atoi(tmp+1);
+		tmp = strrchr(tmp, ' ');
+		recentContact->time->tm_hour = atoi(tmp+1);
+		tmp = strrchr(tmp, ':');
+		recentContact->time->tm_min = atoi(tmp+1);
+		tmp = strrchr(tmp, ':');
+		recentContact->time->tm_sec = atoi(tmp+1);
+		
+		g_ptr_array_add(*pContacts, recentContact);
+		query.nextRow();
+		}
+	
+	CloseDatabase();
+	return 0;
+	}
+
+gint32 CContactDb::GetMaxContactCommId(guint32 * pMaxCommId)
+	{
+	*pMaxCommId = 0;
+	OpenDatabase();
+	*pMaxCommId = m_dbBeluga.execScalar("select max(ce_id) from contact_ext;");
+	CloseDatabase();
+	return 0;
+	}
+   
+gboolean CContactDb::CheckGroupInTag(guint32 nGroupId, guint32 nTagId)
+	{
+	char sql[128] = {0};
+	guint32 count = 0;
+	OpenDatabase();
+	
+	sprintf(sql, "select count(*) from cgroup where tid = %d and gid = %d;", nTagId, nGroupId);
+	count = m_dbBeluga.execScalar(sql);
+	CloseDatabase();
+	
+	return (count ? TRUE : FALSE); 
+	}
