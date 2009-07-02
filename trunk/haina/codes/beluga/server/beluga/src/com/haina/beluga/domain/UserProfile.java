@@ -167,7 +167,7 @@ public class UserProfile extends VersionalModel {
 	}
 
 	/**
-	 * @hibernate.property column="url" length="128" type="string"
+	 * @hibernate.property column="signature" length="128" type="string"
 	 */
 	public String getSignature() {
 		return signature;
@@ -272,6 +272,10 @@ public class UserProfile extends VersionalModel {
 	 */
 	public String getRemark() {
 		return remark;
+	}
+	
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
 
 	/**
