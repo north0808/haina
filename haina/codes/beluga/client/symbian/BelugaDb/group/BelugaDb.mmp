@@ -1,0 +1,53 @@
+/*
+============================================================================
+ Name		: BelugaDb.mmp
+ Author	  : shaochuan.yang
+ Copyright   : haina
+ Description : This is the project specification file for BelugaDb.
+============================================================================
+*/
+
+TARGET		  BelugaDb.dll
+TARGETTYPE	  dll
+UID			 0x1000008d 0xE22B0EF2
+
+USERINCLUDE	 ..\inc
+SYSTEMINCLUDE   \epoc32\include
+SYSTEMINCLUDE 	\epoc32\include\stdapis
+SYSTEMINCLUDE 	\epoc32\include\stdapis\glib-2.0
+
+SOURCEPATH	  ..\src
+
+SOURCE		  BelugaDbDllMain.cpp CDbEntity.cpp CEntityDb.cpp CppSQLite3.cpp stringutils.cpp
+
+// In order to use .def files to freeze code you must use one or more DEFFILE lines;
+// see the ones commented out below for examples.
+// By default, the build tools look for the WINSCW def file in a BWINS directory
+// (at the same level as the directory containing the mmp file), 
+// the GCC ARM def file in a BMARM directory, and the ARMV5 def file in a EABI directory. 
+// If your .def files are stored in these default locations, you can simply specify the
+// .def filename(s) with no path. If you want to store .def files in non-default 
+// locations, you will need to specify the paths in the DEFFILE statement(s).
+
+//The following commented out code shows how the build system uses the implicit
+// location for defiles. To create the DEF files Choose Project > Freeze Exports from Carbide
+// or run 'abld freeze' from the command-line
+//#if defined (WINS)
+//  DEFFILE ..\bwins\BelugaDb.def
+//#elif defined (GCC32)
+//  DEFFILE ..\bmarm\BelugaDb.def
+//#else 
+//  DEFFILE ..\eabi\BelugaDb.def
+//#endif
+
+nostrictdef
+
+LIBRARY		euser.lib 
+LIBRARY		libc.lib 
+LIBRARY		libglib.lib
+LIBRARY		libsqlite3.lib
+
+#ifdef ENABLE_ABIV2_MODE
+DEBUGGABLE_UDEBONLY
+#endif
+
