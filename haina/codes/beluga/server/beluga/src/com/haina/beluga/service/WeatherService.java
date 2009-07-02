@@ -73,7 +73,7 @@ public class WeatherService extends BaseSerivce<IWeatherDao,Weather,String> impl
 //				break;
 			} catch (RemoteException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.error(e.getMessage());
 			}
 			logger.info(cityCode+":in "+i++);
 		}
