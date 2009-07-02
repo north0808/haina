@@ -145,7 +145,7 @@ public class UserProfile extends VersionalModel {
 
 	/**
 	 * @hibernate.property type="timestamp"
-	 * @hibernate.column name="brithday" sql-type="timestamp"
+	 * @hibernate.column name="brithday" sql-type="date"
 	 */
 	public Date getBrithday() {
 		return brithday;
@@ -255,8 +255,8 @@ public class UserProfile extends VersionalModel {
 	}
 
 	/**
-	 * @hibernate.many-to-one not-null="true" insert="true" update="false" cascade="save-update" lazy="false" outer-join="true"
-	 * @hibernate.column name="userId"
+	 * @hibernate.many-to-one name="contactUser" cascade="save-update" class="com.haina.beluga.domain.ContactUser" unique="true"
+	 * @hibernate.column name="userId" sql-type="char(32)" not-null="true"
 	 * @return
 	 */
 	public ContactUser getContactUser() {
@@ -275,7 +275,7 @@ public class UserProfile extends VersionalModel {
 	}
 	
 	public void setRemark(String remark) {
-		this.remark = remark;
+		this.logger.warn("remark column is used for database log only,it can not be set.");
 	}
 
 	/**

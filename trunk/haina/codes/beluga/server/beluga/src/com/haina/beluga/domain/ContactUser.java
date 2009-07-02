@@ -37,6 +37,12 @@ public class ContactUser extends VersionalModel {
 	/*用户的联系人标签。*/
 	private Set<ContactTag> contactTags;
 	
+	/*详细信息。*/
+	private UserProfile userProfile;
+	
+	/*详细扩展信息。*/
+	private Set<UserProfileExt> userProfileExts;
+	
 	/*数据库手动修改记录。*/
 	private String remark;
 	
@@ -132,6 +138,32 @@ public class ContactUser extends VersionalModel {
 	}
 	
 	/**
+	 * @hibernate.one-to-one name="userProfile" class="com.haina.beluga.domain.UserProfile" property-ref="contactUser" cascade="all" constrained="false"
+	 * @return
+	 */
+	public UserProfile getUserProfile() {
+		return userProfile;
+	}
+
+	public void setUserProfile(UserProfile userProfile) {
+		this.userProfile = userProfile;
+	}
+	
+	/**
+	 * @hibernate.set name="userProfileExts" table="UserProfileExt" lazy="true" outer-join="false" inverse="false" cascade="all" order-by="commKey"
+	 * @hibernate.key column="userId"
+	 * @hibernate.one-to-many class="com.haina.beluga.domain.UserProfileExt"
+	 * @return
+	 */
+	public Set<UserProfileExt> getUserProfileExts() {
+		return userProfileExts;
+	}
+
+	public void setUserProfileExts(Set<UserProfileExt> userProfileExts) {
+		this.userProfileExts = userProfileExts;
+	}
+	
+	/**
 	 * 数据库手动修改记录。
 	 * @hibernate.property column="remark" length="2000" type = "java.lang.String"
 	 */
@@ -139,8 +171,8 @@ public class ContactUser extends VersionalModel {
 		return remark;
 	}
 	
-	private void setRemark(String remark) {
-		this.remark = remark;
+	public void setRemark(String remark) {
+		this.logger.warn("remark column is used for database log only,it can not be set.");
 	}
 
 	/**
@@ -183,4 +215,5 @@ public class ContactUser extends VersionalModel {
 						"registerTime", this.registerTime).append("id",
 						this.getId()).toString();
 	}
+
 }
