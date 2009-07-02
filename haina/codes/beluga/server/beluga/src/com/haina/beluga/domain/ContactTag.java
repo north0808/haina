@@ -47,15 +47,7 @@ public class ContactTag extends VersionalModel {
 	private String remark;
 
 	/**
-	 * @hibernate.version column="version" type="long"
-	 */
-	@Override
-	public long getVersion() {
-		return this.version;
-	}
-
-	/**
-	 * @hibernate.id unsaved-value="null" type = "java.lang.String" length="32"
+	 * @hibernate.id unsaved-value="null" type = "string" length="32"
 	 * @hibernate.column name="id" sql-type="char(32)"
 	 * @hibernate.generator class="uuid.hex"
 	 */
@@ -64,6 +56,15 @@ public class ContactTag extends VersionalModel {
 		return this.id;
 	}
 
+	
+	/**
+	 * @hibernate.version column="version" type="long"
+	 */
+	@Override
+	public long getVersion() {
+		return this.version;
+	}
+	
 	/**
 	 * @hibernate.property column="name" type = "java.lang.String" length="64" not-null="true"
 	 */
@@ -138,7 +139,7 @@ public class ContactTag extends VersionalModel {
 	/**
 	 * 标签所属用户。<br/>
 	 * @hibernate.many-to-one not-null="true" insert="true" update="false" cascade="save-update" lazy="false" outer-join="true"
-	 * @hibernate.column name="createUser"
+	 * @hibernate.column name="createUser" sql-type="char(32)"
 	 * @return
 	 */
 	public ContactUser getContactUser() {
@@ -157,8 +158,8 @@ public class ContactTag extends VersionalModel {
 		return remark;
 	}
 
-	private void setRemark(String remark) {
-		this.remark = remark;
+	public void setRemark(String remark) {
+		this.logger.warn("remark column is used for database log only,it can not be set.");
 	}
 
 	/**
