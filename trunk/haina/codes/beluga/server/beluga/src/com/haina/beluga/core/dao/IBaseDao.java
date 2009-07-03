@@ -37,4 +37,13 @@ public interface IBaseDao<T extends IModel, PK extends Serializable> {
 	public List<T> getModels(boolean useCache);
 
 	public Long getModelSize();
+	
+	/**
+	 * 领域模型分页查询方法。<br/>
+	 * @param exampleEntity 存放查询条件的领域对象
+	 * @param begin 开始位置
+	 * @param count 查询的数量
+	 * @return
+	 */
+	public List<T> getModelByPage(T exampleEntity, int begin, int count);
 }
