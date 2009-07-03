@@ -35,7 +35,7 @@ public class ContactUser extends VersionalModel {
 	private String lastLoginIp;
 	
 	/*是否有效。*/
-	private Boolean validFlag=Boolean.TRUE;
+	private Boolean validFlag;
 	
 	/*用户的联系人标签。*/
 	private Set<ContactTag> contactTags;
