@@ -18,10 +18,11 @@ import com.haina.beluga.core.model.IModel;
  * through the executeFinder method. Normally called by the
  * FinderIntroductionInterceptor
  */
-@SuppressWarnings("unchecked")//
-public class BaseDao<T extends IModel, PK extends Serializable> extends HibernateDaoSupport implements
-		IBaseDao<T, PK> {
-	
+@SuppressWarnings("unchecked")
+//
+public class BaseDao<T extends IModel, PK extends Serializable> extends
+		HibernateDaoSupport implements IBaseDao<T, PK> {
+
 	private SessionFactory sessionFactory;
 
 	private T type;
@@ -42,10 +43,10 @@ public class BaseDao<T extends IModel, PK extends Serializable> extends Hibernat
 		getHibernateTemplate().delete(o);
 	}
 
-//	public Session getSession() {
-//		boolean allowCreate = true;
-//		return SessionFactoryUtils.getSession(sessionFactory, allowCreate);
-//	}
+	// public Session getSession() {
+	// boolean allowCreate = true;
+	// return SessionFactoryUtils.getSession(sessionFactory, allowCreate);
+	// }
 
 	@Override
 	public void saveOrUpdate(T newInstance) {
@@ -87,12 +88,19 @@ public class BaseDao<T extends IModel, PK extends Serializable> extends Hibernat
 	public T load(PK id) {
 		return (T) getSession().load(type.getClass(), id);
 	}
-	
+
 	@Autowired(required = true)
 	public void setSessionFactory1(SessionFactory sessionFactory) {
 		super.setSessionFactory(sessionFactory);
 	}
-	
-	
+
+	public List<T> getModelByPage(T exampleEntity, int begin, int count) {
+		List<T> ret = null;
+		if (exampleEntity == null) {
+			exampleEntity = type;
+		}
+		ret = getHibernateTemplate().findByExample(exampleEntity, begin, count);
+		return ret;
+	}
 
 }
