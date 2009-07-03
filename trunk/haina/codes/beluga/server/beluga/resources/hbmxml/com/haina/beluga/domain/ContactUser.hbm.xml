@@ -122,6 +122,38 @@
 
         </set>
 
+        <one-to-one
+            name="userProfile"
+            class="com.haina.beluga.domain.UserProfile"
+            cascade="all"
+            constrained="false"
+            property-ref="contactUser"
+        >
+
+        </one-to-one>
+
+        <set
+            name="userProfileExts"
+            table="UserProfileExt"
+            lazy="true"
+            inverse="false"
+            cascade="all"
+            order-by="commKey"
+            outer-join="false"
+        >
+
+            <key
+                column="userId"
+            >
+
+            </key>          
+
+            <one-to-many
+                class="com.haina.beluga.domain.UserProfileExt"
+            />
+
+        </set>
+
         <property
             name="remark"
                     type="java.lang.String"

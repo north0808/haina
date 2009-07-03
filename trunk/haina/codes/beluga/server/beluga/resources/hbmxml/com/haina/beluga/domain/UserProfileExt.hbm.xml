@@ -9,8 +9,8 @@
 >
 
     <class
-            name="com.haina.beluga.domain.ContactTag"
-            table="ContactTag"
+            name="com.haina.beluga.domain.UserProfileExt"
+            table="UserProfileExt"
             optimistic-lock="version"
     >
 
@@ -45,53 +45,29 @@
         />
 
         <property
-            name="name"
-                    type="java.lang.String"
-                    column="name"
-                length="64"
-                not-null="true"
-        >
-
-        </property>
-
-        <property
-            name="logo"
-                    type="java.lang.String"
-                    column="logo"
-                length="128"
-                not-null="true"
-        >
-
-        </property>
-
-        <property
-            name="createTime"
-                    type="java.util.Date"
+            name="commKey"
+                    type="integer"
                 not-null="true"
         >
 
             <column
-                name="createTime" 
-                sql-type="timestamp"
+                name="commKey" 
+                sql-type="smallint"
             />
 
         </property>
 
         <property
-            name="tagOrder"
-                    type="java.lang.Integer"
-                    column="tagOrder"
+            name="commValue"
+                    type="string"
+                length="128"
                 not-null="true"
         >
 
-        </property>
-
-        <property
-            name="deleteFlag"
-                    type="java.lang.Boolean"
-                    column="deleteFlag"
-                not-null="true"
-        >
+            <column
+                name="commValue" 
+                sql-type="varchar(256)"
+            />
 
         </property>
 
@@ -106,7 +82,7 @@
         >
 
             <column
-                name="createUser" 
+                name="userId" 
                 sql-type="char(32)"
             />
 
@@ -114,9 +90,9 @@
 
         <property
             name="remark"
-                    type="java.lang.String"
+                    type="string"
                     column="remark"
-                length="2000"
+                length="1000"
         >
 
         </property>

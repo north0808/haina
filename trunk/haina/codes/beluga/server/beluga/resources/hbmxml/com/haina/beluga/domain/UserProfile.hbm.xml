@@ -95,7 +95,7 @@
 
             <column
                 name="brithday" 
-                sql-type="timestamp"
+                sql-type="date"
             />
 
         </property>
@@ -112,7 +112,7 @@
         <property
             name="signature"
                     type="string"
-                    column="url"
+                    column="signature"
                 length="128"
         >
 
@@ -183,16 +183,15 @@
 
         <many-to-one
             name="contactUser"
-                not-null="true"
+                    class="com.haina.beluga.domain.ContactUser"
+                unique="true"
                 cascade="save-update"
-                outer-join="true"
-                insert="true"
-                update="false"
-                lazy="false"
         >
 
             <column
                 name="userId" 
+                not-null="true"
+                sql-type="char(32)"
             />
 
         </many-to-one>
