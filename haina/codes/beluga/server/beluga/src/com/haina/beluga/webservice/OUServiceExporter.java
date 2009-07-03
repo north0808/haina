@@ -40,6 +40,7 @@ public class OUServiceExporter implements HttpRequestHandler,InitializingBean {
 			HttpServletResponse res) throws ServletException, IOException {
 		req.setCharacterEncoding("UTF-8");
 		res.setCharacterEncoding("UTF-8");
+		res.setContentType("text/html;charset=UTF-8");
 		if (!"POST".equals(req.getMethod())) {
 		  res.setStatus(500);
 	      PrintWriter out = res.getWriter();
