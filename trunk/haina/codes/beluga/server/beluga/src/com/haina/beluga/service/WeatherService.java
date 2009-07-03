@@ -53,28 +53,7 @@ public class WeatherService extends BaseSerivce<IWeatherDao,Weather,String> impl
 		logger.info("loadWeatherDatasByApiSize:"+codes.length);
 		int i = 0;
 		for(String cityCode:codes){
-			try {
-				ApiForecastData[] forecastDatas = weatherBugWebServicesSoap.getForecastByCityCode(cityCode, UnitType.Metric, ACode);
-				for(ApiForecastData afd:forecastDatas){
-					Weather weather = new Weather();
-					weather.setDate(afd.getTitle());
-					weather.setHigh(Integer.valueOf(afd.getTempHigh()));
-					weather.setLow(Integer.valueOf(afd.getTempLow()));
-					weather.setWeatherCityCode(cityCode);
-					weather.setWeatherType(afd.getDescription());
-					weather.setWind(getWindByStr(afd.getPrediction()));
-					weather.setIcon(getIcon(afd.getImage()));
-					weather.setNight(afd.isIsNight());
-					weather.setIssuetime(MfTime.toNow());
-					//weather.setVersion((long)1);
-					weatherList.add(weather);
-//					getBaseDao().create(weather);
-				}
-//				break;
-			} catch (RemoteException e) {
-				// TODO Auto-generated catch block
-				logger.error(e.getMessage());
-			}
+			loadWDbyCityCode(cityCode,weatherList,0);
 			logger.info(cityCode+":in "+i++);
 		}
 		getBaseDao().saveAll(weatherList);
@@ -131,6 +110,33 @@ public class WeatherService extends BaseSerivce<IWeatherDao,Weather,String> impl
 	}
 	private String getIcon(String str){
 		return str.split("/")[6];
+	}
+	private void loadWDbyCityCode(String cityCode, List<Weather> weatherList,int no){
+		try {
+			ApiForecastData[] forecastDatas = weatherBugWebServicesSoap.getForecastByCityCode(cityCode, UnitType.Metric, ACode);
+			for(ApiForecastData afd:forecastDatas){
+				Weather weather = new Weather();
+				weather.setDate(afd.getTitle());
+				weather.setHigh(Integer.valueOf(afd.getTempHigh()));
+				weather.setLow(Integer.valueOf(afd.getTempLow()));
+				weather.setWeatherCityCode(cityCode);
+				weather.setWeatherType(afd.getDescription());
+				weather.setWind(getWindByStr(afd.getPrediction()));
+				weather.setIcon(getIcon(afd.getImage()));
+				weather.setNight(afd.isIsNight());
+				weather.setIssuetime(MfTime.toNow());
+				//weather.setVersion((long)1);
+				weatherList.add(weather);
+//				getBaseDao().create(weather);
+			}
+//			break;
+		} catch (RemoteException e) {
+			logger.error(e.getMessage());
+			if(no < 3){
+				loadWDbyCityCode(cityCode,weatherList,no++);
+				logger.info(cityCode+":reload... "+no);
+			}
+		}
 	}
 	
 }
