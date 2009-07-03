@@ -34,6 +34,9 @@ public class ContactUser extends VersionalModel {
 	
 	private String lastLoginIp;
 	
+	/*是否有效。*/
+	private Boolean validFlag=Boolean.TRUE;
+	
 	/*用户的联系人标签。*/
 	private Set<ContactTag> contactTags;
 	
@@ -113,6 +116,18 @@ public class ContactUser extends VersionalModel {
 		this.lastLoginIp = lastLoginIp;
 	}
 
+	/**
+	 * @hibernate.property column="validFlag" type="java.lang.Boolean" not-null="true"
+	 * @return
+	 */
+	public Boolean getValidFlag() {
+		return validFlag;
+	}
+
+	public void setValidFlag(Boolean validFlag) {
+		this.validFlag = validFlag;
+	}
+	
 	/**
 	 * @hibernate.version
 	 * @hibernate.column name="version" type="long"
@@ -215,5 +230,4 @@ public class ContactUser extends VersionalModel {
 						"registerTime", this.registerTime).append("id",
 						this.getId()).toString();
 	}
-
 }
