@@ -129,7 +129,7 @@ public class WeatherService extends BaseSerivce<IWeatherDao,Weather,String> impl
 				weatherList.add(weather);
 //				getBaseDao().create(weather);
 			}
-//			break;
+//			break;57065
 		} catch (RemoteException e) {
 			logger.error(e.getMessage());
 			if(no < 3){
