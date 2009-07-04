@@ -51,5 +51,7 @@ public interface IPubService extends Serializable {
 	 */
 	public HessianRemoteReturning getOrUpdatePD(int updateFlg);
 	
+	public HessianRemoteReturning testCN(String cn);
+	
 
 }

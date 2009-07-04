@@ -38,6 +38,13 @@ public class PubService  implements IPubService {
 	public HessianRemoteReturning getOrUpdatePD(int updateFlg) {
 		return phoneDistrictService.getOrUpdatePhoneDistricts(updateFlg);
 	}
+	@Override
+	public HessianRemoteReturning testCN(String cn) {
+		System.out.println(cn);
+		HessianRemoteReturning hr = new HessianRemoteReturning();
+		hr.setValue("好");
+		return hr;
+	}
 	
-
+	
 }
