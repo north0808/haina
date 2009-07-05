@@ -12,8 +12,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
-
 import com.caucho.hessian.micro.MicroHessianInput;
 import com.caucho.hessian.micro.MicroHessianOutput;
 import com.haina.beluga.util.SpringContext;
@@ -59,8 +57,8 @@ public class HelloServlet extends HttpServlet {
 
 	public void testSpring() {
 		SpringContext springContext = SpringContext.getInstance();
-		DriverManagerDataSource dataSource = (DriverManagerDataSource) springContext
-				.getBean("dataSource");
-		System.out.println(dataSource.getUrl());
+		IPubService pubService = (IPubService) springContext
+				.getBean("pubService");
+		System.out.println(pubService.getClass());
 	}
 }
