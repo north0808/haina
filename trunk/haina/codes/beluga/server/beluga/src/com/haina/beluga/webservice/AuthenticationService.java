@@ -1,10 +1,13 @@
 package com.haina.beluga.webservice;
 
-import java.io.Serializable;
-
-public class AuthenticationService implements Serializable{
-
-	private static final long serialVersionUID = -2917948711741108371L;
+/**
+ * 认证业务处理接口实现类。<br/>
+ * @author huangyongqiang
+ * @version 1.0
+ * @since 1.0
+ * @date 2009-07-05
+ */
+public class AuthenticationService implements IAuthenticationService {
 	
 	private String proxyLoginUrl;
 	
