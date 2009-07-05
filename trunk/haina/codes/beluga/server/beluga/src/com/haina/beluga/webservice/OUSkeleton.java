@@ -6,7 +6,6 @@ import java.lang.reflect.Method;
 
 import org.apache.log4j.Logger;
 
-import com.caucho.hessian.micro.MicroHessianInput;
 import com.caucho.hessian.micro.MicroHessianOutput;
 import com.caucho.services.server.AbstractSkeleton;
 
@@ -72,7 +71,7 @@ public class OUSkeleton extends AbstractSkeleton {
 			logger.info(_method.getName() + ":" + (t2 - t1));
 //			System.out.println(rs);
 	    } catch (Throwable e) {
-	    	logger.error(e);
+	    	logger.error(e.getMessage());
 	      return;
 	    }
    

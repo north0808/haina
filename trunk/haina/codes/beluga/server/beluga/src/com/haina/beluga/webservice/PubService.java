@@ -40,9 +40,8 @@ public class PubService  implements IPubService {
 	}
 	@Override
 	public HessianRemoteReturning testCN(String cn) {
-		System.out.println(cn);
 		HessianRemoteReturning hr = new HessianRemoteReturning();
-		hr.setValue("好");
+		hr.setValue("好"+cn);
 		return hr;
 	}
 	
