@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.web.HttpRequestHandler;
 
-import com.caucho.hessian.micro.MicroHessianOutput;
 
 public class OUServiceExporter implements HttpRequestHandler,InitializingBean {
 
