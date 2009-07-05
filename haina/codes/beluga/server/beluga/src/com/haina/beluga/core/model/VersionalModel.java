@@ -18,7 +18,7 @@ public abstract class VersionalModel extends BaseModel {
 	
 
 	private void setVersion(long version) {
-		this.logger.warn("version column is used for database lock only,it can not be set.");
+//		this.logger.warn("version column is used for database lock only,it can not be set.");
 	}
 
 }
