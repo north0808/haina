@@ -37,5 +37,6 @@
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/rome-1.0.jar"/>
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/jdom.jar"/>
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/postgresql-8.3-604.jdbc4.jar"/>
+	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/mail.jar"/>
 	<classpathentry kind="output" path="WebRoot/WEB-INF/classes"/>
 </classpath>
