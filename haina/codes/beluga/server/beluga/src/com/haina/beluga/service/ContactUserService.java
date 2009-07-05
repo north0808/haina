@@ -49,6 +49,13 @@ public class ContactUserService extends BaseSerivce<IContactUserDao,ContactUser,
 		contactUser.setMobile(mobile);
 		contactUser.setRegisterTime(new Date());
 		contactUser.setValidFlag(Boolean.TRUE);
+		
+		UserProfile userProfile=new UserProfile();
+		userProfile.setTelPref(mobile);
+		
+		contactUser.setUserProfile(userProfile);
+		userProfile.setContactUser(contactUser);
+		
 		contactUserDao.saveOrUpdate(contactUser);
 		return contactUser;
 	}
