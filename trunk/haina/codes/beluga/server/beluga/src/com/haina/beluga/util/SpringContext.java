@@ -8,7 +8,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ResourceBundleMessageSource;
+//import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Component;
 //import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -32,7 +32,7 @@ public class SpringContext implements InitializingBean {
 	@Resource
 	private ApplicationContext context;
 	
-	private ResourceBundleMessageSource messageSource;
+	//private ResourceBundleMessageSource messageSource;
 
 	private SpringContext() {
 		//this.appContext = new ClassPathXmlApplicationContext("configs/beluga-application.xml");
@@ -45,7 +45,7 @@ public class SpringContext implements InitializingBean {
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		instance=this;
-		this.messageSource=(ResourceBundleMessageSource)this.getBean("messageSource");
+		//this.messageSource=(ResourceBundleMessageSource)this.getBean("messageSource");
 		LOG.info(">>>>>>>>>>>>>>>>initialize SpringContext successfully>>>>>>>>>>>>>>>>>>>");
 		//LOG.info(MessageFormat.format(">>>>>>>>>>>>>>>>spring context {0}>>>>>>>>>>>>>>>>>>>", context));
 	}
