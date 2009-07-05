@@ -3,6 +3,7 @@ package com.haina.beluga.webservice;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.Locale;
 
 import org.apache.log4j.Logger;
 
@@ -41,7 +42,7 @@ public class OUSkeleton extends AbstractSkeleton {
              
 	 }
 	@SuppressWarnings("unchecked")
-	public void invoke(String method, MicroHessianInput in, MicroHessianOutput out) throws IOException{
+	public void invoke(String method, MicroHessianInput in, MicroHessianOutput out, Locale locale) throws IOException{
     
 	    Method _method = getMothodByClass(intface,method);
 	
