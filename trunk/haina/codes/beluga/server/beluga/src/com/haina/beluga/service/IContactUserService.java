@@ -1,10 +1,13 @@
 package com.haina.beluga.service;
 
 import java.util.List;
+import java.util.Set;
 
 import com.haina.beluga.core.service.IBaseSerivce;
 import com.haina.beluga.dao.IContactUserDao;
 import com.haina.beluga.domain.ContactUser;
+import com.haina.beluga.domain.UserProfile;
+import com.haina.beluga.domain.UserProfileExt;
 
 /**
  * 联系人用户业务处理接口。<br/>
@@ -62,6 +65,34 @@ public interface IContactUserService extends IBaseSerivce<IContactUserDao,Contac
 	 * @return
 	 */
 	public List<ContactUser> getInvalidContactUser(int first, int maxSize);
+	
+	/**
+	 * 通过登录名得到用户详细信息。<br/>
+	 * @param loginName
+	 * @return
+	 */
+	public UserProfile getUserProfileByLoginName(String loginName);
+	
+	/**
+	 * 通过登录名得到用户详细扩展信息。<br/>
+	 * @param loginName
+	 * @return
+	 */
+	public Set<UserProfileExt> getUserProfileExtByLoginName(String loginName);
+	
+	/**
+	 * 通过用户Id得到用户详细信息。<br/>
+	 * @param id
+	 * @return
+	 */
+	public UserProfile getUserProfileById(String id);
+	
+	/**
+	 * 通过用户Id得到用户详细扩展信息。<br/>
+	 * @param id
+	 * @return
+	 */
+	public Set<UserProfileExt> getUserProfileExtById(String id);
 	
 	
 }
