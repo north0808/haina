@@ -42,7 +42,7 @@ public class OUSkeleton extends AbstractSkeleton {
              
 	 }
 	@SuppressWarnings("unchecked")
-	public void invoke(String method, MicroHessianInput in, MicroHessianOutput out, Locale locale) throws IOException{
+	public void invoke(String method, MicroHessianInput in, MicroHessianOutput out) throws IOException{
     
 	    Method _method = getMothodByClass(intface,method);
 	
