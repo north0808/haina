@@ -53,7 +53,7 @@ public class OUServiceExporter implements HttpRequestHandler,InitializingBean {
 	  // hessianInput.readString();
 	   MicroHessianOutput hessianOutput = new MicroHessianOutput(os);
 	   
-	   uuSkeleton.invoke(_method, hessianInput, hessianOutput);
+	   uuSkeleton.invoke(_method, hessianInput, hessianOutput, req.getLocale());
 		
 	}
 
