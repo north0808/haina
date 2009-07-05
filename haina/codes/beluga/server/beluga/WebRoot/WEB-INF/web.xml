@@ -67,9 +67,7 @@
 	<!-- test-->
 	<servlet>
 		<servlet-name>hello</servlet-name>
-		<servlet-class>
-			com.haina.beluga.webservice.HelloServlet
-		</servlet-class>
+		<servlet-class>com.haina.beluga.webservice.HelloServlet</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
