@@ -8,161 +8,192 @@
            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
- 
- 
- <context:component-scan base-package="com.haina.beluga">    
- </context:component-scan> 
 
-<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-     <property name="driverClassName">
-    	<value>org.logicalcobwebs.proxool.ProxoolDriver</value>
-    </property>
-    <property name="url">
-    	<value>proxool.haina_beluga</value>
-    </property>
-   </bean>
 
-<!--Hibernate的连接,事务管理等由sessionFactroy开始-->
-
-<bean id="sessionFactory"
-			class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
-		
-	<property name="dataSource">
-		<ref local="dataSource" />
-	</property>
-	<property name="mappingDirectoryLocations">
-		<list>
-		<value>classpath:hbmxml/com/haina/beluga/</value>
-		<!-- add your application hbm.xml -->
-		</list>
-	</property>
-	<property name="hibernateProperties">
-		<props>
-			<prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
-			<prop key="hibernate.show_sql">true</prop>
-			<prop key="hibernate.jdbc.fetch_size">100</prop>
-        	<prop key="hibernate.jdbc.batch_size">50</prop>
-			<prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheProvider</prop>
-        	<prop key="hibernate.cache.use_query_cache">true</prop>
-		</props>
-	</property> 
+	<context:component-scan base-package="com.haina.beluga">
+	</context:component-scan>
 	
-</bean>
+	<bean id="authenticationService"
+		class="com.haina.beluga.webservice.AuthenticationService">
+		<property name="proxyLoginUrl">
+			<value>http://localhost:8080/shield/r/s?call=proxyLogin</value>
+		</property>
+		<property name="proxyLogoutUrl">
+			<value>http://localhost:8080/shield/r/s?call=proxyLogout</value>
+		</property>
+		<property name="proxyRegisterUrl">
+			<value>http://localhost:8080/shield/r/s?call=proxyRegister</value>
+		</property>
+		<property name="loginUrl">
+			<value>http://localhost:8080/shield/r/s?call=login</value>
+		</property>
+		<property name="loginoutUrl">
+			<value>http://localhost:8080/shield/r/s?call=logout</value>
+		</property>
+		<property name="registerUrl">
+			<value>http://localhost:8080/shield/r/s?call=register</value>
+		</property>
+	</bean>
 
- <!-- enable the configuration of transactional behavior based on annotations -->
-  <tx:annotation-driven transaction-manager="txManager"/>
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName">
+			<value>org.logicalcobwebs.proxool.ProxoolDriver</value>
+		</property>
+		<property name="url">
+			<value>proxool.haina_beluga</value>
+		</property>
+	</bean>
 
-  <!-- a PlatformTransactionManager is still required -->
-  <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-  <!-- (this dependency is defined somewhere else) -->
-  <property name="dataSource" ref="dataSource"/>
-  </bean>
+	<!--Hibernate的连接,事务管理等由sessionFactroy开始-->
 
-   
-<!--以下是利用AspectJ AOP进行拦截,以下是针对以上的拦截进行事务配置-->
-<aop:config>
-				<!-- Core框架事务拦截 --> 
-	 <aop:pointcut id="serviceOperation"
-          expression="execution(* com.haina.beluga.core.service.*.*(..))"/>
-	 <aop:advisor pointcut-ref="serviceOperation" 
-				advice-ref="belugaAdvice"/>
-				<!-- security安全事务拦截 
-	<aop:advisor pointcut="execution(* com.soar.security.service.SecurityManager.*(..))" 
-	  			advice-ref="belugaAdvice"/>  
-	   应用系统(App)事务拦截 -->
-	<aop:advisor pointcut="execution(* com.haina.beluga.service.*.*(..))" 
-				advice-ref="belugaAdvice"/>
-	  </aop:config>
-	     	
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+
+		<property name="dataSource">
+			<ref local="dataSource" />
+		</property>
+		<property name="mappingDirectoryLocations">
+			<list>
+				<value>classpath:hbmxml/com/haina/beluga/</value>
+				<!-- add your application hbm.xml -->
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.jdbc.fetch_size">100</prop>
+				<prop key="hibernate.jdbc.batch_size">50</prop>
+				<prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheProvider</prop>
+				<prop key="hibernate.cache.use_query_cache">true</prop>
+			</props>
+		</property>
+
+	</bean>
+
+	<!-- enable the configuration of transactional behavior based on annotations -->
+	<tx:annotation-driven transaction-manager="txManager" />
+
+	<!-- a PlatformTransactionManager is still required -->
+	<bean id="txManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<!-- (this dependency is defined somewhere else) -->
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+
+	<!--以下是利用AspectJ AOP进行拦截,以下是针对以上的拦截进行事务配置-->
+	<aop:config>
+		<!-- Core框架事务拦截 -->
+		<aop:pointcut id="serviceOperation"
+			expression="execution(* com.haina.beluga.core.service.*.*(..))" />
+		<aop:advisor pointcut-ref="serviceOperation"
+			advice-ref="belugaAdvice" />
+		<!-- security安全事务拦截 
+			<aop:advisor pointcut="execution(* com.soar.security.service.SecurityManager.*(..))" 
+			advice-ref="belugaAdvice"/>  
+			应用系统(App)事务拦截 -->
+		<aop:advisor
+			pointcut="execution(* com.haina.beluga.service.*.*(..))"
+			advice-ref="belugaAdvice" />
+	</aop:config>
+
 	<!--基本事务定义,使用transactionManager作事务管理,默认的设置请参考Spring文档事务一章. -->
-	     <tx:advice id="belugaAdvice" transaction-manager="txManager">   
-	       <tx:attributes>       
-	         <tx:method name="save*" propagation="REQUIRED"/>
-	          <tx:method name="loadWeather*" propagation="REQUIRED" isolation="READ_COMMITTED"/> 
-	         <tx:method name="creat*" propagation="REQUIRED"/>     
-	         <tx:method name="remove*" propagation="REQUIRED"/> 
-	         <tx:method name="del*" propagation="REQUIRED"/> 
-	         <tx:method name="up*" propagation="REQUIRED"/>  
-	         <tx:method name="*" read-only="true"/>  
-	       </tx:attributes>
-	     </tx:advice> 
+	<tx:advice id="belugaAdvice" transaction-manager="txManager">
+		<tx:attributes>
+			<tx:method name="save*" propagation="REQUIRED" />
+			<tx:method name="loadWeather*" propagation="REQUIRED"
+				isolation="READ_COMMITTED" />
+			<tx:method name="creat*" propagation="REQUIRED" />
+			<tx:method name="remove*" propagation="REQUIRED" />
+			<tx:method name="del*" propagation="REQUIRED" />
+			<tx:method name="up*" propagation="REQUIRED" />
+			<tx:method name="*" read-only="true" />
+		</tx:attributes>
+	</tx:advice>
 
 
-<!-- 定义要调用的任务的实现类 
+	<!-- 定义要调用的任务的实现类 
+		
+		
+		
+		<bean id="weatherQuartz" class="com.haina.beluga.service.WeatherService">
+		
+		</bean>
+	-->
+	<!--调用实现类里面的某个方法 -->
 
- 
+	<bean id="loadWeatherDatasByApi"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="weatherService" />
+		</property>
+		<property name="targetMethod">
+			<value>loadWeatherDatasByApi</value>
+		</property>
+	</bean>
 
-<bean id="weatherQuartz" class="com.haina.beluga.service.WeatherService">
+	<!--定义调用任务的时间 -->
+	<bean id="loadWeatherDatasByApiTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail">
+			<ref bean="loadWeatherDatasByApi" />
+		</property>
+		<property name="cronExpression">
+			<value>0 0 0/2 ? * *</value>
+		</property>
+	</bean>
 
- </bean>
--->
-<!--调用实现类里面的某个方法 -->
 
-<bean id="loadWeatherDatasByApi"   class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-     <property name="targetObject">
-       <ref bean="weatherService"/>
-     </property>
-     <property name="targetMethod">
-       <value>loadWeatherDatasByApi</value>
-     </property>
-   </bean>
 
-<!--定义调用任务的时间 -->
-   <bean id="loadWeatherDatasByApiTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
-     <property name="jobDetail">
-       <ref bean="loadWeatherDatasByApi"/>
-     </property>
-     <property name="cronExpression">
-       <value>0 0 0/2 ? * *</value>
-     </property>
-   </bean>
+	<!--管理触发器 -->
 
- 
+	<bean
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
 
-<!--管理触发器 -->
+				<ref local="loadWeatherDatasByApiTrigger" />
+			</list>
+		</property>
+	</bean>
 
-<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
-  <property name="triggers">
-   <list>
+	<!--Hessian调用 -->
+	<bean name="/pub"
+		class="com.haina.beluga.webservice.OUServiceExporter">
 
-      <ref local="loadWeatherDatasByApiTrigger"/>          
-   </list>
-  </property>
-   </bean>  
-   
-<!--Hessian调用 -->  
-    <bean name="/pub" class="com.haina.beluga.webservice.OUServiceExporter">  
-   
-        <property name="method">  
-			<value>call</value>   
-        </property>  
-   
-        <property name="serverAPI">  
-            <value>com.haina.beluga.webservice.IPubService</value>  
-        </property> 
-        
-         <property name="serverImpl">  
-            <ref bean="pubService"/>
-        </property>   
-   
-     </bean>   
-      <bean name="/pri" class="com.haina.beluga.webservice.OUServiceExporter">  
-   
-        <property name="method">  
-			<value>call</value>   
-        </property>  
-   
-        <property name="serverAPI">  
-            <value>com.haina.beluga.webservice.IPriService</value>  
-        </property> 
-        
-         <property name="serverImpl">  
-            <ref bean="priService"/>
-        </property>   
-   
-     </bean>    
+		<property name="method">
+			<value>call</value>
+		</property>
+
+		<property name="serverAPI">
+			<value>com.haina.beluga.webservice.IPubService</value>
+		</property>
+
+		<property name="serverImpl">
+			<ref bean="pubService" />
+		</property>
+
+	</bean>
+	<bean name="/pri"
+		class="com.haina.beluga.webservice.OUServiceExporter">
+
+		<property name="method">
+			<value>call</value>
+		</property>
+
+		<property name="serverAPI">
+			<value>com.haina.beluga.webservice.IPriService</value>
+		</property>
+
+		<property name="serverImpl">
+			<ref bean="priService" />
+		</property>
+
+	</bean>
 </beans>
-   
-   
 
-   
+
+
+
