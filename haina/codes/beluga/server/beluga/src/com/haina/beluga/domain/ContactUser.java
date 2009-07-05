@@ -24,7 +24,7 @@ public class ContactUser extends VersionalModel {
 
 	private static final long serialVersionUID = 6223217962960596222L;
 
-	private String logingName;
+	private String loginName;
 	
 	private Date registerTime;
 	
@@ -60,14 +60,14 @@ public class ContactUser extends VersionalModel {
 	}
 
 	/**
-	 * @hibernate.property column="logingName" length="64" not-null="true" type = "java.lang.String" unique = "true"
+	 * @hibernate.property column="loginName" length="64" not-null="true" type = "java.lang.String" unique = "true"
 	 */
-	public String getLogingName() {
-		return logingName;
+	public String getLoginName() {
+		return loginName;
 	}
 
-	public void setLogingName(String logingName) {
-		this.logingName = logingName;
+	public void setLoginName(String loginName) {
+		this.loginName = loginName;
 	}
 
 	/**
@@ -202,7 +202,7 @@ public class ContactUser extends VersionalModel {
 		return new EqualsBuilder().append(
 				this.lastLoginIp, rhs.lastLoginIp).append(this.lastLoginTime,
 				rhs.lastLoginTime).append(this.registerTime, rhs.registerTime)
-				.append(this.logingName, rhs.logingName).append(this.mobile, rhs.mobile)
+				.append(this.loginName, rhs.loginName).append(this.mobile, rhs.mobile)
 				.append(this.id, rhs.id).isEquals()
 				;
 	}
@@ -214,7 +214,7 @@ public class ContactUser extends VersionalModel {
 	public int hashCode() {
 		return new HashCodeBuilder(1134122519, -1554226803).append(this.lastLoginIp).append(
 				this.lastLoginTime).append(this.registerTime).append(
-				this.logingName).append(this.mobile).append(this.id)
+				this.loginName).append(this.mobile).append(this.id)
 				.toHashCode();
 	}
 
@@ -224,7 +224,7 @@ public class ContactUser extends VersionalModel {
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this)
-				.append("logingName", this.logingName).append("mobile", this.mobile).append(
+				.append("logingName", this.loginName).append("mobile", this.mobile).append(
 						"lastLoginIp", this.lastLoginIp).append(
 						"lastLoginTime", this.lastLoginTime).append(
 						"registerTime", this.registerTime).append("id",
