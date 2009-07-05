@@ -3,12 +3,14 @@ package com.haina.beluga.util;
 import java.util.Locale;
 
 import javax.annotation.Resource;
+import javax.sql.DataSource;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 //import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.haina.beluga.core.util.StringUtils;
