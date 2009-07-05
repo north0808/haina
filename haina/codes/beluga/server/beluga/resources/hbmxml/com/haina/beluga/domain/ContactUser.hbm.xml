@@ -45,9 +45,9 @@
         />
 
         <property
-            name="logingName"
+            name="loginName"
                     type="java.lang.String"
-                    column="logingName"
+                    column="loginName"
                 length="64"
                 not-null="true"
                 unique="true"
