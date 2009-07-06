@@ -268,9 +268,10 @@ public class MicroHessianOutput {
       int len = value.getBytes("utf-8").length;
 
       os.write('S');
-      os.write(len << 8);
-      os.write(len);
-      System.out.println("len:"+len);
+//      os.write(len >> 8);
+//      os.write(len);
+      writeInt(len);
+//      System.out.println("len:"+len);
       printString(value);
     }
   }
@@ -520,7 +521,7 @@ public class MicroHessianOutput {
   public void printString(String v)
     throws IOException
   {
-    printString(v, 0, v.getBytes("utf-8").length-8);
+    printString(v, 0, v.length());
   }
   
   /**
@@ -536,17 +537,20 @@ public class MicroHessianOutput {
 
       if (ch < 0x80){
         os.write(ch);
-        System.out.println(ch);
+//        System.out.print(ch);
       }
       else if (ch < 0x800) {
         os.write(0xc0 + ((ch >> 6) & 0x1f));
         os.write(0x80 + (ch & 0x3f));
+//        System.out.print(ch);
       }
       else {
-        os.write(0xe0 + ((ch >> 12) & 0xf));
-        os.write(0x80 + ((ch >> 6) & 0x3f));
-        os.write(0x80 + (ch & 0x3f));
+    	  os.write(0xe0 + ((ch >> 12) & 0xf));
+    	  os.write(0x80 + ((ch >> 6) & 0x3f));
+    	  os.write(0x80 + (ch & 0x3f));
+//        System.out.print(ch);
       }
     }
+//    System.out.println();
   }
 }
