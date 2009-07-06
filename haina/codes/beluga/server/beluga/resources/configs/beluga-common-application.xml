@@ -27,7 +27,7 @@
 		<property name="loginUrl">
 			<value>http://localhost:8080/shield/r/s?call=login</value>
 		</property>
-		<property name="loginoutUrl">
+		<property name="logoutUrl">
 			<value>http://localhost:8080/shield/r/s?call=logout</value>
 		</property>
 		<property name="registerUrl">
