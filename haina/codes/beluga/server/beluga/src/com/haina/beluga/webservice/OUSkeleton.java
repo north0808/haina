@@ -66,12 +66,12 @@ public class OUSkeleton extends AbstractSkeleton {
 			long t2 = System.currentTimeMillis();
 			String rs=new JSONSerializer().deepSerialize(result);
 			out.writeString(rs);
-//			logger.info("JSON:"+rs);
+			logger.info("JSON:"+rs);
 			logger.info(_method.getName() + ":" + (t2 - t1));
 	    } catch (Throwable e) {
 	    	logger.error(e.getMessage());
 	      return;
 	    }
-   
+   //JSONSerializer 734 可以去掉Json的key,以便节省流量,456可以变null为空格，亦可以减少流量
   }
 }
