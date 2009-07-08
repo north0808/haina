@@ -51,3 +51,7 @@ LIBRARY		libsqlite3.lib
 DEBUGGABLE_UDEBONLY
 #endif
 
+SOURCEPATH ..\src\contact
+SOURCE CGroupDb.cpp CGroupIterator.cpp CTagIterator.cpp CTagDb.cpp
+SOURCEPATH ..\src\config
+SOURCE CConfigDb.cpp CConfigIterator.cpp

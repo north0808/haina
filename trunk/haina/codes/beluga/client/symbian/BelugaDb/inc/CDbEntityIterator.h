@@ -32,10 +32,12 @@ public:
     virtual gint32 Current(CDbEntity ** pEntity) = 0;
     virtual gint32 Next(gboolean * pSuccess) = 0;
     virtual gint32 Prev(gboolean * pSuccess) = 0;
-    
+
+private:
+	CppSQLite3DB 	* m_dbBeluga;
+	
 protected:
 	CEntityDb 		* m_pEntityDb;
-	CppSQLite3DB 	* m_dbBeluga;
 	CppSQLite3Query * m_dbQuery;
 };
 

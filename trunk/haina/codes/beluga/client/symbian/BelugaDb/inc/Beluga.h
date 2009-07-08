@@ -31,12 +31,13 @@ enum EModule
 enum ECode
 	{
 	ECode_No_Error = 0,
-	ECode_Invalid_Param = 1,
-	ECode_Not_Exist = 2,
-	ECode_No_Memory = 3,
-	ECode_Insert_Failed = 4,
-	ECode_Update_Failed = 5,
-	
+	ECode_Not_Implemented = 1,
+	ECode_Invalid_Param = 2,
+	ECode_Not_Exist = 3,
+	ECode_No_Memory = 4,
+	ECode_Insert_Failed = 5,
+	ECode_Update_Failed = 6,
+	ECode_End_Of_Row = 7
 	};
 
 #define	ERROR(side, module, code)	((side << 24)|(module << 16)|(code))

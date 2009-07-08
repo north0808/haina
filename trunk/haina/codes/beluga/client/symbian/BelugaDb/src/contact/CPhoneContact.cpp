@@ -155,10 +155,12 @@ EXPORT_C gint32 CContactDb::GetAllIMs(GHashTable ** hIMs)
 
 EXPORT_C gint32 CContactDb::SetPhones(GHashTable * hPhones)
 	{
-	if (NULL == m_hCommInfoHashTable)
+/*	if (NULL == m_hCommInfoHashTable)
 		{
 		GetAllCommInfo();
-		}
+		} */
+	if (NULL == m_hCommInfoHashTable)
+		m_hCommInfoHashTable = g_hash_table_new_full(g_int_hash, g_int_equal, NULL, g_free);
 	
 	g_hash_table_foreach(*hPhones, fill_hashtable, m_hCommInfoHashTable);
 	return 0;
@@ -166,21 +168,25 @@ EXPORT_C gint32 CContactDb::SetPhones(GHashTable * hPhones)
 
 EXPORT_C gint32 CContactDb::SetEmails(GHashTable * hEmails)
 	{
+	/*	if (NULL == m_hCommInfoHashTable)
+			{
+			GetAllCommInfo();
+			} */
 	if (NULL == m_hCommInfoHashTable)
-		{
-		GetAllCommInfo();
-		}	
-	
+		m_hCommInfoHashTable = g_hash_table_new_full(g_int_hash, g_int_equal, NULL, g_free);
+			
 	g_hash_table_foreach(*hEmails, fill_hashtable, m_hCommInfoHashTable);
 	return 0;
 	}
 
 EXPORT_C gint32 CContactDb::SetAddresses(GPtrArray * hAddresses)
 	{
-	if (NULL == m_aAddressArray)
+/*	if (NULL == m_aAddressArray)
 		{
 		GetAllCommInfo();
-		}	
+		}*/
+	if (NULL == m_aAddressArray)
+		m_aAddressArray = g_ptr_array_new();
 	
 	for (int i=0; i<hAddresses->len; i++)
 		for (int j=0; j<m_aAddressArray->len; j++)
@@ -205,10 +211,12 @@ EXPORT_C gint32 CContactDb::SetAddresses(GPtrArray * hAddresses)
 
 EXPORT_C gint32 CContactDb::SetIMs(GHashTable * hIMs)
 	{
+	/*	if (NULL == m_hCommInfoHashTable)
+			{
+			GetAllCommInfo();
+			} */
 	if (NULL == m_hCommInfoHashTable)
-		{
-		GetAllCommInfo();
-		}	
+		m_hCommInfoHashTable = g_hash_table_new_full(g_int_hash, g_int_equal, NULL, g_free);
 	
 	g_hash_table_foreach(*hIMs, fill_hashtable, m_hCommInfoHashTable);
 	return 0;
@@ -306,7 +314,7 @@ EXPORT_C gint32 CPhoneContact::GetIM(ECommType eIMType, gchar ** sIM)
 EXPORT_C gint32 CPhoneContact::SetPhone(ECommType ePhoneType, gchar * sPhone)
 	{
 	if (NULL == m_hCommInfoHashTable)
-		g_hash_table_new_full(g_int_hash, g_int_equal, NULL, g_free);
+		m_hCommInfoHashTable = g_hash_table_new_full(g_int_hash, g_int_equal, NULL, g_free);
 	
 	g_hash_table_insert(m_hCommInfoHashTable, &ePhoneType, g_strdup((gchar*)sPhone));
 	return 0;
@@ -315,7 +323,7 @@ EXPORT_C gint32 CPhoneContact::SetPhone(ECommType ePhoneType, gchar * sPhone)
 EXPORT_C gint32 CPhoneContact::SetEmail(ECommType eEmailType, gchar * sEmail)
 	{
 	if (NULL == m_hCommInfoHashTable)
-		g_hash_table_new_full(g_int_hash, g_int_equal, NULL, g_free);
+		m_hCommInfoHashTable = g_hash_table_new_full(g_int_hash, g_int_equal, NULL, g_free);
 	
 	g_hash_table_insert(m_hCommInfoHashTable, &eEmailType, g_strdup((gchar*)sEmail));
 	return 0;
@@ -345,7 +353,7 @@ EXPORT_C gint32 CPhoneContact::SetAddress(ECommType eAddrType, stAddress * sAddr
 	g_stpcpy(addr->block, sAddress->block);
 	g_stpcpy(addr->street, sAddress->street);
 	g_stpcpy(addr->district, sAddress->district);
-	g_stpcpy(addr->city, sAddress->district);
+	g_stpcpy(addr->city, sAddress->city);
 	g_stpcpy(addr->state, sAddress->state);
 	g_stpcpy(addr->country, sAddress->country);
 	g_stpcpy(addr->postcode, sAddress->postcode);
@@ -359,7 +367,7 @@ EXPORT_C gint32 CPhoneContact::SetAddress(ECommType eAddrType, stAddress * sAddr
 EXPORT_C gint32 CPhoneContact::SetIM(ECommType eIMType, gchar * sIM)
 	{
 	if (NULL == m_hCommInfoHashTable)
-		g_hash_table_new_full(g_int_hash, g_int_equal, NULL, g_free);	
+		m_hCommInfoHashTable = g_hash_table_new_full(g_int_hash, g_int_equal, NULL, g_free);	
 	
 	g_hash_table_insert(m_hCommInfoHashTable, &eIMType, g_strdup((gchar*)sIM));
 	return 0;
@@ -575,19 +583,21 @@ EXPORT_C gint32 CPhoneContact::DeleteAllIMs()
 
 gint32 CPhoneContact::GetAllCommInfo()
 	{
-	if (NULL == m_hCommInfoHashTable || NULL == m_aAddressArray)
+	if (NULL == m_hCommInfoHashTable)
+		m_hCommInfoHashTable = g_hash_table_new_full(g_int_hash, g_int_equal, NULL, g_free);
+	if (NULL == m_aAddressArray)
+		m_aAddressArray = g_ptr_array_new();
+	
 		return ((CContactDb*)m_pEntityDb)->GetContactCommInfo(this);
-	else 
-		return 0;
 	}
 
-GHashTable * CPhoneContact::createHashTable()
+GHashTable * CPhoneContact::getCommInfoHashTable()
 	{
-	return g_hash_table_new_full(g_int_hash, g_int_equal, NULL, g_free);
+	return m_hCommInfoHashTable;
 	}
 
-GPtrArray * CPhoneContact::createPtrArray()
+GPtrArray * CPhoneContact::getAddressPtrArray()
 	{
-	return g_ptr_array_new();
+	return m_aAddressArray;
 	}
 

@@ -18,15 +18,16 @@ enum GroupField
     GroupField_Id = 0,
     GroupField_TagId,
     GroupField_Name,
+    GroupField_NameSpell,
     GroupField_Logo,
-    GroupField_GroupOder,
+    GroupField_GroupOrder,
     GroupField_DeleteFlag,
     GroupField_GroupType,
     GroupField_EndFlag
 };
 
 #define  GROUP_NAME_LEN			64
-#define  GROUP_LOG_LEN			256
+#define  GROUP_LOGO_LEN			256
 
 class CGroup : public CDbEntity
 {
@@ -43,7 +44,10 @@ public:
 		}
 	}
 	
-	~CGroup();
+	~CGroup()
+		{
+		
+		}
 
 private:
 	guint32 m_nFieldsIndex[GroupField_EndFlag];

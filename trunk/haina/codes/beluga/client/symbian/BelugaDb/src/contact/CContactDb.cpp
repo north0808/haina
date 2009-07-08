@@ -12,9 +12,10 @@
 #include <time.h>
 #include "CContact.h"
 #include "CPhoneContact.h"
+#include "CQQContact.h"
+#include "CMSNContact.h"
 #include "CContactDb.h"
 #include "CContactIterator.h"
-#include "CTag.h"
 
 
 static void insert_contact_ext_row(gpointer key, gpointer value, gpointer user_data)
@@ -88,26 +89,16 @@ EXPORT_C gint32 CContactDb::GetEntityById(guint32 nId, CDbEntity** ppEntity)
 	sprintf(sql, "select * from contact where cid = %d;", nId);
 	CppSQLite3Query query = m_dbBeluga.execQuery(sql);
 	
-	if (!query.numFields())
+	if (query.eof())
 		{
 		CloseDatabase();
 		return ERROR(ESide_Client, EModule_Db, ECode_Not_Exist);
 		}
 	
-	switch (query.getIntField(ContactField_Type))
-		{
-		case ContactType_Phone:
-			*ppEntity = new CPhoneContact(this);
-			break;
-		case ContactType_QQ:
-			*ppEntity = new CQQContact(this);
-			break;
-		case ContactType_MSN:
-			*ppEntity = new CMSNContact(this);
-			break;
-		default:
-			break;
-		}
+	if (ContactType_Phone == query.getIntField(ContactField_Type))
+		*ppEntity = new CPhoneContact(this);
+	else
+		*ppEntity = new CIMContact(this);
 	if (NULL == *ppEntity)
 		{
 		CloseDatabase();
@@ -115,7 +106,11 @@ EXPORT_C gint32 CContactDb::GetEntityById(guint32 nId, CDbEntity** ppEntity)
 		}
 	
 	for (int i=0; i<query.numFields(); i++)
-		(*ppEntity)->SetFieldValue(i, g_string_new(query.fieldValue(i)));
+		{
+		GString * fieldValue = g_string_new(query.fieldValue(i));
+		(*ppEntity)->SetFieldValue(i, fieldValue);
+		g_string_free(fieldValue, TRUE);
+		}
 		
 	CloseDatabase();
 	return 0;
@@ -817,7 +812,7 @@ EXPORT_C gint32 CContactDb::GetContactsTotalityByGroup(guint32 nGroupId, guint32
 	*totality = 0;
 	OpenDatabase();
 	
-	sprintf(sql, "select count(*) from contact c, r_contact_group r where r.gid = %d and c.cid = r.cid;", nGroupId);
+	sprintf(sql, "select count(cid) from r_contact_group where gid = %d;", nGroupId);
 	*totality = m_dbBeluga.execScalar(sql);
 	CloseDatabase();
 	
@@ -928,40 +923,68 @@ EXPORT_C gint32 CContactDb::SaveRecentContact(stRecentContact * contact)
 gint32 GetContactCommInfo(CPhoneContact * pContact)
 	{
 	char sql[128] = {0};
-	GHashTable * hashTable = pContact->createHashTable();
-	GPtrArray * ptrArray = pContact->createPtrArray();
+	GHashTable * hashTable = pContact->getCommInfoHashTable();
+	GPtrArray * ptrArray = pContact->getAddressPtrArray();
 	
 	GString * CidField = NULL;
 	OpenDatabase();
+	
+	/* fill pref comm info to hashtable */
+	GString * fieldValue = NULL;
+	pContact->GetFieldValue(ContactField_PhonePref, &fieldValue);
+	if (fieldValue->len) 
+		pContact->SetPhone(CommType_Pref | CommType_Phone, fieldValue->str);
+	g_string_free(fieldValue, TRUE);
+	
+	pContact->GetFieldValue(ContactField_EmailPref, &fieldValue);
+	if (fieldValue->len) 
+		pContact->SetEmail(CommType_Pref | CommType_Email, fieldValue->str);
+	g_string_free(fieldValue, TRUE);
+	
+	pContact->GetFieldValue(ContactField_IMPref, &fieldValue);
+	if (fieldValue->len) 
+		pContact->SetIM(CommType_Pref | CommType_IM, fieldValue->str);
+	g_string_free(fieldValue, TRUE);
+	
 	pContact->GetFieldValue(ContactField_Id, &CidField);
-	sprintf(sql, "select * from contact_ext where cid = %s;", CidField->str);
+	sprintf(sql, "select ce.comm_key, ce.comm_value, a.* from contact_ext ce "\
+					"left join address a on ce.comm_value = a.aid where ce.cid = %s;", CidField->str);
+	g_string_free(CidField, TRUE);
 	CppSQLite3Query query = m_dbBeluga.execQuery(sql);
 	while (!query.eof())
 		{
-		stRecentContact * recentContact = (stRecentContact*)g_malloc0(sizeof(stRecentContact));
-		if (recentContact == NULL)
+		gint32 commType = query.getIntField(0); /* comm_key field */ 
+		switch(commType & 0xF0) 
 			{
-			CloseDatabase();
-			return ERROR(ESide_Client, EModule_Db, ECode_No_Memory);
+			case CommType_Phone:
+				pContact->SetPhone(commType, query.getStringField(1));	
+				break;
+			case CommType_Email:
+				pContact->SetEmail(commType, query.getStringField(1));
+				break;
+			case CommType_Address:
+				{
+				stAddress addr;
+				addr.aid = query.getIntField(1);
+				addr.atype = commType;
+				g_stpcpy(addr.block, query.getStringField(3));
+				g_stpcpy(addr.street, query.getStringField(4));
+				g_stpcpy(addr.district, query.getStringField(5));
+				g_stpcpy(addr.city, query.getStringField(6));
+				g_stpcpy(addr.state, query.getStringField(7));
+				g_stpcpy(addr.country, query.getStringField(8));
+				g_stpcpy(addr.postcode, query.getStringField(9));
+				
+				pContact->SetAddress(commType, &addr);
+				}
+				break;
+			case CommType_IM:
+				pContact->SetIM(commType, query.getStringField(1));
+				break;
+			default:
+				break;
 			}
-		
-		recentContact->nContactId = query.getIntField(1);
-		recentContact->event = query.getIntField(2);
-		strcpy(recentContact->eventCommInfo, query.getStringField(3));
-		strcpy(time, query.getStringField(4));  /* exp: 2009-6-30 21:51:23 */
-		recentContact->time = localtime(&t); 
-		char * tmp = strrchr(time, '-');
-		recentContact->time->tm_mon = atoi(tmp+1);
-		tmp = strrchr(tmp, '-');
-		recentContact->time->tm_mday = atoi(tmp+1);
-		tmp = strrchr(tmp, ' ');
-		recentContact->time->tm_hour = atoi(tmp+1);
-		tmp = strrchr(tmp, ':');
-		recentContact->time->tm_min = atoi(tmp+1);
-		tmp = strrchr(tmp, ':');
-		recentContact->time->tm_sec = atoi(tmp+1);
-		
-		g_ptr_array_add(*pContacts, recentContact);
+				
 		query.nextRow();
 		}
 	

@@ -66,8 +66,8 @@ public:
     IMPORT_C gint32 DeleteAllAddresses();
     IMPORT_C gint32 DeleteAllIMs();
     
-    GHashTable * createHashTable();
-    GPtrArray * createPtrArray();
+    GHashTable * getCommInfoHashTable();
+    GPtrArray * getAddressPtrArray();
 
 private:
 	gint32  GetAllCommInfo();

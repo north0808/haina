@@ -1,11 +1,34 @@
+/*
+ ============================================================================
+ Name		: CQuickMsgIterator.h
+ Author	  : shaochuan.yang
+ Copyright   : haina
+ Description : QuickMsg Entity Iterator
+ ============================================================================
+ */
 
+#ifndef __CTAG_H__
+#define __CTAG_H__
 
-class CQuickMsgIterator : public IDbEntityIterator
+#include <glib.h>
+#include "CEntityIterator.h"
+#include "CQuickMsgDb.h"
+
+class CQuickMsgIterator : public CDbEntityIterator
 {
 public:
-    ECODE init(IDBResultSet * pResultSet);
-    ECODE reset();
-    ECODE current(CDbEntity ** pEntity);
-    ECODE next(bool * pSuccess);
-    ECODE prev(bool * pSuccess);
-}
+	CQuickMsgIterator(CEntityDb * pEntityDb): 
+		CDbEntityIterator(pEntityDb)
+		{
+		}
+	
+	~CQuickMsgIterator()
+		{
+		}
+/*	
+	IMPORT_C gint32 Current(CDbEntity ** pEntity);
+	IMPORT_C gint32 Next(gboolean * pSuccess);
+	IMPORT_C gint32 Prev(gboolean * pSuccess);*/
+};	
+
+#endif

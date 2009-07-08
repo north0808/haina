@@ -47,10 +47,8 @@ protected:
 	CppSQLite3DB  	m_dbBeluga;
 	CppSQLite3Query m_dbQuery;
 	
-	static guint32  m_ndbCount;
+	guint32  		m_ndbCount;
 };
-
-guint32 CEntityDb::m_ndbCount = 0;
 
 #endif 
 
