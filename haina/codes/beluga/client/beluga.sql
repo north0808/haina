@@ -60,6 +60,7 @@ create table cgroup(
     gid integer primary key autoincrement,
     tid integer not null,
     name varchar(64) not null,
+    name_spell varchar(64),
     logo varchar(256),
     group_order smallint,
     delete_flag smallint,
@@ -70,8 +71,9 @@ create index idx_group_gid on cgroup(gid);
 GO
 
 create table tag(
-    tid integer primary key autoincrement,
+    tid integer primary key,
     name varchar(64)  not null,
+    name_spell varchar(64),
     logo varchar(256),
     tag_order smallint,
     delete_flag smallint);
@@ -81,7 +83,7 @@ create index idx_tag_gid on tag(tid);
 GO
 
 create table r_contact_group(
-    cid integer primary key,
+    cid integer,
     gid integer);
 GO
 
@@ -106,12 +108,22 @@ GO
 
 create table recent_contact(
     rc_id integer primary key autoincrement,
-    cid integer  not null,
+    cid integer not null,
     event smallint,
+    event_comm varchar(256),
     time timestamp);
 GO
 
 create index idx_recent_contact_rc_id on recent_contact(rc_id);
+GO
+
+create table phone_district(
+    pd_id integer primary key autoincrement,
+    district_number varchar(10),
+    district_name varchar(64),
+    range_start bigint,
+    range_end bigint,
+    fee_type varchar(64));
 GO
 
 create table message(
