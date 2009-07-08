@@ -39,8 +39,7 @@ enum ContactField
 enum ContactType 
 {
 	ContactType_Phone = 1,
-	ContactType_QQ = 2,
-	ContactType_MSN = 3
+	ContactType_IM = 2
 };
 
 
@@ -99,7 +98,10 @@ public:
 		}
 	}
 	
-	~CContact();
+	~CContact()
+		{
+		
+		}
 
 protected:
 	guint32 m_nFieldsIndex[ContactField_EndFlag];

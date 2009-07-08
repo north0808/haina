@@ -32,7 +32,7 @@ public:
 	
 	CEntityDb * GetEntityDb();
 	
-private:
+protected:
 	CEntityDb * m_pEntityDb;
 	
 	GPtrArray * m_pFieldsValue;

@@ -1,10 +1,35 @@
+/*
+ ============================================================================
+ Name		: CSignatureIterator.h
+ Author	  : shaochuan.yang
+ Copyright   : haina
+ Description : Signature Entity Iterator
+ ============================================================================
+ */
 
-class CSignatureIterator : public IDbEntityIterator
+#ifndef __CSIGNATUREITERATOR_H__
+#define __CSIGNATUREITERATOR_H__
+
+
+#include <glib.h>
+#include "CEntityIterator.h"
+#include "CSignatureDb.h"
+
+class CSignatureIterator : public CDbEntityIterator
 {
 public:
-    ECODE init(IDBResultSet * pResultSet);
-    ECODE reset();
-    ECODE current(CDbEntity ** pEntity);
-    ECODE next(bool * pSuccess);
-    ECODE prev(bool * pSuccess);
-}
+	CSignatureIterator(CEntityDb * pEntityDb): 
+		CDbEntityIterator(pEntityDb)
+		{
+		}
+	
+	~CSignatureIterator()
+		{
+		}
+	/*
+	IMPORT_C gint32 Current(CDbEntity ** pEntity);
+	IMPORT_C gint32 Next(gboolean * pSuccess);
+	IMPORT_C gint32 Prev(gboolean * pSuccess);*/
+};	
+
+#endif

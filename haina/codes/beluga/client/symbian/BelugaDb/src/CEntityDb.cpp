@@ -14,6 +14,7 @@ GLDEF_C void freeGStringArray(GPtrArray * pArray);
 CEntityDb::CEntityDb()
 	{
 	m_nSortFieldIndex = -1;
+	m_ndbCount = 0;
 	m_bSortAscending = TRUE;
 	m_pFieldsName = NULL;
 	}

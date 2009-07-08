@@ -14,14 +14,15 @@ enum TagField
 {
     TagField_Id = 0,
     TagField_Name,
+    TagField_NameSpell,
     TagField_Logo,
-    TagField_TagOder,
+    TagField_TagOrder,
     TagField_DeleteFlag,
     TagField_EndFlag
 };
 
 #define  TAG_NAME_LEN			64
-#define  TAG_LOG_LEN			256
+#define  TAG_LOGO_LEN			256
 
 
 class CTag : public CDbEntity
@@ -39,7 +40,10 @@ public:
 		}
 	}
 	
-	~CTag();
+	~CTag()
+		{
+		
+		}
 
 private:
 	guint32 m_nFieldsIndex[TagField_EndFlag];

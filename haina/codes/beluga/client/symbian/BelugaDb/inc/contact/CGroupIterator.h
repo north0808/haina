@@ -1,11 +1,35 @@
+/*
+ ============================================================================
+ Name		: CGroupIterator.h
+ Author	  : shaochuan.yang
+ Copyright   : haina
+ Description : Group Entity Iterator
+ ============================================================================
+ */
+
+#ifndef __CGROUPITERATOR_H__
+#define __CGROUPITERATOR_H__
 
 
-class CGroupIterator : public IDbEntityIterator
+#include <glib.h>
+#include "CEntityIterator.h"
+#include "CGroupDb.h"
+
+class CGroupIterator : public CDbEntityIterator
 {
 public:
-    ECODE init(IDBResultSet * pResultSet);
-    ECODE reset();
-    ECODE current(CDbEntity ** pEntity);
-    ECODE next(bool * pSuccess);
-    ECODE prev(bool * pSuccess);
+	CGroupIterator(CEntityDb * pEntityDb): 
+		CDbEntityIterator(pEntityDb)
+		{
+		}
+	
+	~CGroupIterator()
+		{
+		}
+	
+	IMPORT_C gint32 Current(CDbEntity ** pEntity);
+	IMPORT_C gint32 Next(gboolean * pSuccess);
+	IMPORT_C gint32 Prev(gboolean * pSuccess);
+	
 };
+#endif

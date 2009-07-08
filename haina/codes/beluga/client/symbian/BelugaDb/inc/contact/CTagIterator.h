@@ -1,11 +1,35 @@
+/*
+ ============================================================================
+ Name		: CTagIterator.h
+ Author	  : shaochuan.yang
+ Copyright   : haina
+ Description : Tag Entity Iterator
+ ============================================================================
+ */
+
+#ifndef __CTAGITERATOR_H__
+#define __CTAGITERATOR_H__
 
 
-class CTagIterator : public IDbEntityIterator
+#include <glib.h>
+#include "CEntityIterator.h"
+#include "CTagDb.h"
+
+class CTagIterator : public CDbEntityIterator
 {
 public:
-    ECODE init(IDBResultSet * pResultSet);
-    ECODE reset();
-    ECODE current(CDbEntity ** pEntity);
-    ECODE next(bool * pSuccess);
-    ECODE prev(bool * pSuccess);
+	CTagIterator(CEntityDb * pEntityDb): 
+		CDbEntityIterator(pEntityDb)
+		{
+		}
+	
+	~CTagIterator()
+		{
+		}
+	
+	IMPORT_C gint32 Current(CDbEntity ** pEntity);
+	IMPORT_C gint32 Next(gboolean * pSuccess);
+	IMPORT_C gint32 Prev(gboolean * pSuccess);
+	
 };
+#endif

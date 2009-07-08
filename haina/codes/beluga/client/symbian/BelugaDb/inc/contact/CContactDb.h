@@ -7,8 +7,8 @@
  ============================================================================
  */
 
-#ifndef __CENTITYDB_H__
-#define __CENTITYDB_H__
+#ifndef __CCONTACTDB_H__
+#define __CCONTACTDB_H__
 
 #include <time.h>
 #include "CEntityDb.h"

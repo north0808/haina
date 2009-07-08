@@ -63,8 +63,8 @@ EXPORT_C gint32 CDbEntity::SetFieldsValue(GArray * fieldsIndex, const GPtrArray 
 
 EXPORT_C gint32 CDbEntity::SetFieldValue(guint32 fieldIndex, const GString * fieldValue)
 	{
-	GString * fieldValue = g_ptr_array_index(m_pFieldsValue, fieldIndex);
-	g_string_assign(fieldValue, fieldValue->str);
+	GString * field = g_ptr_array_index(m_pFieldsValue, fieldIndex);
+	g_string_assign(field, fieldValue->str);
 	return 0;
 	}
 
