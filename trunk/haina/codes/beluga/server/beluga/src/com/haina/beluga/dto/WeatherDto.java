@@ -17,7 +17,8 @@ public class WeatherDto implements IDto{
 	private String wind; /*风速*/
 	private String temperature;/*实时温度*/
 	private String icon;/*天气图片URI*/
-	private boolean isNight;/*是否夜里*/
+	
+//	private boolean isNight;/*是否夜里*/
 	private int high; /*最高气温*/
 	private int low;/*最低气温*/
 	private String issuetime;/*发布时间*/
@@ -73,13 +74,13 @@ public class WeatherDto implements IDto{
 	public void setIcon(String icon) {
 		this.icon = icon;
 	}
-	
-	public boolean isNight() {
-		return isNight;
-	}
-	public void setNight(boolean isNight) {
-		this.isNight = isNight;
-	}
+//	@JSON(include=false)
+//	public boolean isNight() {
+//		return isNight;
+//	}
+//	public void setNight(boolean isNight) {
+//		this.isNight = isNight;
+//	}
 	
 	public String getIssuetime() {
 		return issuetime;

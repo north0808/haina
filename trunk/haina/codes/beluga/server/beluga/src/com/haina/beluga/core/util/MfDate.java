@@ -332,7 +332,13 @@ public class MfDate {
     public Integer getDay() {
         return new Integer(base.get(GregorianCalendar.DAY_OF_MONTH));
     }
-
+    /**
+     * 获得日.
+     * @return Integer 返回该 MfDate 对象的日
+     */
+    public Integer getWeek() {
+        return new Integer(base.get(GregorianCalendar.DAY_OF_WEEK));
+    }
     /**
      * 判断两个Mfdate的日是否相等.
      * @param arg
@@ -378,7 +384,7 @@ public class MfDate {
      * @exception IllegalArgumentException
      */
     public void addDays(final int arg) {
-        if (0 >= arg) {
+        if (0 > arg) {
             throw new  IllegalArgumentException("arg must be >0");
         }
         base.add(GregorianCalendar.DAY_OF_MONTH, arg);
@@ -530,9 +536,9 @@ public class MfDate {
     }
     public static void main(String[] args) {
         MfDate date = new MfDate();
-        System.out.println(date.toString("yyyy-MM-dd HH:mm:ss"));
-        date = new MfDate("2005-06-8 14:14" , "yyyy-MM-dd HH:mm");
-        System.out.print(date.toString("yyyy-MM-dd HH:mm"));
+//        System.out.println(date.toString("yyyy-MM-dd HH:mm:ss"));
+//        date = new MfDate("2005-06-8 14:14" , "yyyy-MM-dd HH:mm");
+        System.out.print(date.getWeek());
         
     }
 }

@@ -2,6 +2,7 @@ package com.haina.beluga.service;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.haina.beluga.core.service.BaseSerivce;
+import com.haina.beluga.core.util.MfDate;
 import com.haina.beluga.core.util.MfTime;
 import com.haina.beluga.dao.IPhoneDistrictDao;
 import com.haina.beluga.dao.IWeatherDao;
@@ -73,11 +75,12 @@ public class WeatherService extends BaseSerivce<IWeatherDao,Weather,String> impl
 //			dto.setLow(Integer.valueOf(livedata.getTemperatureLow()));
 //			dto.setHigh(Integer.valueOf(livedata.getTemperatureHigh()));
 			dto.setTemperature(livedata.getTemperature());
+			dto.setIssuetime(MfTime.toNow());
 			dto.setIcon(livedata.getCurrIcon());
 			hrr.setValue(dto);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
-			logger.error(e);
+			logger.error(e.getMessage());
 			hrr.setStatusCode(Constant.NO_LIVEDATA_REMOTEERR);
 		}
 		return hrr;
@@ -111,12 +114,36 @@ public class WeatherService extends BaseSerivce<IWeatherDao,Weather,String> impl
 	private String getIcon(String str){
 		return str.split("/")[6];
 	}
+	private String week2num(String week){
+		MfDate mfDate = new MfDate();
+		int day = 0;
+		if(Constant.Monday.equals(week)){
+			 day = Calendar.MONDAY;
+		}else if(Constant.Tuesday.equals(week)){
+			day = Calendar.TUESDAY;
+		}else if(Constant.Wednesday.equals(week)){
+			day = Calendar.WEDNESDAY;
+		}else if(Constant.Thursday.equals(week)){
+			day = Calendar.THURSDAY;
+		}else if(Constant.Friday.equals(week)){
+			day = Calendar.FRIDAY;
+		}else if(Constant.Saturday.equals(week)){
+			day = Calendar.SATURDAY;
+		}else {
+			day = Calendar.SUNDAY;
+		}
+		if(day >= mfDate.getWeek())
+			mfDate.addDays(day-mfDate.getWeek());
+		else
+			mfDate.addDays(day+7-mfDate.getWeek());
+		return mfDate.toString();
+	}
 	private void loadWDbyCityCode(String cityCode, List<Weather> weatherList,int no){
 		try {
 			ApiForecastData[] forecastDatas = weatherBugWebServicesSoap.getForecastByCityCode(cityCode, UnitType.Metric, ACode);
 			for(ApiForecastData afd:forecastDatas){
 				Weather weather = new Weather();
-				weather.setDate(afd.getTitle());
+				weather.setDate(week2num(afd.getTitle()));
 				weather.setHigh(Integer.valueOf(afd.getTempHigh()));
 				weather.setLow(Integer.valueOf(afd.getTempLow()));
 				weather.setWeatherCityCode(cityCode);
@@ -131,7 +158,7 @@ public class WeatherService extends BaseSerivce<IWeatherDao,Weather,String> impl
 			}
 //			break;57065
 		} catch (RemoteException e) {
-			logger.error(e.getMessage());
+//			logger.error(e.getMessage());
 			if(no < 3){
 				loadWDbyCityCode(cityCode,weatherList,no++);
 				logger.info(cityCode+":reload... "+no);

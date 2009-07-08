@@ -2,6 +2,8 @@ package test;
 
 import java.util.List;
 
+import flexjson.JSONSerializer;
+
 
 public class Person {
 	
@@ -42,5 +44,11 @@ public class Person {
 		this.addrList = addrList;
 	}
 	
+	public static void main( String[] args){
+		 JSONSerializer serializer = new JSONSerializer();
+		 Person p = new Person();
+		 p.setC("\"");
+		 System.out.println(serializer.deepSerialize(p));
+	}
 
 }
