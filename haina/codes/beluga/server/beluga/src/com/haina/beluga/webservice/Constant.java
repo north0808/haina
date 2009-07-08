@@ -32,11 +32,4 @@ public class Constant {
 	public static final String Saturday = "Saturday";
 	public static final String Sunday = "Sunday";
 	
-	public static final String One = "1";
-	public static final String Two = "2";
-	public static final String Three = "3";
-	public static final String Four = "4";
-	public static final String Five = "5";
-	public static final String Six = "6";
-	public static final String Seven = "7";
 }

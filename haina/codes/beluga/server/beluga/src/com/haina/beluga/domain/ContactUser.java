@@ -31,6 +31,10 @@ public class ContactUser extends VersionalModel {
 	private String mobile;
 	
 	private Date lastLoginTime;
+	/*最后修改日期*/
+	private Date lastUpdateTime;
+	/*登录次数*/
+	private Integer loginNumber;
 	
 	private String lastLoginIp;
 	
@@ -103,6 +107,28 @@ public class ContactUser extends VersionalModel {
 
 	public void setLastLoginTime(Date lastLoginTime) {
 		this.lastLoginTime = lastLoginTime;
+	}
+	/**
+	 * @hibernate.property type="timestamp"
+	 * @hibernate.column name="lastUpdateTime" sql-type="timestamp"
+	 */
+	public Date getLastUpdateTime() {
+		return lastUpdateTime;
+	}
+
+	public void setLastUpdateTime(Date lastUpdateTime) {
+		this.lastUpdateTime = lastUpdateTime;
+	}
+	/**
+	 * @hibernate.property column="loginNumber" 
+	 * return Integer
+	 */
+	public Integer getLoginNumber() {
+		return loginNumber;
+	}
+
+	public void setLoginNumber(Integer loginNumber) {
+		this.loginNumber = loginNumber;
 	}
 
 	/**
