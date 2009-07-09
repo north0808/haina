@@ -20,6 +20,11 @@ public class AuthenticationService implements IAuthenticationService {
 	private String registerUrl;
 	
 	private String logoutUrl;
+	
+	/**
+	 * 海纳个人信息中心的应用代码。
+	 */
+	private String appCode;
 
 	public String getProxyLoginUrl() {
 		return proxyLoginUrl;
@@ -67,6 +72,19 @@ public class AuthenticationService implements IAuthenticationService {
 
 	public void setLogoutUrl(String logoutUrl) {
 		this.logoutUrl = logoutUrl;
+	}
+
+	public String getAppCode() {
+		return appCode;
+	}
+
+	public void setAppCode(String appCode) {
+		this.appCode = appCode;
+	}
+	
+	public void proxyRegister(String email, String password, String mobile,
+			String description, String registerIp,String lang) {
+		
 	}
 
 }
