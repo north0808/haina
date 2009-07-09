@@ -26,7 +26,7 @@
 //						-Added CppSQLiteDB3::tableExists()
 ////////////////////////////////////////////////////////////////////////////////
 #include "CppSQLite3.h"
-#include <cstdlib>
+#include <stdlib.h>
 
 
 // Named constant for passing to CppSQLite3Exception when passing it a string

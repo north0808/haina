@@ -11,7 +11,7 @@
 #define __CTAG_H__
 
 #include <glib.h>
-#include "CEntityIterator.h"
+#include "CDbEntityIterator.h"
 #include "CQuickMsgDb.h"
 
 class CQuickMsgIterator : public CDbEntityIterator

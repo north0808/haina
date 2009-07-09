@@ -9,8 +9,10 @@
 
 #include <string.h>
 #include <stdlib.h>
-#include "CGroupIterator.h"
+#include "Beluga.h"
 #include "CGroup.h"
+#include "CGroupIterator.h"
+#include "CGroupDb.h"
 
 
 CGroupDb::CGroupDb()
@@ -71,7 +73,7 @@ EXPORT_C gint32 CGroupDb::GetEntityById(guint32 nId, CDbEntity** ppEntity)
 	
 	for (int i=0; i<query.numFields(); i++)
 		{
-		GString * fieldValue = g_string_new(m_dbQuery->fieldValue(i));
+		GString * fieldValue = g_string_new(query.fieldValue(i));
 		(*ppEntity)->SetFieldValue(i, fieldValue);	
 		g_string_free(fieldValue, TRUE);
 		}
@@ -80,7 +82,7 @@ EXPORT_C gint32 CGroupDb::GetEntityById(guint32 nId, CDbEntity** ppEntity)
 	return 0;
 	}
     
-EXPORT_C gint32 CGroup::SaveEntity(CDbEntity * pEntity)
+EXPORT_C gint32 CGroupDb::SaveEntity(CDbEntity * pEntity)
 	{
 	int i;
 	char sql[256] = {0};
@@ -146,7 +148,7 @@ EXPORT_C gint32 CGroupDb::UpdateEntity(CDbEntity * pEntity)
 		strcpy(sql, "update group set "); 
 		for (i=1; i<GroupField_EndFlag; i++)
 			{
-			GString * fieldName = g_ptr_array_index(m_pFieldsName, i);
+			GString * fieldName = (GString*)g_ptr_array_index(m_pFieldsName, i);
 			strcat(sql, fieldName->str);
 			strcat(sql, " = ?");
 			if (i != GroupField_EndFlag - 1)
@@ -222,7 +224,7 @@ EXPORT_C gint32 CGroupDb::ReleaseGroupAllRelations(CGroup * pGroup)
 	{
 	GString * GroupId = NULL;
 	pGroup->GetFieldValue(GroupField_Id, &GroupId);
-	ReleaseContactAllRelations(atoi(GroupId->str));
+	ReleaseGroupAllRelations(atoi(GroupId->str));
 	g_string_free(GroupId, TRUE);
 	}
 

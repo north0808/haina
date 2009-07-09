@@ -11,6 +11,12 @@
 #define __CTAGDB_H__
 
 
+#include <glib.h>
+#include "CEntityDb.h"
+#include "CTag.h"
+
+class CTagIterator;
+
 class CTagDb : public CEntityDb
 {
 public:

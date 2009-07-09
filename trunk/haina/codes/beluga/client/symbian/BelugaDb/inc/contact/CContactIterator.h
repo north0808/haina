@@ -11,7 +11,7 @@
 #define __CCONTACTITERATOR_H__
 
 #include <glib.h>
-#include "CEntityIterator.h"
+#include "CDbEntityIterator.h"
 #include "CContactDb.h"
 
 class CContactIterator : public CDbEntityIterator

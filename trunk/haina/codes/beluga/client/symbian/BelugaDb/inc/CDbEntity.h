@@ -12,18 +12,20 @@
 
 #include <glib.h>
 
+class CEntityDb;
+
 class CDbEntity
 {
-	CDbEntity(CEntityDb * pEntityDb):
-	m_pEntityDb(pEntityDb)
+public:
+	CDbEntity(CEntityDb * pEntityDb)
 	{
+	m_pEntityDb = pEntityDb;
 	m_pFieldsValue = NULL;
 	m_pFieldsIndex = NULL;
 	}
 	
 	~CDbEntity();
 	
-public:
 	IMPORT_C gint32 GetFieldsName(GPtrArray ** fieldsName);
 	IMPORT_C gint32 GetFieldsValue(GArray * fieldsIndex, GPtrArray ** fieldsValue);
 	IMPORT_C gint32 GetFieldValue(guint32 fieldIndex, GString ** fieldValue);

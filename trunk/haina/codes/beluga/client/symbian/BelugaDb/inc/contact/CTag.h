@@ -48,3 +48,6 @@ public:
 private:
 	guint32 m_nFieldsIndex[TagField_EndFlag];
 };
+
+#endif
+
