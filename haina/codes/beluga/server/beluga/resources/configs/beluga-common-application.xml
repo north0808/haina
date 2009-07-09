@@ -33,6 +33,9 @@
 		<property name="registerUrl">
 			<value>http://localhost:8080/shield/r/s?call=register</value>
 		</property>
+		<property name="appCode">
+			<value>haina_beluga</value>
+		</property>
 	</bean>
 
 	<bean id="dataSource"
