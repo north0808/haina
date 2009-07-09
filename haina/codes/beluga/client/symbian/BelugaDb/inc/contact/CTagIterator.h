@@ -12,7 +12,7 @@
 
 
 #include <glib.h>
-#include "CEntityIterator.h"
+#include "CDbEntityIterator.h"
 #include "CTagDb.h"
 
 class CTagIterator : public CDbEntityIterator

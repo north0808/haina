@@ -29,8 +29,8 @@
 #define _CppSQLite3_H_
 
 #include "sqlite3.h"
-#include <cstdio>
-#include <cstring>
+#include <stdio.h>
+#include <string.h>
 
 #define CPPSQLITE_ERROR 1000
 

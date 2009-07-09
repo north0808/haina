@@ -8,6 +8,7 @@
  */
 
 #include "CDbEntity.h"
+#include "CEntityDb.h"
 
 GLDEF_C void freeGStringArray(GPtrArray * pArray);
 
@@ -43,7 +44,7 @@ EXPORT_C gint32 CDbEntity::GetFieldsValue(GArray * fieldsIndex, GPtrArray ** fie
 
 EXPORT_C gint32 CDbEntity::GetFieldValue(guint32 fieldIndex, GString ** fieldValue)
 	{
-	*fieldValue = g_string_new((g_ptr_array_index(m_pFieldsValue, fieldIndex))->str);
+	*fieldValue = g_string_new(((GString*)g_ptr_array_index(m_pFieldsValue, fieldIndex))->str);
 	return 0;
 	}
 
@@ -54,8 +55,8 @@ EXPORT_C gint32 CDbEntity::SetFieldsValue(GArray * fieldsIndex, const GPtrArray 
 			{
 			if (g_array_index(m_pFieldsIndex, guint32, j) == g_array_index(fieldsIndex, guint32, i))
 				{
-				GString * fieldValue = g_ptr_array_index(m_pFieldsValue, j);
-				g_string_assign(fieldValue, (g_ptr_array_index(fieldsValue, i))->str);
+				GString * fieldValue = (GString*)g_ptr_array_index(m_pFieldsValue, j);
+				g_string_assign(fieldValue, ((GString*)g_ptr_array_index(fieldsValue, i))->str);
 				}
 			}
 	return 0;
@@ -63,7 +64,7 @@ EXPORT_C gint32 CDbEntity::SetFieldsValue(GArray * fieldsIndex, const GPtrArray 
 
 EXPORT_C gint32 CDbEntity::SetFieldValue(guint32 fieldIndex, const GString * fieldValue)
 	{
-	GString * field = g_ptr_array_index(m_pFieldsValue, fieldIndex);
+	GString * field = (GString*)g_ptr_array_index(m_pFieldsValue, fieldIndex);
 	g_string_assign(field, fieldValue->str);
 	return 0;
 	}

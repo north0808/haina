@@ -9,6 +9,7 @@
 
 #include <string.h>
 #include <stdlib.h>
+#include "Beluga.h"
 #include "CTagIterator.h"
 #include "CTag.h"
 
@@ -71,7 +72,7 @@ EXPORT_C gint32 CTagDb::GetEntityById(guint32 nId, CDbEntity** ppEntity)
 	
 	for (int i=0; i<query.numFields(); i++)
 		{
-		GString * fieldValue = g_string_new(m_dbQuery->fieldValue(i));
+		GString * fieldValue = g_string_new(query.fieldValue(i));
 		(*ppEntity)->SetFieldValue(i, fieldValue);	
 		g_string_free(fieldValue, TRUE);
 		}
@@ -94,7 +95,7 @@ EXPORT_C gint32 CTagDb::SaveEntity(CDbEntity * pEntity)
 		strcat(sql, ");");
 		
 		CppSQLite3Statement statement = m_dbBeluga.compileStatement(sql);
-		for (i=0; i<GroupField_EndFlag; i++)
+		for (i=0; i<TagField_EndFlag; i++)
 			{
 			GString * fieldValue = NULL;
 			if (ECode_No_Error == pEntity->GetFieldValue(i, &fieldValue))
@@ -146,7 +147,7 @@ EXPORT_C gint32 CTagDb::UpdateEntity(CDbEntity * pEntity)
 		strcpy(sql, "update tag set "); 
 		for (i=1; i<TagField_EndFlag; i++)
 			{
-			GString * fieldName = g_ptr_array_index(m_pFieldsName, i);
+			GString * fieldName = (GString*)g_ptr_array_index(m_pFieldsName, i);
 			strcat(sql, fieldName->str);
 			strcat(sql, " = ?");
 			if (i != TagField_EndFlag - 1)
@@ -214,7 +215,7 @@ IMPORT_C gint32 CTagDb::GetAllTags(CTagIterator ** ppTagIterator)
 	return 0;	
 	}
 
-IMPORT_C gint32 CTagDb::GetTagsTotality(guint32 &totality)
+IMPORT_C gint32 CTagDb::GetTagsTotality(guint32 * totality)
 	{
 	char sql[128] = {0};
 	*totality = 0;
@@ -227,7 +228,7 @@ IMPORT_C gint32 CTagDb::GetTagsTotality(guint32 &totality)
 	return 0;
 	}
 
-IMPORT_C gint32 CTagDb::CheckTagNameConflict(gchar * tagName, gboolean & bConflict)
+IMPORT_C gint32 CTagDb::CheckTagNameConflict(gchar * tagName, gboolean * bConflict)
 	{
 	char sql[128] = {0};
 	guint32 count = 0;

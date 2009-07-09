@@ -12,7 +12,7 @@
 
 
 #include <glib.h>
-#include "CEntityIterator.h"
+#include "CDbEntityIterator.h"
 #include "CSignatureDb.h"
 
 class CSignatureIterator : public CDbEntityIterator

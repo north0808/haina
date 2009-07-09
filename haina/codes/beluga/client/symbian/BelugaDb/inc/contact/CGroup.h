@@ -11,6 +11,8 @@
 #define __CGROUP_H__
 
 
+#include "CDbEntity.h"
+
 #define  GROUPID_DEFAULT		(guint32(-1))
 
 enum GroupField

@@ -8,6 +8,7 @@
  */
 
 #include "CEntityDb.h"
+#include "Beluga.h"
 
 GLDEF_C void freeGStringArray(GPtrArray * pArray);
 
@@ -36,8 +37,8 @@ EXPORT_C gint32 CEntityDb::SetSortKey(guint32 fieldIndex, gboolean ascending)
 gint32 CEntityDb::GetEntityFieldsName(GPtrArray ** fieldsName)
 	{
 	*fieldsName = g_ptr_array_sized_new(m_pFieldsName->len);
-	for(int i=0; i<m_pFieldsName->len, i++)
-		g_ptr_array_add(*fieldsName, g_string_new((g_ptr_array_index(m_pFieldsName, i))->str));
+	for(int i=0; i<m_pFieldsName->len; i++)
+		g_ptr_array_add(*fieldsName, g_string_new(((GString*)g_ptr_array_index(m_pFieldsName, i))->str));
 	return 0;
 	}
 

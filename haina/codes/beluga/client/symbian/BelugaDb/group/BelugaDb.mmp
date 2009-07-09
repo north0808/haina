@@ -12,6 +12,9 @@ TARGETTYPE	  dll
 UID			 0x1000008d 0xE22B0EF2
 
 USERINCLUDE	 ..\inc
+USERINCLUDE	 ..\inc\contact
+USERINCLUDE  ..\inc\config
+USERINCLUDE  ..\inc\message
 SYSTEMINCLUDE   \epoc32\include
 SYSTEMINCLUDE 	\epoc32\include\stdapis
 SYSTEMINCLUDE 	\epoc32\include\stdapis\glib-2.0
@@ -45,7 +48,7 @@ nostrictdef
 LIBRARY		euser.lib 
 LIBRARY		libc.lib 
 LIBRARY		libglib.lib
-LIBRARY		libsqlite3.lib
+LIBRARY		sqlite.lib
 
 #ifdef ENABLE_ABIV2_MODE
 DEBUGGABLE_UDEBONLY

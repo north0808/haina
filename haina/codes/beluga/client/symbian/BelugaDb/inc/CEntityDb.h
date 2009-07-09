@@ -11,8 +11,9 @@
 #define __CENTITYDB_H__
 
 #include <glib.h>
-#include "CDbEntity.h"
 #include "CppSQLite3.h"
+
+class CDbEntity;
 
 class CEntityDb
 {

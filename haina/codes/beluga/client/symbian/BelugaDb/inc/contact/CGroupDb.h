@@ -11,6 +11,12 @@
 #define __CGROUPDB_H__
 
 
+#include <glib.h>
+#include "CEntityDb.h"
+#include "CGroup.h"
+
+class CGroupIterator;
+
 class CGroupDb : public CEntityDb
 {
 public:

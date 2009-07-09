@@ -7,6 +7,7 @@
  ============================================================================
  */
 
+#include "Beluga.h"
 #include "CTagIterator.h"
 #include "CTag.h"
 
@@ -27,7 +28,7 @@ EXPORT_C gint32 CTagIterator::Current(CDbEntity ** ppEntity)
 		return ERROR(ESide_Client, EModule_Db, ECode_No_Memory);
 		}
 	
-	CTag * pTag = *ppEntity;
+	CTag * pTag = (CTag*)(*ppEntity);
 	for (int i=0; i<TagField_EndFlag; i++)
 		{
 		GString * fieldValue = g_string_new(m_dbQuery->fieldValue(i));

@@ -11,7 +11,7 @@
 #define __CMSGFACEITERATOR_H__
 
 #include <glib.h>
-#include "CEntityIterator.h"
+#include "CDbEntityIterator.h"
 #include "CMsgFaceDb.h"
 
 class CMsgFaceIterator : public CDbEntityIterator

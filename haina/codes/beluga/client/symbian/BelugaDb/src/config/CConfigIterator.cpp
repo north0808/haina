@@ -7,6 +7,7 @@
  ============================================================================
  */
 
+#include "Beluga.h"
 #include "CConfigIterator.h"
 #include "CConfig.h"
 
@@ -27,7 +28,7 @@ EXPORT_C gint32 CConfigIterator::Current(CDbEntity ** ppEntity)
 		return ERROR(ESide_Client, EModule_Db, ECode_No_Memory);
 		}
 	
-	CConifg * pConfig = *ppEntity;
+	CConfig * pConfig = (CConfig*)(*ppEntity);
 	for (int i=0; i<ConfigField_EndFlag; i++)
 		{
 		GString * fieldValue = g_string_new(m_dbQuery->fieldValue(i));

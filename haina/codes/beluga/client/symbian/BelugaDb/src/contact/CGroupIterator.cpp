@@ -7,6 +7,7 @@
  ============================================================================
  */
 
+#include "Beluga.h"
 #include "CGroupIterator.h"
 #include "CGroup.h"
 
@@ -27,7 +28,7 @@ EXPORT_C gint32 CGroupIterator::Current(CDbEntity ** ppEntity)
 		return ERROR(ESide_Client, EModule_Db, ECode_No_Memory);
 		}
 	
-	CGroup * pGroup = *ppEntity;
+	CGroup * pGroup = (CGroup*)(*ppEntity);
 	for (int i=0; i<GroupField_EndFlag; i++)
 		{
 		GString * fieldValue = g_string_new(m_dbQuery->fieldValue(i));

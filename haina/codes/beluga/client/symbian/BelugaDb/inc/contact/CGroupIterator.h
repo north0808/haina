@@ -12,7 +12,7 @@
 
 
 #include <glib.h>
-#include "CEntityIterator.h"
+#include "CDbEntityIterator.h"
 #include "CGroupDb.h"
 
 class CGroupIterator : public CDbEntityIterator

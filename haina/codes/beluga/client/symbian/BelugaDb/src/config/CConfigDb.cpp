@@ -9,6 +9,7 @@
 
 #include <string.h>
 #include <stdlib.h>
+#include "Beluga.h"
 #include "CConfigIterator.h"
 #include "CConfig.h"
 
@@ -71,7 +72,7 @@ EXPORT_C gint32 CConfigDb::GetEntityById(guint32 nId, CDbEntity** ppEntity)
 	
 	for (int i=0; i<query.numFields(); i++)
 		{
-		GString * fieldValue = g_string_new(m_dbQuery->fieldValue(i));
+		GString * fieldValue = g_string_new(query.fieldValue(i));
 		(*ppEntity)->SetFieldValue(i, fieldValue);	
 		g_string_free(fieldValue, TRUE);
 		}
@@ -146,7 +147,7 @@ EXPORT_C gint32 CConfigDb::UpdateEntity(CDbEntity * pEntity)
 		strcpy(sql, "update config set "); 
 		for (i=1; i<ConfigField_EndFlag; i++)
 			{
-			GString * fieldName = g_ptr_array_index(m_pFieldsName, i);
+			GString * fieldName = (GString*)g_ptr_array_index(m_pFieldsName, i);
 			strcat(sql, fieldName->str);
 			strcat(sql, " = ?");
 			if (i != ConfigField_EndFlag - 1)
@@ -208,15 +209,15 @@ EXPORT_C gint32 CConfigDb::GetConfigByName(gchar * configName, CConfig* pConfig)
 		return ERROR(ESide_Client, EModule_Db, ECode_Not_Exist);
 		}
 	
-	*ppEntity = new CConfig(this);
-	if (NULL == *ppEntity)
+	pConfig = new CConfig(this);
+	if (NULL == pConfig)
 		{
 		CloseDatabase();
 		return ERROR(ESide_Client, EModule_Db, ECode_No_Memory);
 		}
 	
 	for (int i=0; i<query.numFields(); i++)
-		(*ppEntity)->SetFieldValue(i, g_string_new(query.fieldValue(i)));
+		pConfig->SetFieldValue(i, g_string_new(query.fieldValue(i)));
 		
 	CloseDatabase();
 	

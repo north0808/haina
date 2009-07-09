@@ -12,6 +12,8 @@
 
 #include "CDbEntity.h"
 #include "CppSQLite3.h"
+#include "CEntityDb.h"
+
 
 class CDbEntityIterator
 {

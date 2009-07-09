@@ -11,7 +11,7 @@
 #define __CCONFIGITERATOR_H__
 
 #include <glib.h>
-#include "CEntityIterator.h"
+#include "CDbEntityIterator.h"
 #include "CConfigDb.h"
 
 class CConfigIterator : public CDbEntityIterator

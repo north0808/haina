@@ -10,7 +10,11 @@
 #ifndef __CCONFIGDB_H__
 #define __CCONFIGDB_H__
 
+#include <glib.h>
 #include "CEntityDb.h"
+#include "CConfig.h"
+
+class CConfigIterator;
 
 class CConfigDb : public CEntityDb
 {
