@@ -2,6 +2,8 @@ package com.haina.beluga.webservice;
 
 import java.io.Serializable;
 
+import com.haina.beluga.webservice.data.hessian.HessianRemoteReturning;
+
 /**
  * 个人服务Api接口。<br/>
  * @author huangyongqiang
@@ -20,7 +22,7 @@ public interface IPriService extends Serializable {
 	 * @param destAppCode 目标认证应用代码
 	 * @param userLoginIp 用户登录的IP地址
 	 */
-	public void login(String email, String pwd,String srcAppCode, String destAppCode, String userLoginIp);
+	public HessianRemoteReturning login(String email, String pwd,String srcAppCode, String destAppCode, String userLoginIp);
 	
 	/**
 	 * 联系人用户注册。<br/>
@@ -29,17 +31,17 @@ public interface IPriService extends Serializable {
 	 * @param password 密码
 	 * @param mobile 移动电话号码
 	 * @param description 描述
-	 * @param srcAppCode注册来源应用代码
 	 * @param registerIp 注册用户的IP地址
+	 * @param lang 语言环境
 	 */
-	public void register(String email, String password, String mobile, String description,
-			String srcAppCode,String registerIp);
+	public HessianRemoteReturning register(String email, String password, String mobile, String description,
+			String registerIp,String lang);
 	
 	/**
 	 * 联系人用户退出。<br/>
 	 * @param email 用户的登录名
 	 */
-	public void logout(String email);
+	public HessianRemoteReturning logout(String email);
 	
 	/**
 	 * 修改密码。<br/>
@@ -48,7 +50,7 @@ public interface IPriService extends Serializable {
 	 * @param oldPwd 旧密码
 	 * @param neoPwd 新密码
 	 */
-	public void editPwd(String email, String oldPwd, String neoPwd);
+	public HessianRemoteReturning editPwd(String email, String oldPwd, String neoPwd);
 
 	/**
 	 * 修改手机号码。<br/>
@@ -57,7 +59,7 @@ public interface IPriService extends Serializable {
 	 * @param oldMobile 旧手机号码
 	 * @param neoMobile 新手机号码
 	 */
-	public void editMobile(String email, String oldMobile, String neoMobile);
+	public HessianRemoteReturning editMobile(String email, String oldMobile, String neoMobile);
 	
 	/**
 	 * 修改登录名（同时修改电子邮件）。<br/>
@@ -65,6 +67,6 @@ public interface IPriService extends Serializable {
 	 * @param neoEmail 新的登录名
 	 * @return 操作结果
 	 */
-	public void editLoginName(String email, String neoEmail);
+	public HessianRemoteReturning editLoginName(String email, String neoEmail);
 
 }
