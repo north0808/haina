@@ -10,8 +10,7 @@
 #include "CContactIterator.h"
 #include "CContact.h"
 #include "CPhoneContact.h"
-#include "CQQContact.h"
-#include "CMSNContact.h"
+#include "CIMContact.h"
 
 
 EXPORT_C gint32 CContactIterator::Current(CDbEntity ** ppEntity)
@@ -39,10 +38,10 @@ EXPORT_C gint32 CContactIterator::Current(CDbEntity ** ppEntity)
 		return ERROR(ESide_Client, EModule_Db, ECode_No_Memory);
 		}
 	
-	CContact * pContact = *ppEntity;
+	CContact * pContact = (CContact*)(*ppEntity);
 	for (int i=0; i<ContactField_EndFlag; i++)
 		{
-		gchar * fieldValue = m_dbQuery->fieldValue(i);
+		const gchar * fieldValue = m_dbQuery->fieldValue(i);
 		GString * field = g_string_new(fieldValue);
 		pContact->SetFieldValue(i, field);	
 		g_string_free(field, TRUE);
@@ -50,11 +49,11 @@ EXPORT_C gint32 CContactIterator::Current(CDbEntity ** ppEntity)
 		if (ContactType_Phone == contactType)
 			{
 			if (i == ContactField_PhonePref && strlen(fieldValue))
-				((CPhoneContact*)pContact)->SetPhone(CommType_Pref | CommType_Phone, fieldValue);
+				((CPhoneContact*)pContact)->SetPhone((ECommType)(CommType_Pref | CommType_Phone), (gchar*)fieldValue);
 			else if (i == ContactField_EmailPref)
-				((CPhoneContact*)pContact)->SetEmail(CommType_Pref | CommType_Email, fieldValue);
+				((CPhoneContact*)pContact)->SetEmail((ECommType)(CommType_Pref | CommType_Email), (gchar*)fieldValue);
 			else if (i == ContactField_IMPref)
-				((CPhoneContact*)pContact)->SetIM(CommType_Pref | CommType_IM, fieldValue);
+				((CPhoneContact*)pContact)->SetIM((ECommType)(CommType_Pref | CommType_IM), (gchar*)fieldValue);
 			}
 		}
 	
@@ -72,14 +71,14 @@ EXPORT_C gint32 CContactIterator::Current(CDbEntity ** ppEntity)
 				}
 			else /* fill contact_ext table and address table fields */
 				{
-				gint32 commType = m_dbQuery->getIntField(ContactField_EndFlag + 1); /* contact_ext comm_key field */ 
+				ECommType commType = (ECommType)m_dbQuery->getIntField(ContactField_EndFlag + 1); /* contact_ext comm_key field */ 
 				switch(commType & 0xF0) 
 					{
 					case CommType_Phone:
-						phoneContact->SetPhone(commType, m_dbQuery->getStringField(ContactField_EndFlag + 2));	
+						phoneContact->SetPhone(commType, (gchar*)m_dbQuery->getStringField(ContactField_EndFlag + 2));	
 						break;
 					case CommType_Email:
-						phoneContact->SetEmail(commType, m_dbQuery->getStringField(ContactField_EndFlag + 2));
+						phoneContact->SetEmail(commType, (gchar*)m_dbQuery->getStringField(ContactField_EndFlag + 2));
 						break;
 					case CommType_Address:
 						{
@@ -98,7 +97,7 @@ EXPORT_C gint32 CContactIterator::Current(CDbEntity ** ppEntity)
 						}
 						break;
 					case CommType_IM:
-						phoneContact->SetIM(commType, m_dbQuery->getStringField(ContactField_EndFlag + 2));
+						phoneContact->SetIM(commType, (gchar*)m_dbQuery->getStringField(ContactField_EndFlag + 2));
 						break;
 					default:
 						break;

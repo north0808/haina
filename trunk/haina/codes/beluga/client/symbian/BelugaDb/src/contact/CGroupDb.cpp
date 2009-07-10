@@ -226,6 +226,7 @@ EXPORT_C gint32 CGroupDb::ReleaseGroupAllRelations(CGroup * pGroup)
 	pGroup->GetFieldValue(GroupField_Id, &GroupId);
 	ReleaseGroupAllRelations(atoi(GroupId->str));
 	g_string_free(GroupId, TRUE);
+	return 0;
 	}
 
 EXPORT_C gint32 CGroupDb::GetContactRelationGroups(guint32 nContactId, CGroupIterator ** ppGroupIterator)

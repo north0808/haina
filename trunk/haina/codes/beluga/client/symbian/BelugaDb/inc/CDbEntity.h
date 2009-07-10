@@ -10,7 +10,9 @@
 #ifndef __CDBENTITY_H__
 #define __CDBENTITY_H__
 
+
 #include <glib.h>
+#include "Beluga.h"
 
 class CEntityDb;
 

@@ -15,7 +15,7 @@
 static ECommType eCommInfoType;
 static guint32	 nTotality = 0;
 
-extern freeAddressArray(GPtrArray * pArray);
+GLREF_C void freeAddressArray(GPtrArray * pArray);
 
 static void fill_hashtable (gpointer key, gpointer value, gpointer user_data)
 	{
@@ -24,42 +24,42 @@ static void fill_hashtable (gpointer key, gpointer value, gpointer user_data)
 
 static void fill_hashtable_by_phonetype(gpointer key, gpointer value, gpointer user_data)
 	{
-	if ((*key) & CommType_Phone)
+	if (*((guint32*)key) & CommType_Phone)
 		g_hash_table_insert((GHashTable*)user_data, key, g_strdup((gchar*)value));
 	}
 
 static void fill_hashtable_by_emailtype(gpointer key, gpointer value, gpointer user_data)
 	{
-	if ((*key) & CommType_Email)
+	if (*((guint32*)key) & CommType_Email)
 		g_hash_table_insert((GHashTable*)user_data, key, g_strdup((gchar*)value));
 	}
 
 static void fill_hashtable_by_imtype(gpointer key, gpointer value, gpointer user_data)
 	{
-	if ((*key) & CommType_IM)
+	if (*((guint32*)key) & CommType_IM)
 		g_hash_table_insert((GHashTable*)user_data, key, g_strdup((gchar*)value));
 	}
 
 static void get_totality(gpointer key, gpointer value, gpointer user_data)
 	{
-	if ((*key) & (*(ECommType*)user_data)) nTotality++;
+	if (*((guint32*)key) & (*(ECommType*)user_data)) nTotality++;
 	}
 
 static void delete_comminfo_by_phonetype(gpointer key, gpointer value, gpointer user_data)
 	{
-	if ((*key) & CommType_Phone) 
+	if (*((guint32*)key) & CommType_Phone) 
 		g_hash_table_remove((GHashTable*)user_data, key);
 	}
 
 static void delete_comminfo_by_emailtype(gpointer key, gpointer value, gpointer user_data)
 	{
-	if ((*key) & CommType_Email) 
+	if (*((guint32*)key) & CommType_Email) 
 		g_hash_table_remove((GHashTable*)user_data, key);
 	}
 
 static void delete_comminfo_by_imtype(gpointer key, gpointer value, gpointer user_data)
 	{
-	if ((*key) & CommType_IM) 
+	if (*((guint32*)key) & CommType_IM) 
 		g_hash_table_remove((GHashTable*)user_data, key);
 	}
 
@@ -90,7 +90,7 @@ static void copy_address(gpointer data, gpointer user_data)
 	}
 
 
-CContactDb::~CPhoneContact()
+CPhoneContact::~CPhoneContact()
 	{
 	if (m_hCommInfoHashTable)
 		{
@@ -105,7 +105,7 @@ CContactDb::~CPhoneContact()
 		}
 	}
 
-EXPORT_C gint32 CContactDb::GetAllPhones(GHashTable ** hPhones)
+EXPORT_C gint32 CPhoneContact::GetAllPhones(GHashTable ** hPhones)
 	{
 	if (NULL == m_hCommInfoHashTable)
 		{
@@ -117,7 +117,7 @@ EXPORT_C gint32 CContactDb::GetAllPhones(GHashTable ** hPhones)
 	return 0;
 	}
 
-EXPORT_C gint32 CContactDb::GetAllEmails(GHashTable ** hEmails)
+EXPORT_C gint32 CPhoneContact::GetAllEmails(GHashTable ** hEmails)
 	{
 	if (NULL == m_hCommInfoHashTable)
 		{
@@ -129,7 +129,7 @@ EXPORT_C gint32 CContactDb::GetAllEmails(GHashTable ** hEmails)
 	return 0;
 	}
 
-EXPORT_C gint32 CContactDb::GetAllAddresses(GPtrArray ** hAddresses)
+EXPORT_C gint32 CPhoneContact::GetAllAddresses(GPtrArray ** hAddresses)
 	{
 	if (NULL == m_aAddressArray)
 		{
@@ -141,7 +141,7 @@ EXPORT_C gint32 CContactDb::GetAllAddresses(GPtrArray ** hAddresses)
 	return 0;
 	}
 
-EXPORT_C gint32 CContactDb::GetAllIMs(GHashTable ** hIMs)
+EXPORT_C gint32 CPhoneContact::GetAllIMs(GHashTable ** hIMs)
 	{
 	if (NULL == m_hCommInfoHashTable)
 		{
@@ -153,7 +153,7 @@ EXPORT_C gint32 CContactDb::GetAllIMs(GHashTable ** hIMs)
 	return 0;
 	}
 
-EXPORT_C gint32 CContactDb::SetPhones(GHashTable * hPhones)
+EXPORT_C gint32 CPhoneContact::SetPhones(GHashTable * hPhones)
 	{
 /*	if (NULL == m_hCommInfoHashTable)
 		{
@@ -162,11 +162,11 @@ EXPORT_C gint32 CContactDb::SetPhones(GHashTable * hPhones)
 	if (NULL == m_hCommInfoHashTable)
 		m_hCommInfoHashTable = g_hash_table_new_full(g_int_hash, g_int_equal, NULL, g_free);
 	
-	g_hash_table_foreach(*hPhones, fill_hashtable, m_hCommInfoHashTable);
+	g_hash_table_foreach(hPhones, fill_hashtable, m_hCommInfoHashTable);
 	return 0;
 	}
 
-EXPORT_C gint32 CContactDb::SetEmails(GHashTable * hEmails)
+EXPORT_C gint32 CPhoneContact::SetEmails(GHashTable * hEmails)
 	{
 	/*	if (NULL == m_hCommInfoHashTable)
 			{
@@ -175,11 +175,11 @@ EXPORT_C gint32 CContactDb::SetEmails(GHashTable * hEmails)
 	if (NULL == m_hCommInfoHashTable)
 		m_hCommInfoHashTable = g_hash_table_new_full(g_int_hash, g_int_equal, NULL, g_free);
 			
-	g_hash_table_foreach(*hEmails, fill_hashtable, m_hCommInfoHashTable);
+	g_hash_table_foreach(hEmails, fill_hashtable, m_hCommInfoHashTable);
 	return 0;
 	}
 
-EXPORT_C gint32 CContactDb::SetAddresses(GPtrArray * hAddresses)
+EXPORT_C gint32 CPhoneContact::SetAddresses(GPtrArray * hAddresses)
 	{
 /*	if (NULL == m_aAddressArray)
 		{
@@ -188,11 +188,11 @@ EXPORT_C gint32 CContactDb::SetAddresses(GPtrArray * hAddresses)
 	if (NULL == m_aAddressArray)
 		m_aAddressArray = g_ptr_array_new();
 	
-	for (int i=0; i<hAddresses->len; i++)
-		for (int j=0; j<m_aAddressArray->len; j++)
+	for (guint32 i=0; i<hAddresses->len; i++)
+		for (guint32 j=0; j<m_aAddressArray->len; j++)
 			{
-			stAddress * srcAddr = g_ptr_array_index(hAddresses, i);
-			stAddress * DestAddr = g_ptr_array_index(m_aAddressArray, j);
+			stAddress * srcAddr = (stAddress*)g_ptr_array_index(hAddresses, i);
+			stAddress * DestAddr = (stAddress*)g_ptr_array_index(m_aAddressArray, j);
 			
 			if (srcAddr->aid == DestAddr->aid)
 				{
@@ -209,7 +209,7 @@ EXPORT_C gint32 CContactDb::SetAddresses(GPtrArray * hAddresses)
 	return 0;
 	}
 
-EXPORT_C gint32 CContactDb::SetIMs(GHashTable * hIMs)
+EXPORT_C gint32 CPhoneContact::SetIMs(GHashTable * hIMs)
 	{
 	/*	if (NULL == m_hCommInfoHashTable)
 			{
@@ -218,7 +218,7 @@ EXPORT_C gint32 CContactDb::SetIMs(GHashTable * hIMs)
 	if (NULL == m_hCommInfoHashTable)
 		m_hCommInfoHashTable = g_hash_table_new_full(g_int_hash, g_int_equal, NULL, g_free);
 	
-	g_hash_table_foreach(*hIMs, fill_hashtable, m_hCommInfoHashTable);
+	g_hash_table_foreach(hIMs, fill_hashtable, m_hCommInfoHashTable);
 	return 0;
 	}
 
@@ -270,9 +270,9 @@ EXPORT_C gint32 CPhoneContact::GetAddress(ECommType eAddrType, stAddress ** sAdd
 		return ERROR(ESide_Client, EModule_Db, ECode_Invalid_Param);
 	
 	*sAddress = NULL;
-	for (int j=0; j<m_aAddressArray->len; j++)
+	for (guint32 j=0; j<m_aAddressArray->len; j++)
 		{
-		stAddress * srcAddr = g_ptr_array_index(m_aAddressArray, j);
+		stAddress * srcAddr = (stAddress*)g_ptr_array_index(m_aAddressArray, j);
 		if (eAddrType == srcAddr->atype)
 			{
 				*sAddress = (stAddress*)g_malloc0(sizeof(stAddress));
@@ -338,13 +338,12 @@ EXPORT_C gint32 CPhoneContact::SetAddress(ECommType eAddrType, stAddress * sAddr
 		return ERROR(ESide_Client, EModule_Db, ECode_Invalid_Param);
 	
 	guint32 j = 0;
-	*sAddress = NULL;
 	for (j=0; j<m_aAddressArray->len; j++)
-		if (eAddrType == g_ptr_array_index(m_aAddressArray, j)->atype) break;
+		if (eAddrType == ((stAddress*)g_ptr_array_index(m_aAddressArray, j))->atype) break;
 	
 	stAddress * addr;
 	if (j < m_aAddressArray->len)
-		addr = g_ptr_array_index(m_aAddressArray, j);
+		addr = (stAddress*)g_ptr_array_index(m_aAddressArray, j);
 	else
 		addr = (stAddress*)g_malloc0(sizeof(stAddress));
 	
@@ -373,14 +372,14 @@ EXPORT_C gint32 CPhoneContact::SetIM(ECommType eIMType, gchar * sIM)
 	return 0;
 	}
 
-EXPORT_C gint32 GCPhoneContact::GetPhoneType(gchar * sPhone, ECommType * ePhoneType)
+EXPORT_C gint32 CPhoneContact::GetPhoneType(gchar * sPhone, ECommType * ePhoneType)
 	{
 	if (NULL == m_hCommInfoHashTable)
 		{
 		GetAllCommInfo();
 		}
 	
-	if (g_hash_table_find(m_hCommInfoHashTable, find_commtype_by_phone, sPhone))
+	if (g_hash_table_find(m_hCommInfoHashTable, find_commtype, sPhone))
 		{
 		*ePhoneType = eCommInfoType;
 		return 0;
@@ -412,10 +411,10 @@ EXPORT_C gint32 CPhoneContact::GetAddressType(stAddress * sAddress, ECommType * 
 		GetAllCommInfo();
 		}	
 	
-	for (int i=0; i<m_aAddressArray->len; i++)
-		if (sAddress->aid == g_ptr_array_index(m_aAddressArray, i)->aid)
+	for (guint32 i=0; i<m_aAddressArray->len; i++)
+		if (sAddress->aid == ((stAddress*)g_ptr_array_index(m_aAddressArray, i))->aid)
 			{
-			*eAddrType = g_ptr_array_index(m_aAddressArray, i)->atype;
+			*eAddrType = (ECommType)((stAddress*)g_ptr_array_index(m_aAddressArray, i))->atype;
 			return 0;
 			}
 	
@@ -431,7 +430,7 @@ EXPORT_C gint32 CPhoneContact::GetIMType(gchar * sIM, ECommType * eIMType)
 	
 	if (g_hash_table_find(m_hCommInfoHashTable, find_commtype, sIM))
 		{
-		*eEmailType = eCommInfoType;
+		*eIMType = eCommInfoType;
 		return 0;
 		}
 	else
@@ -471,8 +470,8 @@ EXPORT_C gint32 CPhoneContact::GetAddressTotality(guint32 * totality)
 		GetAllCommInfo();
 		}	
 	nTotality = 0;
-	for (int i=0; i<m_aAddressArray->len; i++)
-		if (CommType_Address & g_ptr_array_index(m_aAddressArray, i)->atype)
+	for (guint32 i=0; i<m_aAddressArray->len; i++)
+		if (CommType_Address & ((stAddress*)g_ptr_array_index(m_aAddressArray, i))->atype)
 			nTotality++;
 	*totality = nTotality;
 	return 0;
@@ -517,10 +516,10 @@ EXPORT_C gint32 CPhoneContact::DeleteAddress(ECommType eAddrType)
 		{
 		GetAllCommInfo();
 		}	
-	for (int i=0; i<m_aAddressArray->len; i++)
-		if (eAddrType == g_ptr_array_index(m_aAddressArray, i)->atype)
+	for (guint32 i=0; i<m_aAddressArray->len; i++)
+		if (eAddrType == ((stAddress*)g_ptr_array_index(m_aAddressArray, i))->atype)
 			{
-			stAdress * addr = g_ptr_array_remove_index(i);
+			stAddress * addr = (stAddress*)g_ptr_array_remove_index(m_aAddressArray, i);
 			g_free(addr);
 			}
 	return 0;
@@ -562,10 +561,10 @@ EXPORT_C gint32 CPhoneContact::DeleteAllAddresses()
 		{
 		GetAllCommInfo();
 		}	
-	for (int i=0; i<m_aAddressArray->len; i++)
-		if (CommType_Address & g_ptr_array_index(m_aAddressArray, i)->atype)
+	for (guint32 i=0; i<m_aAddressArray->len; i++)
+		if (CommType_Address & ((stAddress*)g_ptr_array_index(m_aAddressArray, i))->atype)
 			{
-			stAdress * addr = g_ptr_array_remove_index(i);
+			stAddress * addr = (stAddress*)g_ptr_array_remove_index(m_aAddressArray, i);
 			g_free(addr);
 			}
 	return 0;

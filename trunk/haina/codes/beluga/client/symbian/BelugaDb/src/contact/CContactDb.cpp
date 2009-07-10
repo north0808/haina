@@ -11,12 +11,13 @@
 #include <stdlib.h>
 #include <time.h>
 #include "CContact.h"
+#include "CGroup.h"
 #include "CPhoneContact.h"
-#include "CQQContact.h"
-#include "CMSNContact.h"
+#include "CIMContact.h"
 #include "CContactDb.h"
 #include "CContactIterator.h"
 
+GLREF_C void freeAddressArray(GPtrArray * pArray);
 
 static void insert_contact_ext_row(gpointer key, gpointer value, gpointer user_data)
 	{
@@ -26,9 +27,9 @@ static void insert_contact_ext_row(gpointer key, gpointer value, gpointer user_d
 	contact->GetEntityDb()->GetMaxId(&nContactId);
 	
 	sprintf(sql, "insert into contact_ext values(NULL, %d, %d, %s);", 
-			nContactId, (guint32)*key, (char*)value);
+			nContactId, *((guint32*)key), (char*)value);
 	
-	contact->GetEntityDb()->GetDatabase().execDML(sql);
+	contact->GetEntityDb()->GetDatabase()->execDML(sql);
 	}
 
 static void update_contact_ext_row(gpointer key, gpointer value, gpointer user_data)
@@ -39,9 +40,9 @@ static void update_contact_ext_row(gpointer key, gpointer value, gpointer user_d
 	contact->GetFieldValue(ContactField_Id, &fieldValue);
 	
 	sprintf(sql, "insert into contact_ext values(NULL, %d, %d, %s);", 
-			atoi(fieldValue->str), (guint32)*key, (char*)value);
+			atoi(fieldValue->str), *((guint32*)key), (char*)value);
 	g_string_free(fieldValue, TRUE);
-	contact->GetEntityDb()->GetDatabase().execDML(sql);
+	contact->GetEntityDb()->GetDatabase()->execDML(sql);
 	}
 
 
@@ -172,13 +173,13 @@ EXPORT_C gint32 CContactDb::SaveEntity(CDbEntity * pEntity)
 			
 			/* insert addresses */
 			GPtrArray * addresses = NULL;
-			phonecontact->GetAllIMs(&addresses);
-			for (int j=0; j<addresses->len; j++)
+			phonecontact->GetAllAddresses(&addresses);
+			for (guint32 j=0; j<addresses->len; j++)
 				{
 				guint32 nContactId = 0;
 				memset(sql, 0, sizeof(sql));
 				GetMaxId(&nContactId);
-				stAddress * addr = g_ptr_array_index(addresses, j);
+				stAddress * addr = (stAddress*)g_ptr_array_index(addresses, j);
 				sprintf(sql, "insert into address values(NULL, %d, %s, %s %s, %s, %s, %s);", 
 									addr->atype, addr->block, addr->street, addr->district,
 									addr->city, addr->state, addr->country, addr->postcode);
@@ -235,7 +236,7 @@ EXPORT_C gint32 CContactDb::UpdateEntity(CDbEntity * pEntity)
 		strcpy(sql, "update contact set "); 
 		for (i=1; i<ContactField_EndFlag; i++)
 			{
-			GString * fieldName = g_ptr_array_index(m_pFieldsName, i);
+			GString * fieldName = (GString*)g_ptr_array_index(m_pFieldsName, i);
 			strcat(sql, fieldName->str);
 			strcat(sql, " = ?");
 			if (i != ContactField_EndFlag - 1)
@@ -291,11 +292,11 @@ EXPORT_C gint32 CContactDb::UpdateEntity(CDbEntity * pEntity)
 			
 			/* insert addresses */
 			GPtrArray * addresses = NULL;
-			phonecontact->GetAllIMs(&addresses);
-			for (int j=0; j<addresses->len; j++)
+			phonecontact->GetAllAddresses(&addresses);
+			for (guint32 j=0; j<addresses->len; j++)
 				{
 				memset(sql, 0, sizeof(sql));
-				stAddress * addr = g_ptr_array_index(addresses, j);
+				stAddress * addr = (stAddress*)g_ptr_array_index(addresses, j);
 				sprintf(sql, "insert into address values(NULL, %d, %s, %s %s, %s, %s, %s);", 
 									addr->atype, addr->block, addr->street, addr->district,
 									addr->city, addr->state, addr->country, addr->postcode);
@@ -417,14 +418,14 @@ EXPORT_C gint32 CContactDb::SearchContactsByTag(guint32 nTagId, GArray * fieldsI
 					"left join address a on ce.comm_value = a.aid) ext "\
 					"on c.cid = ext.cid where ");
 		
-	for (int i=0; i<fieldsIndex->len; i++)
-		for (int j=ContactField_UserId; j<ContactField_EndFlag; j++)
+	for (guint32 i=0; i<fieldsIndex->len; i++)
+		for (guint32 j=ContactField_UserId; j<ContactField_EndFlag; j++)
 			{
 			if (g_array_index(fieldsIndex, guint32, i) == j)
 				{
-				strcat(sql, g_ptr_array_index(m_pFieldsName, j)->str));
+				strcat(sql, ((GString*)g_ptr_array_index(m_pFieldsName, j))->str);
 				strcat(sql, " like '%");
-				strcat(sql, g_ptr_array_index(fieldsValue, i)->str));
+				strcat(sql, ((GString*)g_ptr_array_index(fieldsValue, i))->str);
 				strcat(sql, "%' and");				
 				}
 			}
@@ -434,7 +435,7 @@ EXPORT_C gint32 CContactDb::SearchContactsByTag(guint32 nTagId, GArray * fieldsI
 	if (-1 != m_nSortFieldIndex)
 		{
 		strcat(sql, "order by c.");
-		strcat(sql, g_ptr_array_index(m_pFieldsName, m_nSortFieldIndex)->str));
+		strcat(sql, ((GString*)g_ptr_array_index(m_pFieldsName, m_nSortFieldIndex))->str);
 		strcat(sql, " asc;");
 		}
 		
@@ -481,21 +482,21 @@ EXPORT_C gint32 CContactDb::SearchPhoneContactsByPhoneOrEmail(gchar * commValue,
 	return 0;
 	}
 
-EXPORT_C gint32 SearchContactsByName(guint32 nTagId, gchar* name, gboolean onlyPref, 
+EXPORT_C gint32 CContactDb::SearchContactsByName(guint32 nTagId, gchar* name, gboolean onlyPref, 
 											CContactIterator ** ppContactIterator)
 	{
 	char sql[512] = {0};
 	OpenDatabase();
 	
 	if (nTagId != ContactType_Phone)
-		sprintf(sql, "select * from contact where nickname_spell like '\%%s\%' order by nikename_spell asc;", name);
+		sprintf(sql, "select * from contact where nickname_spell like \'%%s%\' order by nikename_spell asc;", name);
 	else if (onlyPref)
-		sprintf(sql, "select * from contact where name_spell like '\%%s\%' order by name_spell asc;", name);
+		sprintf(sql, "select * from contact where name_spell like \'%%s%\' order by name_spell asc;", name);
 	else
 		sprintf(sql, "select c.*, ext.* from contact c "\
 					"left join (select ce.cid ,ce.comm_key, ce.comm_value, a.* from contact_ext ce "\
 					"left join address a on ce.comm_value = a.aid) ext "\
-					"on c.cid = ext.cid where name_spell like '\%%s\%' order by name_spell asc;", name);
+					"on c.cid = ext.cid where name_spell like \'%%s%\' order by name_spell asc;", name);
 							
 	m_dbQuery = m_dbBeluga.execQuery(sql);
 	*ppContactIterator = NULL;
@@ -510,7 +511,7 @@ EXPORT_C gint32 SearchContactsByName(guint32 nTagId, gchar* name, gboolean onlyP
 	return 0;	
 	}
 /*
-EXPORT_C gint32 SearchContactsByWordsFirstLetter(guint32 nTagId, gchar* nameLetters, gboolean onlyPref, 
+EXPORT_C gint32 CContactDb::SearchContactsByWordsFirstLetter(guint32 nTagId, gchar* nameLetters, gboolean onlyPref, 
     											CContactIterator ** ppContactIterator)
 	{
 	char sql[512] = {0};
@@ -597,6 +598,7 @@ EXPORT_C gint32 CContactDb::GetMostMatchingPhoneContactByPhoneOrEmail(gchar * co
 	guint8 nMatchingBit = CONTACT_PHONE_PREF_LEN;
 	char sql[512] = {0};
 	
+	*ppContact = NULL;
 	OpenDatabase();
 	
 	char * email = strrchr(commValue, '@'); /* simply check commValue is email */
@@ -643,7 +645,7 @@ EXPORT_C gint32 CContactDb::GetMostMatchingPhoneContactByPhoneOrEmail(gchar * co
 	while (!query.eof())
 		{
 		nContactId = query.getIntField(0);
-		gchar * fieldValue = query.getStringField(1);
+		const gchar * fieldValue = query.getStringField(1);
 		
 		if (NULL == fieldValue)  /* query error */
 			break; 
@@ -663,7 +665,7 @@ EXPORT_C gint32 CContactDb::GetMostMatchingPhoneContactByPhoneOrEmail(gchar * co
 			guint32 i = strlen(commValue);
 			guint32 j = strlen(fieldValue);
 			
-			while (i && j && (commValue[i - 1] == fieldValue[j - 1]) 
+			while (i && j && (commValue[i - 1] == fieldValue[j - 1]) )
 				{
 				i--; j--;
 				
@@ -687,7 +689,10 @@ EXPORT_C gint32 CContactDb::GetMostMatchingPhoneContactByPhoneOrEmail(gchar * co
 		query.nextRow();
 		}
 	
-	ret = GetEntityById(nMostMatchingId, ppContact);
+	CDbEntity * pEntity = NULL;
+	ret = GetEntityById(nMostMatchingId, &pEntity);
+	if (0 == ret)
+		*ppContact = (CContact*)pEntity;
 
 	CloseDatabase();	
 	return ret;
@@ -709,7 +714,7 @@ EXPORT_C gint32 CContactDb::GetAllContactsByTag(guint32 nTagId, gboolean onlyPre
 	if (-1 != m_nSortFieldIndex)
 		{
 		strcat(sql, "order by c.");
-		strcat(sql, g_ptr_array_index(m_pFieldsName, m_nSortFieldIndex)->str));
+		strcat(sql, ((GString*)g_ptr_array_index(m_pFieldsName, m_nSortFieldIndex))->str);
 		strcat(sql, " asc;");
 		}
 		
@@ -731,7 +736,7 @@ EXPORT_C gint32 CContactDb::GetAllContactsNotInGroupByTag(guint32 nTagId, gboole
 	char sql[512] = {0};
 	OpenDatabase();
 	
-	if (onlyPref || nTag != ContactType_Phone)
+	if (onlyPref || nTagId != ContactType_Phone)
 		sprintf(sql, "select * from contact c where c.cid not in (select cid from r_contact_group) and c.type = %d ", nTagId);
 	else
 		sprintf(sql, "select c.*, ext.* from contact c "\
@@ -742,7 +747,7 @@ EXPORT_C gint32 CContactDb::GetAllContactsNotInGroupByTag(guint32 nTagId, gboole
 	if (-1 != m_nSortFieldIndex)
 		{
 		strcat(sql, "order by c.");
-		strcat(sql, g_ptr_array_index(m_pFieldsName, m_nSortFieldIndex)->str));
+		strcat(sql, ((GString*)g_ptr_array_index(m_pFieldsName, m_nSortFieldIndex))->str);
 		strcat(sql, " asc;");
 		}
 		
@@ -776,7 +781,7 @@ EXPORT_C gint32 CContactDb::GetAllContactsByGroup(guint32 nGroupId, gboolean onl
 	if (-1 != m_nSortFieldIndex)
 		{
 		strcat(sql, "order by c.");
-		strcat(sql, g_ptr_array_index(m_pFieldsName, m_nSortFieldIndex)->str));
+		strcat(sql, ((GString*)g_ptr_array_index(m_pFieldsName, m_nSortFieldIndex))->str);
 		strcat(sql, " asc;");
 		}
 		
@@ -819,7 +824,7 @@ EXPORT_C gint32 CContactDb::GetContactsTotalityByGroup(guint32 nGroupId, guint32
 	return 0;
 	}
     
-EXPORT_C gint32 CContactDb::GetPhoneDistrict(gchar* phoneNumber, gchar ** districtNumber, gchar ** districtName, guint32 * feeType)
+EXPORT_C gint32 CContactDb::GetPhoneDistrict(gchar* phoneNumber, gchar ** districtNumber, gchar ** districtName, gchar ** feeType)
 	{
 	char sql[256] = {0};
 	OpenDatabase();
@@ -846,7 +851,7 @@ EXPORT_C gint32 CContactDb::GetPhoneDistrict(gchar* phoneNumber, gchar ** distri
 		}
 	
 	*feeType = NULL;
-	*feeType =  query.getStringField(5);
+	*feeType =  (gchar*)query.getStringField(5);
 		
 	CloseDatabase();
 	return 0;
@@ -855,10 +860,10 @@ EXPORT_C gint32 CContactDb::GetPhoneDistrict(gchar* phoneNumber, gchar ** distri
 EXPORT_C gint32 CContactDb::GetRecentContacts(GPtrArray ** pContacts)
 	{
 	char sql[64] = {0};
-	char time[20] = {0};
+	char times[20] = {0};
 	time_t t;
 	
-	t = time(NULL); 
+	time(&t); 
 	*pContacts = NULL;
 	*pContacts = g_ptr_array_new();
 	if (*pContacts == NULL)
@@ -879,11 +884,11 @@ EXPORT_C gint32 CContactDb::GetRecentContacts(GPtrArray ** pContacts)
 			}
 		
 		recentContact->nContactId = query.getIntField(1);
-		recentContact->event = query.getIntField(2);
+		recentContact->event = (EContactEvent)query.getIntField(2);
 		strcpy(recentContact->eventCommInfo, query.getStringField(3));
-		strcpy(time, query.getStringField(4));  /* exp: 2009-6-30 21:51:23 */
+		strcpy(times, query.getStringField(4));  /* exp: 2009-6-30 21:51:23 */
  		recentContact->time = localtime(&t); 
-		char * tmp = strrchr(time, '-');
+		char * tmp = strrchr(times, '-');
 		recentContact->time->tm_mon = atoi(tmp+1);
 		tmp = strrchr(tmp, '-');
 		recentContact->time->tm_mday = atoi(tmp+1);
@@ -920,7 +925,7 @@ EXPORT_C gint32 CContactDb::SaveRecentContact(stRecentContact * contact)
 	return 0;
 	}
     
-gint32 GetContactCommInfo(CPhoneContact * pContact)
+gint32 CContactDb::GetContactCommInfo(CPhoneContact * pContact)
 	{
 	char sql[128] = {0};
 	GHashTable * hashTable = pContact->getCommInfoHashTable();
@@ -933,17 +938,17 @@ gint32 GetContactCommInfo(CPhoneContact * pContact)
 	GString * fieldValue = NULL;
 	pContact->GetFieldValue(ContactField_PhonePref, &fieldValue);
 	if (fieldValue->len) 
-		pContact->SetPhone(CommType_Pref | CommType_Phone, fieldValue->str);
+		pContact->SetPhone((ECommType)(CommType_Pref | CommType_Phone), fieldValue->str);
 	g_string_free(fieldValue, TRUE);
 	
 	pContact->GetFieldValue(ContactField_EmailPref, &fieldValue);
 	if (fieldValue->len) 
-		pContact->SetEmail(CommType_Pref | CommType_Email, fieldValue->str);
+		pContact->SetEmail((ECommType)(CommType_Pref | CommType_Email), fieldValue->str);
 	g_string_free(fieldValue, TRUE);
 	
 	pContact->GetFieldValue(ContactField_IMPref, &fieldValue);
 	if (fieldValue->len) 
-		pContact->SetIM(CommType_Pref | CommType_IM, fieldValue->str);
+		pContact->SetIM((ECommType)(CommType_Pref | CommType_IM), fieldValue->str);
 	g_string_free(fieldValue, TRUE);
 	
 	pContact->GetFieldValue(ContactField_Id, &CidField);
@@ -953,14 +958,14 @@ gint32 GetContactCommInfo(CPhoneContact * pContact)
 	CppSQLite3Query query = m_dbBeluga.execQuery(sql);
 	while (!query.eof())
 		{
-		gint32 commType = query.getIntField(0); /* comm_key field */ 
+		ECommType commType = (ECommType)query.getIntField(0); /* comm_key field */ 
 		switch(commType & 0xF0) 
 			{
 			case CommType_Phone:
-				pContact->SetPhone(commType, query.getStringField(1));	
+				pContact->SetPhone(commType, (gchar*)query.getStringField(1));	
 				break;
 			case CommType_Email:
-				pContact->SetEmail(commType, query.getStringField(1));
+				pContact->SetEmail(commType, (gchar*)query.getStringField(1));
 				break;
 			case CommType_Address:
 				{
@@ -979,7 +984,7 @@ gint32 GetContactCommInfo(CPhoneContact * pContact)
 				}
 				break;
 			case CommType_IM:
-				pContact->SetIM(commType, query.getStringField(1));
+				pContact->SetIM(commType, (gchar*)query.getStringField(1));
 				break;
 			default:
 				break;

@@ -13,6 +13,7 @@
 #include "CDbEntity.h"
 #include "CppSQLite3.h"
 #include "CEntityDb.h"
+#include "Beluga.h"
 
 
 class CDbEntityIterator

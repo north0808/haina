@@ -11,6 +11,8 @@
 
 #include <e32std.h>		 // GLDEF_C
 #include <glib.h>
+#include "Beluga.h"		 
+
 
 static void free_gstring (gpointer data, gpointer user_data)
 	{
