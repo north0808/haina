@@ -14,9 +14,11 @@
 class CIMContact : public CContact
 {
 public:
-    CIMContact()
-    	{
-    	}
+    
+	CIMContact(CEntityDb * pEntityDb) :
+    CContact(pEntityDb)
+		{
+		}
     
     ~CIMContact()
     	{ 	

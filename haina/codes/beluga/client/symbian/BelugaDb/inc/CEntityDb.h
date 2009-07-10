@@ -12,6 +12,7 @@
 
 #include <glib.h>
 #include "CppSQLite3.h"
+#include "Beluga.h"
 
 class CDbEntity;
 

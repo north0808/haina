@@ -12,6 +12,8 @@
 
 #include <time.h>
 #include "CEntityDb.h"
+#include "CContact.h"
+#include "CContactIterator.h"
 
 
 enum EContactEvent
@@ -24,7 +26,7 @@ enum EContactEvent
     ContactEvent_OutgoCall,
     ContactEvent_QQ,
     ContactEvent_MSN
-}
+};
 
 enum ECommType
 {
@@ -39,7 +41,7 @@ enum ECommType
     CommType_Pref = 0x04,
     CommType_QQ = 0x05,
     CommType_MSN = 0x06,
-}
+};
 
 struct stRecentContact
 {
@@ -47,10 +49,15 @@ struct stRecentContact
     EContactEvent event;
     gchar eventCommInfo[256];
     tm * time;
-}
+};
 
 #define 	MAX_RECENT_CONTACT_NUM		15
 
+
+
+class CGroup;
+class CContactIterator;
+class CPhoneContact;
 
 class CContactDb : public CEntityDb
 {
@@ -96,7 +103,7 @@ public:
     IMPORT_C gint32 GetContactsTotalityByTag(guint32 nTagId, guint32 * totality);
     IMPORT_C gint32 GetContactsTotalityByGroup(guint32 nGroupId, guint32 * totality);
 
-    IMPORT_C gint32 GetPhoneDistrict(gchar* phoneNumber, gchar ** districtNumber, gchar ** districtName, guint32 * feeType);
+    IMPORT_C gint32 GetPhoneDistrict(gchar* phoneNumber, gchar ** districtNumber, gchar ** districtName, gchar ** feeType);
  
     IMPORT_C gint32 GetRecentContacts(GPtrArray ** pContacts);
     IMPORT_C gint32 SaveRecentContact(stRecentContact * contact);
