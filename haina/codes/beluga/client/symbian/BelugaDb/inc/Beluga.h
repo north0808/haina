@@ -10,6 +10,53 @@
 #ifndef BELUGA_H_
 #define BELUGA_H_
 
+
+/**
+@publishedAll
+
+*/
+#define IMPORT_C __declspec(dllexport)
+/**
+@publishedAll
+
+*/
+#define EXPORT_C __declspec(dllexport)
+
+
+/**
+@publishedAll
+@deprecated
+*/
+#define GLREF_D extern
+/**
+@publishedAll
+@deprecated
+*/
+#define GLDEF_D
+/**
+@publishedAll
+@deprecated
+*/
+#define LOCAL_D static
+/**
+@publishedAll
+@deprecated
+*/
+#define GLREF_C extern
+/**
+@publishedAll
+@deprecated
+*/
+#define GLDEF_C
+/**
+@publishedAll
+@deprecated
+*/
+#define LOCAL_C static
+
+
+
+
 /* database name */
 #define	BELUGA_DATABASE		"beluga.db"
 
