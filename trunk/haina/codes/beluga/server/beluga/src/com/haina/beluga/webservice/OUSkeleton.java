@@ -55,8 +55,11 @@ public class OUSkeleton extends AbstractSkeleton {
 	    	logger.info(args.length + ":Parameters in "+_method.getName());
 		    values = new Object[args.length];
 		    for (int i = 0; i < args.length; i++) {
-		    	values[i] =  new JSONDeserializer().use(null, args[i])
+		    	Object js =  new JSONDeserializer().use(null, args[i])
 					.deserialize(in.readString());
+		    	if(!js.getClass().equals(args[i])){
+		    		values[i] = js.toString();
+		    	}
 		    	logger.info(i +":"+values[i].getClass());
 		    }
 	    }
