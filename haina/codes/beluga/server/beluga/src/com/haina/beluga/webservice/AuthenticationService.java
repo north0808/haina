@@ -1,5 +1,7 @@
 package com.haina.beluga.webservice;
 
+import org.springframework.stereotype.Service;
+
 /**
  * 认证业务处理接口实现类。<br/>
  * @author huangyongqiang
@@ -7,6 +9,7 @@ package com.haina.beluga.webservice;
  * @since 1.0
  * @date 2009-07-05
  */
+@Service(value="authenticationService")
 public class AuthenticationService implements IAuthenticationService {
 	
 	private String proxyLoginUrl;
