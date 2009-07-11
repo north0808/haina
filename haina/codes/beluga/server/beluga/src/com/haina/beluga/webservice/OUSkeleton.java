@@ -59,6 +59,8 @@ public class OUSkeleton extends AbstractSkeleton {
 					.deserialize(in.readString());
 		    	if(!js.getClass().equals(args[i])){
 		    		values[i] = js.toString();
+		    	}else{
+		    		values[i] = js;
 		    	}
 		    	logger.info(i +":"+values[i].getClass());
 		    }
