@@ -25,9 +25,11 @@ public interface IContactUserService extends IBaseSerivce<IContactUserDao,Contac
 	 * @param password 密码
 	 * @param mobile 手机号码
 	 * @param userStatus 用户状态
+	 * @param userIp 用户使用的IP地址
 	 * @return
 	 */
-	public ContactUser addContactUser(String loginName, String password, String mobile,Integer userStatus);
+	public ContactUser addContactUser(String loginName, String password, String mobile,Integer userStatus
+			,String userIp);
 	
 	/**
 	 * 通过Id取得联系人用户信息。<br/>
