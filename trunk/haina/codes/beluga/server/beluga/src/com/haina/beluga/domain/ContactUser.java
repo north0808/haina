@@ -28,7 +28,7 @@ public class ContactUser extends VersionalModel {
 	public static final Integer USER_STATUS_ONLINE=1;
 	
 	/*用户离线状态。*/
-	public static final Integer USER_STATUS_OFFLINE=1;
+	public static final Integer USER_STATUS_OFFLINE=0;
 
 	private String loginName;
 	
@@ -266,6 +266,15 @@ public class ContactUser extends VersionalModel {
 		this.logger.warn("remark column is used for database log only,it can not be set.");
 	}
 
+	/**
+	 * 是否在线。<br/>
+	 * @return
+	 */
+	public boolean isOnline() {
+		return (!this.isNew() && this.getValidFlag() 
+				&& this.getUserStatus().equals(ContactUser.USER_STATUS_ONLINE));
+	}
+	
 	/**
 	 * @see java.lang.Object#equals(Object)
 	 */
