@@ -97,5 +97,12 @@ public interface IContactUserService extends IBaseSerivce<IContactUserDao,Contac
 	 */
 	public Set<UserProfileExt> getUserProfileExtById(String id);
 	
+	/**
+	 * 设置用户为离线状态。<br/>
+	 * @param contactUser
+	 * @return
+	 */
+	public ContactUser editContactUserToOffline(ContactUser contactUser);
+	
 	
 }
