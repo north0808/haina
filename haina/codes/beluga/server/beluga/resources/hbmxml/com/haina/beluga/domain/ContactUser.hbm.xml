@@ -56,6 +56,25 @@
         </property>
 
         <property
+            name="password"
+                    type="string"
+                    column="password"
+                length="256"
+                not-null="true"
+        >
+
+        </property>
+
+        <property
+            name="userStatus"
+                    type="integer"
+                    column="userStatus"
+                not-null="true"
+        >
+
+        </property>
+
+        <property
             name="registerTime"
                     type="timestamp"
                 not-null="true"
@@ -92,6 +111,25 @@
         </property>
 
         <property
+            name="lastUpdateTime"
+                    type="timestamp"
+        >
+
+            <column
+                name="lastUpdateTime" 
+                sql-type="timestamp"
+            />
+
+        </property>
+
+        <property
+            name="loginNumber"
+                    column="loginNumber"
+        >
+
+        </property>
+
+        <property
             name="lastLoginIp"
                     type="java.lang.String"
                     column="lastLoginIp"
@@ -105,6 +143,15 @@
                     type="java.lang.Boolean"
                     column="validFlag"
                 not-null="true"
+        >
+
+        </property>
+
+        <property
+            name="description"
+                    type="java.lang.String"
+                    column="description"
+                length="2000"
         >
 
         </property>
