@@ -117,4 +117,14 @@ public class ContactUserService extends BaseSerivce<IContactUserDao,ContactUser,
 		return contactUserDao.getModelByPage(contactUser, first, maxSize);
 	}
 
+	@Override
+	public ContactUser editContactUserToOffline(ContactUser contactUser) {
+		ContactUser user=contactUser;
+		if(null!=user && user.isOnline()) {
+			user.setUserStatus(ContactUser.USER_STATUS_OFFLINE);
+		}
+		this.contactUserDao.update(user);
+		return user;
+	}
+
 }
