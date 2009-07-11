@@ -32,7 +32,7 @@ public class ContactUserService extends BaseSerivce<IContactUserDao,ContactUser,
 	
 	@Override
 	public ContactUser addContactUser(String loginName, String password,
-			String mobile) {
+			String mobile,Integer userStatus) {
 		if(StringUtils.isNull(loginName) || StringUtils.isNull(mobile)) {
 			return null;
 		}
@@ -46,10 +46,11 @@ public class ContactUserService extends BaseSerivce<IContactUserDao,ContactUser,
 		} 
 		contactUser=new ContactUser();
 		contactUser.setLoginName(loginName);
+		contactUser.setPassword(password);
 		contactUser.setMobile(mobile);
 		contactUser.setRegisterTime(new Date());
 		contactUser.setValidFlag(Boolean.TRUE);
-		
+		contactUser.setUserStatus(userStatus);
 		UserProfile userProfile=new UserProfile();
 		userProfile.setTelPref(mobile);
 		
