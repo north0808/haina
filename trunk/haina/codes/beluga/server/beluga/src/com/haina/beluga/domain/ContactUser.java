@@ -23,8 +23,18 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 public class ContactUser extends VersionalModel {
 
 	private static final long serialVersionUID = 6223217962960596222L;
+	
+	/*用户在线状态。*/
+	public static final Integer USER_STATUS_ONLINE=1;
+	
+	/*用户离线状态。*/
+	public static final Integer USER_STATUS_OFFLINE=1;
 
 	private String loginName;
+	
+	private String password;
+	
+	private Integer userStatus;
 	
 	private Date registerTime;
 	
@@ -40,6 +50,8 @@ public class ContactUser extends VersionalModel {
 	
 	/*是否有效。*/
 	private Boolean validFlag;
+	
+	private String description;
 	
 	/*用户的联系人标签。*/
 	private Set<ContactTag> contactTags;
@@ -74,6 +86,33 @@ public class ContactUser extends VersionalModel {
 		this.loginName = loginName;
 	}
 
+	/**
+	 * @hibernate.property column="password" length="256" not-null="true" type = "string"
+	 */
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	
+	/**
+	 * @hibernate.property column="userStatus" not-null="true" type = "integer"
+	 */
+	public Integer getUserStatus() {
+		return userStatus;
+	}
+
+	public void setUserStatus(Integer userStatus) {
+		Integer status=userStatus;
+		if(null==status || !status.equals(USER_STATUS_OFFLINE) 
+				|| !status.equals(USER_STATUS_ONLINE)) {
+			status=USER_STATUS_OFFLINE;
+		}
+		this.userStatus=status;
+	}
+	
 	/**
 	 * @hibernate.property not-null="true" type="timestamp"
 	 * @hibernate.column name="registerTime" sql-type="timestamp"
@@ -155,6 +194,17 @@ public class ContactUser extends VersionalModel {
 	}
 	
 	/**
+	 * @hibernate.property column="description" length="2000" type = "java.lang.String"
+	 */
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
+	/**
 	 * @hibernate.version
 	 * @hibernate.column name="version" type="long"
 	 */
@@ -229,8 +279,9 @@ public class ContactUser extends VersionalModel {
 				this.lastLoginIp, rhs.lastLoginIp).append(this.lastLoginTime,
 				rhs.lastLoginTime).append(this.registerTime, rhs.registerTime)
 				.append(this.loginName, rhs.loginName).append(this.mobile, rhs.mobile)
-				.append(this.id, rhs.id).isEquals()
-				;
+				.append(this.id, rhs.id).append(this.password, rhs.password)
+				.append(this.description, rhs.description)
+				.append(this.userStatus, rhs.userStatus).isEquals();
 	}
 
 	/**
@@ -240,8 +291,8 @@ public class ContactUser extends VersionalModel {
 	public int hashCode() {
 		return new HashCodeBuilder(1134122519, -1554226803).append(this.lastLoginIp).append(
 				this.lastLoginTime).append(this.registerTime).append(
-				this.loginName).append(this.mobile).append(this.id)
-				.toHashCode();
+				this.loginName).append(this.mobile).append(this.id).append(this.password)
+				.append(this.userStatus).append(this.description).toHashCode();
 	}
 
 	/**
@@ -254,6 +305,8 @@ public class ContactUser extends VersionalModel {
 						"lastLoginIp", this.lastLoginIp).append(
 						"lastLoginTime", this.lastLoginTime).append(
 						"registerTime", this.registerTime).append("id",
-						this.getId()).toString();
+						this.getId()).append("description",this.getDescription()).
+						append("userStatus",this.getUserStatus()).
+						append("password",this.getPassword()).toString();
 	}
 }
