@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.haina.beluga.core.service.BaseSerivce;
@@ -27,8 +26,7 @@ import com.haina.beluga.domain.UserProfileExt;
 public class ContactUserService extends BaseSerivce<IContactUserDao,ContactUser,String> implements
 		IContactUserService {
 
-	@Autowired(required=true)
-	private IContactUserDao contactUserDao;
+	private IContactUserDao contactUserDao=this.getBaseDao();
 	
 	@Override
 	public ContactUser addContactUser(String loginName, String password,
