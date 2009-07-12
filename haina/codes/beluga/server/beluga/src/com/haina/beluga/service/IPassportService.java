@@ -3,7 +3,6 @@ package com.haina.beluga.service;
 import org.springframework.beans.factory.InitializingBean;
 
 import com.haina.beluga.domain.ContactUser;
-import com.haina.beluga.dto.PassportDto;
 
 /**
  * 用户验证护照业务处理接口。<br/>
@@ -20,21 +19,21 @@ public interface IPassportService extends InitializingBean {
 	 * @param contactUser 联系人用户
 	 * @return
 	 */
-	public PassportDto addPassport(ContactUser contactUser);
+	public ContactUserToken addPassport(ContactUser contactUser);
 	
 	/**
 	 * 更新护照。<br/>
 	 * @param loginName 登录名
 	 * @return
 	 */
-	public PassportDto updatePassport(String loginName);
+	public ContactUserToken updatePassport(String loginName);
 	
 	/**
 	 * 取得护照。<br/>
 	 * @param loginName 登录名
 	 * @return
 	 */
-	public PassportDto getPassport(String loginName);
+	public ContactUserToken getPassport(String loginName);
 	
 	/**
 	 * 是否过期的护照。<br/>
@@ -48,7 +47,7 @@ public interface IPassportService extends InitializingBean {
 	 * @param passportDto 护照对象
 	 * @return
 	 */
-	public boolean isExpiredPassport(PassportDto passportDto); 
+	public boolean isExpiredPassport(ContactUserToken passportDto); 
 	
 	/**
 	 * 删除单个护照。<br/>
