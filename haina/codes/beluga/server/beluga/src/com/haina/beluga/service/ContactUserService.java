@@ -35,35 +35,82 @@ public class ContactUserService extends BaseSerivce<IContactUserDao,ContactUser,
 			return null;
 		}
 		ContactUser contactUser=contactUserDao.getContactUserByLoginName(loginName);
-		if(null!=contactUser) {
+		if(null==contactUser) {
+			/*新用户。*/
+			contactUser=contactUserDao.getContactUserByMobile(mobile);
+			if(null!=contactUser && contactUser.getValidFlag()) {
+				return null;
+			}
+			Date now=new Date();
+			contactUser=new ContactUser();
+			contactUser.setLoginName(loginName);
+			contactUser.setPassword(password);
+			contactUser.setMobile(mobile);
+			contactUser.setRegisterTime(now);
+			contactUser.setLastLoginTime(now);
+			contactUser.setValidFlag(Boolean.TRUE);
+			contactUser.setUserStatus(userStatus);
+			if(userStatus!=null && userStatus.equals(ContactUser.USER_STATUS_ONLINE)) {
+				contactUser.setLastLoginIp(userIp);
+			}
+			UserProfile userProfile=new UserProfile();
+			userProfile.setTelPref(mobile);
+			
+			contactUser.setUserProfile(userProfile);
+			userProfile.setContactUser(contactUser);
+			contactUserDao.create(contactUser);
 			return contactUser;
-		} 
-		contactUser=contactUserDao.getContactUserByMobile(mobile);
-		if(null!=contactUser) {
+		} else {
+			contactUser=this.editContactUserToValid(loginName, password, mobile, userStatus, userIp);
 			return contactUser;
-		} 
-		Date now=new Date();
-		contactUser=new ContactUser();
-		contactUser.setLoginName(loginName);
-		contactUser.setPassword(password);
-		contactUser.setMobile(mobile);
-		contactUser.setRegisterTime(now);
-		contactUser.setLastLoginTime(now);
-		contactUser.setValidFlag(Boolean.TRUE);
-		contactUser.setUserStatus(userStatus!=null?userStatus:ContactUser.USER_STATUS_OFFLINE);
-		if(userStatus!=null && userStatus.equals(ContactUser.USER_STATUS_ONLINE)) {
-			contactUser.setLastLoginIp(userIp);
 		}
-		UserProfile userProfile=new UserProfile();
-		userProfile.setTelPref(mobile);
-		
-		contactUser.setUserProfile(userProfile);
-		userProfile.setContactUser(contactUser);
-		
-		contactUserDao.saveOrUpdate(contactUser);
-		return contactUser;
 	}
 
+	@Override
+	public ContactUser editContactUserToValid(ContactUser contactUser) {
+		if(null==contactUser) {
+			return null;
+		}
+		if(contactUser.isNew()) {
+			return null;
+		}
+		ContactUser tempContactUser=contactUserDao.read(contactUser.getId());
+		if(!tempContactUser.getPassword().equals(contactUser.getPassword())) {
+			return null;
+		}
+		if(!contactUser.getValidFlag()) {
+			contactUser.setValidFlag(Boolean.TRUE);
+			contactUserDao.update(contactUser);
+		}
+		return contactUser;
+	}
+	
+	@Override
+	public ContactUser editContactUserToValid(String loginName, String password,
+			String mobile,Integer userStatus,String userIp) {
+		if(StringUtils.isNull(loginName) || StringUtils.isNull(password) ||
+				StringUtils.isNull(mobile)) {
+			return null;
+		}
+		ContactUser contactUser=contactUserDao.getContactUserByLoginName(loginName);
+		if(null==contactUser || !contactUser.getPassword().equals(password)) {
+			return null;
+		}
+		if(contactUser.getValidFlag()) {
+			return contactUser;
+		}
+		contactUser.setMobile(mobile);
+		contactUser.setValidFlag(Boolean.TRUE);
+		contactUser.setUserStatus(userStatus);
+		if(userStatus!=null && userStatus.equals(ContactUser.USER_STATUS_ONLINE)) {
+			contactUser.setLastLoginIp(userIp);
+			contactUser.setLastLoginTime(new Date());
+		}
+		contactUser.getUserProfile().setTelPref(mobile);
+		contactUserDao.update(contactUser);
+		return contactUser;
+	}
+	
 	@Override
 	public List<ContactUser> getContactUser(int first, int maxSize) {
 		return contactUserDao.getModelByPage(null, first, maxSize);
@@ -125,6 +172,47 @@ public class ContactUserService extends BaseSerivce<IContactUserDao,ContactUser,
 		}
 		this.contactUserDao.update(user);
 		return user;
+	}
+
+	@Override
+	public ContactUser editContactUserToOnline(String loginName, String password,
+			String userLoginIp) {
+		if(StringUtils.isNull(loginName) || StringUtils.isNull(password)) {
+			return null;
+		}
+		ContactUser contactUser=contactUserDao.getContactUserByLoginName(loginName);
+		if(null==contactUser) {
+			return null;
+		}
+		if(!contactUser.getValidFlag()) {
+			return contactUser;
+		}
+		if(contactUser.getUserStatus().equals(ContactUser.USER_STATUS_OFFLINE)) {
+			contactUser.setUserStatus(ContactUser.USER_STATUS_ONLINE);
+			contactUser.setLastLoginIp(userLoginIp);
+			contactUser.setLastLoginTime(new Date());
+			contactUserDao.update(contactUser);
+		}
+		return contactUser;
+	}
+
+	@Override
+	public ContactUser editContactUserToOffline(String loginName) {
+		if(StringUtils.isNull(loginName)) {
+			return null;
+		}
+		ContactUser contactUser=contactUserDao.getContactUserByLoginName(loginName);
+		if(null==contactUser) {
+			return null;
+		}
+		if(!contactUser.getValidFlag()) {
+			return contactUser;
+		}
+		if(contactUser.getUserStatus().equals(ContactUser.USER_STATUS_ONLINE)) {
+			contactUser.setUserStatus(ContactUser.USER_STATUS_OFFLINE);
+			contactUserDao.update(contactUser);
+		}
+		return contactUser;
 	}
 
 }

@@ -32,6 +32,25 @@ public interface IContactUserService extends IBaseSerivce<IContactUserDao,Contac
 			,String userIp);
 	
 	/**
+	 * 设置联系人用户有效。<br/>
+	 * @param contactUser 用户对象
+	 * @return
+	 */
+	public ContactUser editContactUserToValid(ContactUser contactUser);
+	
+	/**
+	 * 设置联系人用户有效。<br/>
+	 * @param loginName 登录名
+	 * @param password 密码
+	 * @param mobile 手机号码
+	 * @param userStatus 用户状态
+	 * @param userIp 用户IP地址
+	 * @return
+	 */
+	public ContactUser editContactUserToValid(String loginName, String password,
+			String mobile,Integer userStatus,String userIp);
+	
+	/**
 	 * 通过Id取得联系人用户信息。<br/>
 	 * @param userId
 	 * @return
@@ -103,6 +122,22 @@ public interface IContactUserService extends IBaseSerivce<IContactUserDao,Contac
 	 * @return
 	 */
 	public ContactUser editContactUserToOffline(ContactUser contactUser);
+	
+	/**
+	 * 设置用户为离线状态。<br/>
+	 * @param loginName
+	 * @return
+	 */
+	public ContactUser editContactUserToOffline(String loginName);
+	
+	/**
+	 * 设置用户为在线状态。<br/>
+	 * @param loginName
+	 * @param password
+	 * @param userLoginIp
+	 * @return
+	 */
+	public ContactUser editContactUserToOnline(String loginName, String password, String userLoginIp);
 	
 	
 }
