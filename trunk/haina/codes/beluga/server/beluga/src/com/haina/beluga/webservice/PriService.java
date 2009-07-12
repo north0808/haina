@@ -92,7 +92,7 @@ public class PriService implements IPriService {
 	}
 
 	@Override
-	public HessianRemoteReturning editPwd(String passport, String neoPassword) {
+	public HessianRemoteReturning editPassword(String passport, String neoPassword) {
 		HessianRemoteReturning ret = new HessianRemoteReturning();
 		//$1 验证合法性
 		if(StringUtils.isNull(passport)) {
