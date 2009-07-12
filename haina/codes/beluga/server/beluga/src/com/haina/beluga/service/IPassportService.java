@@ -47,7 +47,7 @@ public interface IPassportService extends InitializingBean {
 	 * @param passportDto 护照对象
 	 * @return
 	 */
-	public boolean isExpiredPassport(ContactUserToken passportDto); 
+	public boolean isExpiredPassport(ContactUserToken contactUserToken); 
 	
 	/**
 	 * 删除单个护照。<br/>
