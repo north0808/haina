@@ -12,31 +12,6 @@
 
 	<context:component-scan base-package="com.haina.beluga">
 	</context:component-scan>
-	
-	<bean id="authenticationService"
-		class="com.haina.beluga.webservice.AuthenticationService">
-		<property name="proxyLoginUrl">
-			<value>http://localhost:8080/shield/r/s?call=proxyLogin</value>
-		</property>
-		<property name="proxyLogoutUrl">
-			<value>http://localhost:8080/shield/r/s?call=proxyLogout</value>
-		</property>
-		<property name="proxyRegisterUrl">
-			<value>http://localhost:8080/shield/r/s?call=proxyRegister</value>
-		</property>
-		<property name="loginUrl">
-			<value>http://localhost:8080/shield/r/s?call=login</value>
-		</property>
-		<property name="logoutUrl">
-			<value>http://localhost:8080/shield/r/s?call=logout</value>
-		</property>
-		<property name="registerUrl">
-			<value>http://localhost:8080/shield/r/s?call=register</value>
-		</property>
-		<property name="appCode">
-			<value>haina_beluga</value>
-		</property>
-	</bean>
 
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
@@ -163,6 +138,47 @@
 		</property>
 	</bean>
 
+	<bean id="authenticationService"
+		class="com.haina.beluga.service.AuthenticationService">
+		<property name="proxyLoginUrl">
+			<value>http://localhost:8080/shield/r/s?call=proxyLogin</value>
+		</property>
+		<property name="proxyLogoutUrl">
+			<value>http://localhost:8080/shield/r/s?call=proxyLogout</value>
+		</property>
+		<property name="proxyRegisterUrl">
+			<value>http://localhost:8080/shield/r/s?call=proxyRegister</value>
+		</property>
+		<property name="loginUrl">
+			<value>http://localhost:8080/shield/r/s?call=login</value>
+		</property>
+		<property name="logoutUrl">
+			<value>http://localhost:8080/shield/r/s?call=logout</value>
+		</property>
+		<property name="registerUrl">
+			<value>http://localhost:8080/shield/r/s?call=register</value>
+		</property>
+		<property name="appCode">
+			<value>haina_beluga</value>
+		</property>
+	</bean>
+	
+	<bean id="passportService"
+		class="com.haina.beluga.service.PassportService">
+		<property name="loginExpiry">
+			<value>604800000</value>
+		</property>
+		<property name="passportExpiry">
+			<value>1800000</value>
+		</property>
+		<property name="passportExpiryTimeOff">
+			<value>30000</value>
+		</property>
+		<property name="loginExpiryTimeOff">
+			<value>10000</value>
+		</property>
+	</bean>
+	
 	<!--Hessian调用 -->
 	<bean name="/pub"
 		class="com.haina.beluga.webservice.OUServiceExporter">
