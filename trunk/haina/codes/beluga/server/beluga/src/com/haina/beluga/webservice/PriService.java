@@ -8,8 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.haina.beluga.core.util.StringUtils;
 import com.haina.beluga.domain.ContactUser;
+import com.haina.beluga.dto.PassportDto;
 import com.haina.beluga.service.IContactUserService;
-import com.haina.beluga.service.ILocaleMessageService;
+import com.haina.beluga.service.IPassportService;
 import com.haina.beluga.webservice.data.hessian.HessianRemoteReturning;
 
 /**
@@ -25,14 +26,17 @@ public class PriService implements IPriService {
 	
 	private static final long serialVersionUID = 4943053100272442973L;
 	
-	@Autowired(required=true)
-	private AuthenticationService authenticationService;
+	//@Autowired(required=true)
+	//private AuthenticationService authenticationService;
 	
 	@Autowired(required=true)
 	private IContactUserService contactUserService;
 	
+	//@Autowired(required=true)
+	//private ILocaleMessageService localeMessageService;
+	
 	@Autowired(required=true)
-	private ILocaleMessageService localeMessageService;
+	private IPassportService passportService;
 
 	@Override
 	public HessianRemoteReturning editLoginName(String email, String neoEmail) {
@@ -42,14 +46,14 @@ public class PriService implements IPriService {
 	}
 
 	@Override
-	public HessianRemoteReturning editMobile(String email, String oldMobile, String neoMobile) {
+	public HessianRemoteReturning editMobile(String loginName, String oldMobile, String neoMobile) {
 		HessianRemoteReturning ret = new HessianRemoteReturning();
 		
 		return ret;
 	}
 
 	@Override
-	public HessianRemoteReturning editPwd(String email, String oldPwd, String neoPwd) {
+	public HessianRemoteReturning editPwd(String loginName, String oldPwd, String neoPwd) {
 		HessianRemoteReturning ret = new HessianRemoteReturning();
 		
 		return ret;
@@ -58,49 +62,94 @@ public class PriService implements IPriService {
 	@Override
 	@Transactional(propagation=Propagation.REQUIRED, readOnly=false,
 			isolation=Isolation.READ_COMMITTED,rollbackFor = Exception.class)
-	public HessianRemoteReturning login(String email, String pwd, String srcAppCode,
+	public HessianRemoteReturning login(String loginName, String password, String srcAppCode,
 			String destAppCode, String userLoginIp) {
 		HessianRemoteReturning ret = new HessianRemoteReturning();
-		
-		return ret;
-	}
-
-	@Override
-	public HessianRemoteReturning logout(String email) {
-		HessianRemoteReturning ret = new HessianRemoteReturning();
-		
+		//$1 验证合法性
+		if(StringUtils.isNull(loginName) || StringUtils.isNull(password)) {
+			ret.setStatusCode(IStatusCode.LOGINNAME_PASSWORD_INVALID);
+			return ret;
+		}
+		//$2 设置用户在线状态
+		ContactUser contactUser=contactUserService.editContactUserToOnline(loginName, password, userLoginIp);
+		if(null==contactUser || !contactUser.getValidFlag()) {
+			ret.setStatusCode(IStatusCode.INVALID_CONTACT_USER);
+			return ret;
+		}
+		//$3 生成护照
+		PassportDto passportDto=passportService.addPassport(contactUser);
+		if(null==passportDto) {
+			ret.setStatusCode(IStatusCode.LOGIN_PASSPORT_FAILD);
+			contactUserService.editContactUserToOffline(contactUser);
+		} else {
+			ret.setStatusCode(IStatusCode.SUCCESS);
+			ret.setValue(passportDto);
+		}
 		return ret;
 	}
 
 	@Override
 	@Transactional(propagation=Propagation.REQUIRED, readOnly=false,
 			isolation=Isolation.READ_COMMITTED,rollbackFor = Exception.class)
-	public HessianRemoteReturning register(String email, String password, String mobile,
+	public HessianRemoteReturning logout(String loginName) {
+		HessianRemoteReturning ret = new HessianRemoteReturning();
+		//$1 验证合法性
+		if(StringUtils.isNull(loginName)) {
+			ret.setStatusCode(IStatusCode.LOGINNAME_INVALID);
+			return ret;
+		}
+		//$2 设置用户离线状态
+		ContactUser contactUser=contactUserService.editContactUserToOffline(loginName);
+		if(null==contactUser || !contactUser.getValidFlag()) {
+			ret.setStatusCode(IStatusCode.INVALID_CONTACT_USER);
+			return ret;
+		}
+		//$3 登录失效，清除护照
+		passportService.expireLogin(loginName);
+		ret.setStatusCode(IStatusCode.SUCCESS);
+		return ret;
+	}
+
+	@Override
+	@Transactional(propagation=Propagation.REQUIRED, readOnly=false,
+			isolation=Isolation.READ_COMMITTED,rollbackFor = Exception.class)
+	public HessianRemoteReturning register(String loginName, String password, String mobile,
 			String description, String registerIp,String lang) {
 		HessianRemoteReturning ret = new HessianRemoteReturning();
 		//$1 验证合法性
-		if(StringUtils.isNull(email) || StringUtils.isNull(password)) {
-			ret.setStatusCode(IStatusCode.FAILURE);
-			ret.setStatusText(localeMessageService
-					.getI18NMessage("com.haina.shield.message.passportuser.register.failure.email.and.passpord"));
+		if(StringUtils.isNull(loginName) || StringUtils.isNull(password)) {
+			ret.setStatusCode(IStatusCode.LOGINNAME_PASSWORD_INVALID);
+//			ret.setStatusText(localeMessageService
+//					.getI18NMessage("com.haina.shield.message.passportuser.register.failure.email.and.passpord"));
 			return ret;
 		}
 		if(StringUtils.isNull(mobile)) {
-			ret.setStatusCode(IStatusCode.FAILURE);
-			ret.setStatusText(localeMessageService
-					.getI18NMessage("com.haina.shield.message.passportuser.register.failure.mobile"));
+			ret.setStatusCode(IStatusCode.MOBILE_INVALID);
+//			ret.setStatusText(localeMessageService
+//					.getI18NMessage("com.haina.shield.message.passportuser.register.failure.mobile"));
 			return ret;
 		}
-		ContactUser contactUser=contactUserService.addContactUser(email, password, mobile);
+		ContactUser contactUser=contactUserService.addContactUser(
+				loginName, password, mobile, ContactUser.USER_STATUS_ONLINE,registerIp);
 		if(null!=contactUser && !contactUser.getMobile().equals(mobile.trim())) {
-			ret.setStatusCode(IStatusCode.FAILURE);
-			ret.setStatusText(localeMessageService
-					.getI18NMessage("com.haina.shield.message.passportuser.register.failure.existent.email.or.mobile"));
+			ret.setStatusCode(IStatusCode.CONTACT_USER_EXISTENT);
+//			ret.setStatusText(localeMessageService
+//					.getI18NMessage("com.haina.shield.message.passportuser.register.failure.existent.email.or.mobile"));
 			return ret;
 		}
 		
 		//$2 向认证中心注册
-		ret.setStatusCode(IStatusCode.SUCCESS);
+		//TODO暂时不实现。
+		
+		//$3 生成护照
+		PassportDto passportDto=passportService.addPassport(contactUser);
+		if(null==passportDto) {
+			ret.setStatusCode(IStatusCode.REGISTER_SUCCESS_PASSPORT_FAILD);
+			contactUserService.editContactUserToOffline(contactUser);
+		} else {
+			ret.setStatusCode(IStatusCode.SUCCESS);
+			ret.setValue(passportDto);
+		}
 		return ret;
 	}
 
