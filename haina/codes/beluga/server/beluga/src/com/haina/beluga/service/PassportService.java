@@ -69,7 +69,7 @@ public class PassportService implements IPassportService {
 			passportDto.setPassport(generatePassport());
 			passportDto.setPassportTime(time);
 			passportDto.setPassportExpiry(passportExpiry);
-			passportPool.put(contactUser.getLastLoginIp(), passportDto);
+			passportPool.put(contactUser.getLoginName(), passportDto);
 		}
 		return passportDto;
 	}
