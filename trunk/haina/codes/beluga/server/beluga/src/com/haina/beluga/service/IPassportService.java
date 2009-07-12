@@ -19,21 +19,21 @@ public interface IPassportService extends InitializingBean {
 	 * @param contactUser 联系人用户
 	 * @return
 	 */
-	public ContactUserToken addPassport(ContactUser contactUser);
+	public LoginPassport addPassport(ContactUser contactUser);
 	
 	/**
 	 * 更新护照。<br/>
 	 * @param loginName 登录名
 	 * @return
 	 */
-	public ContactUserToken updatePassport(String loginName);
+	public LoginPassport updatePassport(String loginName);
 	
 	/**
 	 * 取得护照。<br/>
 	 * @param loginName 登录名
 	 * @return
 	 */
-	public ContactUserToken getPassport(String loginName);
+	public LoginPassport getPassport(String loginName);
 	
 	/**
 	 * 是否过期的护照。<br/>
@@ -47,7 +47,7 @@ public interface IPassportService extends InitializingBean {
 	 * @param passportDto 护照对象
 	 * @return
 	 */
-	public boolean isExpiredPassport(ContactUserToken contactUserToken); 
+	public boolean isExpiredPassport(LoginPassport loginPassport); 
 	
 	/**
 	 * 删除单个护照。<br/>
