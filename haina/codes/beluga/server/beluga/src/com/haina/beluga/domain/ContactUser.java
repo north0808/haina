@@ -159,7 +159,8 @@ public class ContactUser extends VersionalModel {
 		this.lastUpdateTime = lastUpdateTime;
 	}
 	/**
-	 * @hibernate.property column="loginNumber" 
+	 * @hibernate.property
+	 * @hibernate.column name="loginNumber" sql-type="int default 0"
 	 * return Integer
 	 */
 	public Integer getLoginNumber() {
