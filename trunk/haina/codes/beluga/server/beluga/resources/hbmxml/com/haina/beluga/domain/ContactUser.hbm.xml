@@ -124,8 +124,12 @@
 
         <property
             name="loginNumber"
-                    column="loginNumber"
         >
+
+            <column
+                name="loginNumber" 
+                sql-type="int default 0"
+            />
 
         </property>
 
