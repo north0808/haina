@@ -58,4 +58,24 @@ public interface IStatusCode {
 	 * 登录名无效。<br/>
 	 */
 	int LOGINNAME_INVALID=INVALID_CONTACT_USER+1;
+	
+	/**
+	 * 登录护照无效或已过期。<br/>
+	 */
+	int INVALID_LOGIN_PASSPORT=LOGINNAME_INVALID+1;
+	
+	/**
+	 * 无效的电子邮件地址。<br/>
+	 */
+	int INVALID_EMAIL=INVALID_LOGIN_PASSPORT+1;
+	
+	/**
+	 * 无效的电子邮件地址。<br/>
+	 */
+	int INVALID_MOBILE=INVALID_EMAIL+1;
+	
+	/**
+	 * 无效的密码。<br/>
+	 */
+	int INVALID_PASSWORD=INVALID_MOBILE+1;
 }
