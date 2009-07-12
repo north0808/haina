@@ -185,35 +185,53 @@
 	<!--Hessian调用 -->
 	<bean name="/pub"
 		class="com.haina.beluga.webservice.OUServiceExporter">
-
 		<property name="method">
 			<value>call</value>
 		</property>
-
 		<property name="serverAPI">
 			<value>com.haina.beluga.webservice.IPubService</value>
 		</property>
-
 		<property name="serverImpl">
 			<ref bean="pubService" />
 		</property>
-
 	</bean>
+	
+	<bean id="priMethhod" class="java.util.ArrayList">
+		<constructor-arg>
+	    	<list>
+	     		<value>editLoginName</value>
+	     		<value>editMobile</value>
+	     		<value>editPassword</value>
+	     		<value>logout</value>
+	    	</list>
+	   	</constructor-arg>
+	</bean>
+	
+	<bean id="priValidatedMethod" class="java.util.HashMap">
+   		<constructor-arg>
+    		<map>
+     			<entry key="/pri" value-ref="priMethhod" />
+    		</map>
+   		</constructor-arg>
+	</bean>
+	
 	<bean name="/pri"
 		class="com.haina.beluga.webservice.OUServiceExporter">
-
 		<property name="method">
 			<value>call</value>
 		</property>
-
 		<property name="serverAPI">
 			<value>com.haina.beluga.webservice.IPriService</value>
 		</property>
-
 		<property name="serverImpl">
 			<ref bean="priService" />
 		</property>
-
+		<property name="passportName">
+			<value>passport</value>
+		</property>
+		<property name="validatedMethod">
+			<ref bean="priValidatedMethod" />
+		</property>
 	</bean>
 </beans>
 
