@@ -25,14 +25,14 @@ public interface IStatusCode {
 	Integer NETWORK_ERROR=UNKNOW_ERROR+1;
 	
 	/**
-	 * 电子邮件或密码不符合要求。<br/>
+	 * 登录名或密码无效。<br/>
 	 */
-	Integer EMAIL_PASSWORD_INVALID=NETWORK_ERROR+1;
+	Integer LOGINNAME_PASSWORD_INVALID=NETWORK_ERROR+1;
 	
 	/**
-	 * 手机号码不符合要求。<br/>
+	 * 手机号码无效。<br/>
 	 */
-	Integer MOBILE_INVALID=EMAIL_PASSWORD_INVALID+1;
+	Integer MOBILE_INVALID=LOGINNAME_PASSWORD_INVALID+1;
 	
 	/**
 	 * 用户已存在。<br/>
@@ -43,4 +43,19 @@ public interface IStatusCode {
 	 * 注册成功，但暂时不能生成登录护照。<br/>
 	 */
 	Integer REGISTER_SUCCESS_PASSPORT_FAILD=CONTACT_USER_EXISTENT+1;
+	
+	/**
+	 * 登录失败，暂时不能生成登录护照。<br/>
+	 */
+	Integer LOGIN_PASSPORT_FAILD=REGISTER_SUCCESS_PASSPORT_FAILD+1;
+	
+	/**
+	 * 用户不存在或用户未激活。<br/>
+	 */
+	Integer INVALID_CONTACT_USER=LOGIN_PASSPORT_FAILD+1;
+	
+	/**
+	 * 登录名无效。<br/>
+	 */
+	Integer LOGINNAME_INVALID=INVALID_CONTACT_USER+1;
 }
