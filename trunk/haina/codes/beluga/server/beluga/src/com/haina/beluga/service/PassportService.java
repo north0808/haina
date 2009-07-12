@@ -13,7 +13,6 @@ import org.apache.commons.logging.LogFactory;
 import com.haina.beluga.core.util.DESUtil;
 import com.haina.beluga.core.util.StringUtils;
 import com.haina.beluga.domain.ContactUser;
-import com.haina.beluga.dto.PassportDto;
 
 /**
  * 用户验证护照业务处理接口实现类。<br/>
@@ -28,7 +27,7 @@ public class PassportService implements IPassportService {
 	private static final Log LOG=LogFactory.getLog(PassportService.class);
 
 	/*用户护照的存储池。*/
-	private Map<String,PassportDto> passportPool=new ConcurrentHashMap<String,PassportDto>();
+	private Map<String,ContactUserToken> passportPool=new ConcurrentHashMap<String,ContactUserToken>();
 	
 	/*登录超期时间。默认604800000毫秒，即一周。*/
 	private Long loginExpiry;
@@ -58,10 +57,10 @@ public class PassportService implements IPassportService {
 	
 	
 	@Override
-	public PassportDto addPassport(ContactUser contactUser) {
-		PassportDto passportDto=null;
+	public ContactUserToken addPassport(ContactUser contactUser) {
+		ContactUserToken passportDto=null;
 		if(null!=contactUser && contactUser.isOnline()) {
-			passportDto=new PassportDto();
+			passportDto=new ContactUserToken();
 			passportDto.setEmail(contactUser.getLoginName());
 			passportDto.setLoginExpiry(loginExpiry);
 			Long time=contactUser.getLastLoginTime().getTime();
@@ -75,8 +74,8 @@ public class PassportService implements IPassportService {
 	}
 
 	@Override
-	public PassportDto updatePassport(String loginName) {
-		PassportDto passportDto=null;
+	public ContactUserToken updatePassport(String loginName) {
+		ContactUserToken passportDto=null;
 		if(null!=loginName && passportPool.containsKey(loginName)) {
 			passportDto=passportPool.get(loginName);
 			Long now=(new Date()).getTime();
@@ -89,8 +88,8 @@ public class PassportService implements IPassportService {
 	}
 	
 	@Override
-	public PassportDto getPassport(String loginName) {
-		PassportDto passportDto=null;
+	public ContactUserToken getPassport(String loginName) {
+		ContactUserToken passportDto=null;
 		if(loginName!=null && passportPool.containsKey(loginName)) {
 			passportDto=passportPool.get(loginName);
 		}
@@ -102,12 +101,12 @@ public class PassportService implements IPassportService {
 		if(isExpiredLogin(loginName)) {
 			return true;
 		}
-		PassportDto passportDto=passportPool.get(loginName);
+		ContactUserToken passportDto=passportPool.get(loginName);
 		return isExpiredPassport(passportDto);
 	}
 	
 	@Override
-	public boolean isExpiredPassport(PassportDto passportDto) {
+	public boolean isExpiredPassport(ContactUserToken passportDto) {
 		if(isExpiredLogin(passportDto)) {
 			return true;
 		}
@@ -130,11 +129,11 @@ public class PassportService implements IPassportService {
 		if(loginName==null || !passportPool.containsKey(loginName)) {
 			return true;
 		}
-		PassportDto passportDto=passportPool.get(loginName);
+		ContactUserToken passportDto=passportPool.get(loginName);
 		return isExpiredLogin(passportDto);
 	}
 	
-	public boolean isExpiredLogin(PassportDto passportDto) {
+	public boolean isExpiredLogin(ContactUserToken passportDto) {
 		if(passportDto==null) {
 			return true;
 		} else {
@@ -202,7 +201,7 @@ public class PassportService implements IPassportService {
 						Iterator<String> keys=passportPool.keySet().iterator();
 						while(keys.hasNext()) {
 							String key=keys.next();
-							PassportDto passportDto=passportPool.get(key);
+							ContactUserToken passportDto=passportPool.get(key);
 							if(isExpiredLogin(passportDto)) {
 								expireLogin(key);
 							}
