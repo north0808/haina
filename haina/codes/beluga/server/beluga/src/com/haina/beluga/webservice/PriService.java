@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.haina.beluga.core.util.StringUtils;
 import com.haina.beluga.domain.ContactUser;
-import com.haina.beluga.dto.PassportDto;
+import com.haina.beluga.service.ContactUserToken;
 import com.haina.beluga.service.IContactUserService;
 import com.haina.beluga.service.IPassportService;
 import com.haina.beluga.webservice.data.hessian.HessianRemoteReturning;
@@ -62,8 +62,7 @@ public class PriService implements IPriService {
 	@Override
 	@Transactional(propagation=Propagation.REQUIRED, readOnly=false,
 			isolation=Isolation.READ_COMMITTED,rollbackFor = Exception.class)
-	public HessianRemoteReturning login(String loginName, String password, String srcAppCode,
-			String destAppCode, String userLoginIp) {
+	public HessianRemoteReturning login(String loginName, String password) {
 		HessianRemoteReturning ret = new HessianRemoteReturning();
 		//$1 验证合法性
 		if(StringUtils.isNull(loginName) || StringUtils.isNull(password)) {
@@ -71,13 +70,13 @@ public class PriService implements IPriService {
 			return ret;
 		}
 		//$2 设置用户在线状态
-		ContactUser contactUser=contactUserService.editContactUserToOnline(loginName, password, userLoginIp);
+		ContactUser contactUser=contactUserService.editContactUserToOnline(loginName, password, null);
 		if(null==contactUser || !contactUser.getValidFlag()) {
 			ret.setStatusCode(IStatusCode.INVALID_CONTACT_USER);
 			return ret;
 		}
 		//$3 生成护照
-		PassportDto passportDto=passportService.addPassport(contactUser);
+		ContactUserToken passportDto=passportService.addPassport(contactUser);
 		if(null==passportDto) {
 			ret.setStatusCode(IStatusCode.LOGIN_PASSPORT_FAILD);
 			contactUserService.editContactUserToOffline(contactUser);
@@ -113,8 +112,7 @@ public class PriService implements IPriService {
 	@Override
 	@Transactional(propagation=Propagation.REQUIRED, readOnly=false,
 			isolation=Isolation.READ_COMMITTED,rollbackFor = Exception.class)
-	public HessianRemoteReturning register(String loginName, String password, String mobile,
-			String description, String registerIp,String lang) {
+	public HessianRemoteReturning register(String loginName, String password, String mobile) {
 		HessianRemoteReturning ret = new HessianRemoteReturning();
 		//$1 验证合法性
 		if(StringUtils.isNull(loginName) || StringUtils.isNull(password)) {
@@ -130,7 +128,7 @@ public class PriService implements IPriService {
 			return ret;
 		}
 		ContactUser contactUser=contactUserService.addContactUser(
-				loginName, password, mobile, ContactUser.USER_STATUS_ONLINE,registerIp);
+				loginName, password, mobile, ContactUser.USER_STATUS_ONLINE,null);
 		if(null!=contactUser && !contactUser.getMobile().equals(mobile.trim())) {
 			ret.setStatusCode(IStatusCode.CONTACT_USER_EXISTENT);
 //			ret.setStatusText(localeMessageService
@@ -142,7 +140,7 @@ public class PriService implements IPriService {
 		//TODO暂时不实现。
 		
 		//$3 生成护照
-		PassportDto passportDto=passportService.addPassport(contactUser);
+		ContactUserToken passportDto=passportService.addPassport(contactUser);
 		if(null==passportDto) {
 			ret.setStatusCode(IStatusCode.REGISTER_SUCCESS_PASSPORT_FAILD);
 			contactUserService.editContactUserToOffline(contactUser);

@@ -18,11 +18,8 @@ public interface IPriService extends Serializable {
 	 * 联系人用户登录。<br/>
 	 * @param loginName 用户的登录名
 	 * @param password 密码
-	 * @param srcAppCode 来源认证应用代码
-	 * @param destAppCode 目标认证应用代码
-	 * @param userLoginIp 用户登录的IP地址
 	 */
-	public HessianRemoteReturning login(String loginName, String password,String srcAppCode, String destAppCode, String userLoginIp);
+	public HessianRemoteReturning login(String loginName, String password);
 	
 	/**
 	 * 联系人用户注册。<br/>
@@ -30,12 +27,8 @@ public interface IPriService extends Serializable {
 	 * @param loginName 用户的登录名
 	 * @param password 密码
 	 * @param mobile 移动电话号码
-	 * @param description 描述
-	 * @param registerIp 注册用户的IP地址
-	 * @param lang 语言环境
 	 */
-	public HessianRemoteReturning register(String loginName, String password, String mobile, String description,
-			String registerIp,String lang);
+	public HessianRemoteReturning register(String loginName, String password, String mobile);
 	
 	/**
 	 * 联系人用户退出。<br/>
