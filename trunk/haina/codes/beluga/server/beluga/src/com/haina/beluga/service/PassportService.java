@@ -61,23 +61,24 @@ public class PassportService implements IPassportService {
 		LoginPassport loginPassport=null;
 		if(null!=contactUser && contactUser.isOnline()) {
 			loginPassport=new LoginPassport();
-			loginPassport.setEmail(contactUser.getLoginName());
+			loginPassport.setLoginName(contactUser.getLoginName());
 			loginPassport.setLoginExpiry(loginExpiry);
 			Long time=contactUser.getLastLoginTime().getTime();
 			loginPassport.setLoginTime(time);
-			loginPassport.setPassport(generatePassport());
+			String passport=generatePassport();
+			loginPassport.setPassport(passport);
 			loginPassport.setPassportTime(time);
 			loginPassport.setPassportExpiry(passportExpiry);
-			passportPool.put(contactUser.getLoginName(), loginPassport);
+			passportPool.put(passport, loginPassport);
 		}
 		return loginPassport;
 	}
 
 	@Override
-	public LoginPassport updatePassport(String loginName) {
+	public LoginPassport updatePassport(String passport) {
 		LoginPassport loginPassport=null;
-		if(null!=loginName && passportPool.containsKey(loginName)) {
-			loginPassport=passportPool.get(loginName);
+		if(null!=passport && passportPool.containsKey(passport)) {
+			loginPassport=passportPool.get(passport);
 			Long now=(new Date()).getTime();
 			if(isExpiredPassport(loginPassport)) {
 				loginPassport.setPassport(generatePassport());
@@ -88,26 +89,32 @@ public class PassportService implements IPassportService {
 	}
 	
 	@Override
-	public LoginPassport getPassport(String loginName) {
+	public LoginPassport getPassport(String passport) {
 		LoginPassport loginPassport=null;
-		if(loginName!=null && passportPool.containsKey(loginName)) {
-			loginPassport=passportPool.get(loginName);
+		if(passport!=null && passportPool.containsKey(passport)) {
+			loginPassport=passportPool.get(passport);
 		}
 		return loginPassport;
 	}
 
 	@Override
-	public boolean isExpiredPassport(String loginName) {
-		if(isExpiredLogin(loginName)) {
+	public boolean isExpiredPassport(String passport) {
+//		if(isExpiredLogin(passport)) {
+//		return true;
+//	}
+		if(StringUtils.isNull(passport) || !passportPool.containsKey(passport)) {
 			return true;
 		}
-		LoginPassport loginPassport=passportPool.get(loginName);
+		LoginPassport loginPassport=passportPool.get(passport);
 		return isExpiredPassport(loginPassport);
 	}
 	
 	@Override
 	public boolean isExpiredPassport(LoginPassport loginPassport) {
-		if(isExpiredLogin(loginPassport)) {
+//		if(isExpiredLogin(loginPassport)) {
+//			return true;
+//		}
+		if(null==loginPassport) {
 			return true;
 		}
 		Long now=(new Date()).getTime();
@@ -120,16 +127,16 @@ public class PassportService implements IPassportService {
 	}
 
 	@Override
-	public boolean removePassport(String loginName) {
+	public boolean removePassport(String passport) {
 		return false;
 	}
 
 	@Override
-	public boolean isExpiredLogin(String loginName) {
-		if(loginName==null || !passportPool.containsKey(loginName)) {
+	public boolean isExpiredLogin(String passport) {
+		if(passport==null || !passportPool.containsKey(passport)) {
 			return true;
 		}
-		LoginPassport loginPassport=passportPool.get(loginName);
+		LoginPassport loginPassport=passportPool.get(passport);
 		return isExpiredLogin(loginPassport);
 	}
 	
@@ -200,10 +207,13 @@ public class PassportService implements IPassportService {
 					if(passportPool.size()>0) {
 						Iterator<String> keys=passportPool.keySet().iterator();
 						while(keys.hasNext()) {
-							String key=keys.next();
-							LoginPassport loginPassport=passportPool.get(key);
-							if(isExpiredLogin(loginPassport)) {
-								expireLogin(key);
+							String passport=keys.next();
+//							LoginPassport loginPassport=passportPool.get(key);
+//							if(isExpiredLogin(loginPassport)) {
+//								expireLogin(key);
+//							}
+							if(isExpiredPassport(passport)) {
+								expireLogin(passport);
 							}
 						}
 					}
@@ -218,11 +228,11 @@ public class PassportService implements IPassportService {
 	}
 
 	@Override
-	public boolean expireLogin(String loginName) {
-		if(StringUtils.isNull(loginName) || !passportPool.containsKey(loginName)) {
+	public boolean expireLogin(String passport) {
+		if(StringUtils.isNull(passport) || !passportPool.containsKey(passport)) {
 			return false;
 		}
-		passportPool.remove(loginName);
+		passportPool.remove(passport);
 		return true;
 	}
 }

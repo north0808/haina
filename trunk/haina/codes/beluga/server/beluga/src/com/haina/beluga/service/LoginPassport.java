@@ -17,7 +17,7 @@ public class LoginPassport implements Serializable {
 	private static final long serialVersionUID = 808574421082242925L;
 	
 	/*电子邮件即登录名。*/
-	private String email;
+	private String loginName;
 	
 	/*手机号码。*/
 	//private String mobile;
@@ -38,12 +38,12 @@ public class LoginPassport implements Serializable {
 	/*护照超期时间毫秒数。即在用户登录有效期内，每隔passportExpiry毫秒，passport更新一次。比如"100000000000"。*/
 	private Long passportExpiry;
 
-	public String getEmail() {
-		return email;
+	public String getLoginName() {
+		return loginName;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setLoginName(String loginName) {
+		this.loginName = loginName;
 	}
 
 	public Long getLoginTime() {
@@ -97,7 +97,7 @@ public class LoginPassport implements Serializable {
 		return new EqualsBuilder().appendSuper(super.equals(object)).append(
 				this.loginTime, rhs.loginTime).append(this.passportTime,
 				rhs.passportTime).append(this.passportExpiry,
-				rhs.passportExpiry).append(this.email, rhs.email).append(
+				rhs.passportExpiry).append(this.loginName, rhs.loginName).append(
 				this.loginExpiry, rhs.loginExpiry).append(this.passport,
 				rhs.passport).isEquals();
 	}
@@ -109,7 +109,7 @@ public class LoginPassport implements Serializable {
 		return new HashCodeBuilder(-1898689585, 1572956259).appendSuper(
 				super.hashCode()).append(this.loginTime).append(
 				this.passportTime).append(this.passportExpiry).append(
-				this.email).append(this.loginExpiry).append(this.passport)
+				this.loginName).append(this.loginExpiry).append(this.passport)
 				.toHashCode();
 	}
 
