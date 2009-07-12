@@ -42,7 +42,7 @@ public interface IPriService extends Serializable {
 	 * @param passport 登录护照
 	 * @param neoPassword 新密码
 	 */
-	public HessianRemoteReturning editPwd(String passport, String neoPassword);
+	public HessianRemoteReturning editPassword(String passport, String neoPassword);
 
 	/**
 	 * 修改手机号码。<br/>
