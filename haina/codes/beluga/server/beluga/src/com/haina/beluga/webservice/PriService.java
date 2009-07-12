@@ -36,23 +36,85 @@ public class PriService implements IPriService {
 	private IPassportService passportService;
 
 	@Override
-	public HessianRemoteReturning editLoginName(String email, String neoEmail) {
+	public HessianRemoteReturning editLoginName(String passport, String newLoginName) {
 		HessianRemoteReturning ret = new HessianRemoteReturning();
+		//$1 验证合法性
+		if(StringUtils.isNull(passport)) {
+			ret.setStatusCode(IStatusCode.INVALID_LOGIN_PASSPORT);
+			return ret;
+		}
+		if(StringUtils.isNull(passport) || StringUtils.isNull(newLoginName)) {
+			ret.setStatusCode(IStatusCode.INVALID_EMAIL);
+			return ret;
+		}
 		
+		//$2 修改电子邮件
+		LoginPassport loginPassport=passportService.getPassport(passport);
+		if(null==loginPassport) {
+			ret.setStatusCode(IStatusCode.INVALID_LOGIN_PASSPORT);
+			return ret;
+		}
+		ContactUser contactUser=contactUserService.editLoginName(loginPassport.getLoginName(), newLoginName);
+		if(null==contactUser || !contactUser.getValidFlag()) {
+			ret.setStatusCode(IStatusCode.INVALID_CONTACT_USER);
+			return ret;
+		}
+		ret.setStatusCode(IStatusCode.SUCCESS);
 		return ret;
 	}
 
 	@Override
-	public HessianRemoteReturning editMobile(String loginName, String oldMobile, String neoMobile) {
+	public HessianRemoteReturning editMobile(String passport,String neoMobile) {
 		HessianRemoteReturning ret = new HessianRemoteReturning();
+		//$1 验证合法性
+		if(StringUtils.isNull(passport)) {
+			ret.setStatusCode(IStatusCode.INVALID_LOGIN_PASSPORT);
+			return ret;
+		}
+		if(StringUtils.isNull(neoMobile)) {
+			ret.setStatusCode(IStatusCode.INVALID_MOBILE);
+			return ret;
+		}
 		
+		//$2 修改手机号码
+		LoginPassport loginPassport=passportService.getPassport(passport);
+		if(null==loginPassport) {
+			ret.setStatusCode(IStatusCode.INVALID_LOGIN_PASSPORT);
+			return ret;
+		}
+		ContactUser contactUser=contactUserService.editMobile(loginPassport.getLoginName(), neoMobile);
+		if(null==contactUser || !contactUser.getValidFlag()) {
+			ret.setStatusCode(IStatusCode.INVALID_CONTACT_USER);
+			return ret;
+		}
+		ret.setStatusCode(IStatusCode.SUCCESS);
 		return ret;
 	}
 
 	@Override
-	public HessianRemoteReturning editPwd(String loginName, String oldPwd, String neoPwd) {
+	public HessianRemoteReturning editPwd(String passport, String neoPassword) {
 		HessianRemoteReturning ret = new HessianRemoteReturning();
-		
+		//$1 验证合法性
+		if(StringUtils.isNull(passport)) {
+			ret.setStatusCode(IStatusCode.INVALID_LOGIN_PASSPORT);
+			return ret;
+		}
+		if(StringUtils.isNull(neoPassword)) {
+			ret.setStatusCode(IStatusCode.INVALID_PASSWORD);
+			return ret;
+		}
+		//$2 修改密码
+		LoginPassport loginPassport=passportService.getPassport(passport);
+		if(null==loginPassport) {
+			ret.setStatusCode(IStatusCode.INVALID_LOGIN_PASSPORT);
+			return ret;
+		}
+		ContactUser contactUser=contactUserService.editPassword(loginPassport.getLoginName(),neoPassword);
+		if(null==contactUser || !contactUser.getValidFlag()) {
+			ret.setStatusCode(IStatusCode.INVALID_CONTACT_USER);
+			return ret;
+		}
+		ret.setStatusCode(IStatusCode.SUCCESS);
 		return ret;
 	}
 
@@ -76,28 +138,34 @@ public class PriService implements IPriService {
 			ret.setStatusCode(IStatusCode.LOGIN_PASSPORT_FAILD);
 			contactUserService.editContactUserToOffline(contactUser);
 		} else {
+			contactUserService.addContactUserLoginNumber(contactUser);
 			ret.setStatusCode(IStatusCode.SUCCESS);
-			ret.setValue(loginPassport);
+			ret.setValue(loginPassport.getPassport());
 		}
 		return ret;
 	}
 
 	@Override
-	public HessianRemoteReturning logout(String loginName) {
+	public HessianRemoteReturning logout(String passport) {
 		HessianRemoteReturning ret = new HessianRemoteReturning();
 		//$1 验证合法性
-		if(StringUtils.isNull(loginName)) {
-			ret.setStatusCode(IStatusCode.LOGINNAME_INVALID);
+		if(StringUtils.isNull(passport)) {
+			ret.setStatusCode(IStatusCode.INVALID_LOGIN_PASSPORT);
+			return ret;
+		}
+		LoginPassport loginPassport=passportService.getPassport(passport);
+		if(null==loginPassport) {
+			ret.setStatusCode(IStatusCode.INVALID_LOGIN_PASSPORT);
 			return ret;
 		}
 		//$2 设置用户离线状态
-		ContactUser contactUser=contactUserService.editContactUserToOffline(loginName);
+		ContactUser contactUser=contactUserService.editContactUserToOffline(loginPassport.getLoginName());
 		if(null==contactUser || !contactUser.getValidFlag()) {
 			ret.setStatusCode(IStatusCode.INVALID_CONTACT_USER);
 			return ret;
 		}
 		//$3 登录失效，清除护照
-		passportService.expireLogin(loginName);
+		passportService.expireLogin(passport);
 		ret.setStatusCode(IStatusCode.SUCCESS);
 		return ret;
 	}
@@ -136,10 +204,10 @@ public class PriService implements IPriService {
 			ret.setStatusCode(IStatusCode.REGISTER_SUCCESS_PASSPORT_FAILD);
 			contactUserService.editContactUserToOffline(contactUser);
 		} else {
+			contactUserService.addContactUserLoginNumber(contactUser);
 			ret.setStatusCode(IStatusCode.SUCCESS);
-			ret.setValue(loginPassport);
+			ret.setValue(loginPassport.getPassport());
 		}
 		return ret;
 	}
-
 }

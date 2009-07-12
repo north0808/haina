@@ -32,34 +32,32 @@ public interface IPriService extends Serializable {
 	
 	/**
 	 * 联系人用户退出。<br/>
-	 * @param email 用户的登录名
+	 * @param passport 登录护照
 	 */
-	public HessianRemoteReturning logout(String email);
+	public HessianRemoteReturning logout(String passport);
 	
 	/**
 	 * 修改密码。<br/>
 	 * 
-	 * @param loginName 用户的登录名
-	 * @param oldPwd 旧密码
-	 * @param neoPwd 新密码
+	 * @param passport 登录护照
+	 * @param neoPassword 新密码
 	 */
-	public HessianRemoteReturning editPwd(String loginName, String oldPwd, String neoPwd);
+	public HessianRemoteReturning editPwd(String passport, String neoPassword);
 
 	/**
 	 * 修改手机号码。<br/>
 	 * 
-	 * @param loginName 用户的登录名
-	 * @param oldMobile 旧手机号码
+	 * @param passport 登录护照
 	 * @param neoMobile 新手机号码
 	 */
-	public HessianRemoteReturning editMobile(String loginName, String oldMobile, String neoMobile);
+	public HessianRemoteReturning editMobile(String passport, String neoMobile);
 	
 	/**
 	 * 修改登录名（同时修改电子邮件）。<br/>
-	 * @param email 用户的登录名
+	 * @param passport 登录护照
 	 * @param neoEmail 新的登录名
 	 * @return 操作结果
 	 */
-	public HessianRemoteReturning editLoginName(String email, String neoEmail);
+	public HessianRemoteReturning editLoginName(String passport, String neoEmail);
 
 }
