@@ -2,9 +2,6 @@ package com.haina.beluga.webservice;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.haina.beluga.core.util.StringUtils;
 import com.haina.beluga.domain.ContactUser;
@@ -60,8 +57,6 @@ public class PriService implements IPriService {
 	}
 
 	@Override
-	@Transactional(propagation=Propagation.REQUIRED, readOnly=false,
-			isolation=Isolation.READ_COMMITTED,rollbackFor = Exception.class)
 	public HessianRemoteReturning login(String loginName, String password) {
 		HessianRemoteReturning ret = new HessianRemoteReturning();
 		//$1 验证合法性
@@ -88,8 +83,6 @@ public class PriService implements IPriService {
 	}
 
 	@Override
-	@Transactional(propagation=Propagation.REQUIRED, readOnly=false,
-			isolation=Isolation.READ_COMMITTED,rollbackFor = Exception.class)
 	public HessianRemoteReturning logout(String loginName) {
 		HessianRemoteReturning ret = new HessianRemoteReturning();
 		//$1 验证合法性
@@ -110,8 +103,6 @@ public class PriService implements IPriService {
 	}
 
 	@Override
-	@Transactional(propagation=Propagation.REQUIRED, readOnly=false,
-			isolation=Isolation.READ_COMMITTED,rollbackFor = Exception.class)
 	public HessianRemoteReturning register(String loginName, String password, String mobile) {
 		HessianRemoteReturning ret = new HessianRemoteReturning();
 		//$1 验证合法性
