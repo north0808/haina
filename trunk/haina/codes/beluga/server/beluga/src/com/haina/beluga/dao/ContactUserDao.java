@@ -2,7 +2,7 @@ package com.haina.beluga.dao;
 
 import java.util.List;
 
-import org.springframework.stereotype.Repository;
+//import org.springframework.stereotype.Repository;
 
 import com.haina.beluga.core.dao.BaseDao;
 import com.haina.beluga.core.util.StringUtils;
@@ -16,7 +16,7 @@ import com.haina.beluga.domain.ContactUser;
  * @date 2009-07-03
  */
 
-@Repository(value="contactUserDao")
+//@Repository(value="contactUserDao")
 public class ContactUserDao extends BaseDao<ContactUser,String> implements IContactUserDao {
 
 	@SuppressWarnings("unchecked")
