@@ -139,5 +139,36 @@ public interface IContactUserService extends IBaseSerivce<IContactUserDao,Contac
 	 */
 	public ContactUser editContactUserToOnline(String loginName, String password, String userLoginIp);
 	
+	/**
+	 * 用户登录次数增加一次。<br/>
+	 * @param contactUser
+	 * @return
+	 */
+	public ContactUser addContactUserLoginNumber(ContactUser contactUser);
+	
+	/**
+	 * 修改登录名称即修改电子邮件。<br/>
+	 * @param loginName 现在登录名
+	 * @param newLoginName 新的登录名
+	 * @return
+	 */
+	public ContactUser editLoginName(String loginName, String newLoginName);
+	
+	/**
+	 * 修改手机号码。<br/>
+	 * @param loginName 登录名
+	 * @param newMobile 新的手机号码
+	 * @return
+	 */
+	public ContactUser editMobile(String loginName, String neoMobile);
+	
+	/**
+	 * 修改密码。<br/>
+	 * @param loginName 登录名
+	 * @param neoPassword 新的密码
+	 * @return
+	 */
+	public ContactUser editPassword(String loginName, String neoPassword);
+	
 	
 }

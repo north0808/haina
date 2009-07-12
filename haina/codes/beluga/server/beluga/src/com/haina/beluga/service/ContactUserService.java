@@ -214,5 +214,68 @@ public class ContactUserService extends BaseSerivce<IContactUserDao,ContactUser,
 		}
 		return contactUser;
 	}
+	
+	@Override
+	public ContactUser addContactUserLoginNumber(ContactUser contactUser) {
+		ContactUser user=contactUser;
+		if(null!=user && user.isOnline()) {
+			user.setLoginNumber(user.getLoginNumber()!=null ? user.getLoginNumber()+1 : 1);
+			this.contactUserDao.update(user);
+		}
+		return user;
+	}
+
+	@Override
+	public ContactUser editLoginName(String loginName, String newLoginName) {
+		if(StringUtils.isNull(loginName) || StringUtils.isNull(newLoginName)) {
+			return null;
+		}
+		ContactUser contactUser=contactUserDao.getContactUserByLoginName(loginName);
+		if(null==contactUser) {
+			return null;
+		}
+		if(!contactUser.getValidFlag()) {
+			return contactUser;
+		}
+		contactUser.setLoginName(newLoginName);
+		contactUser.getUserProfile().setEmailPref(newLoginName);
+		contactUserDao.update(contactUser);
+		return contactUser;
+	}
+
+	@Override
+	public ContactUser editMobile(String loginName, String neoMobile) {
+		if(StringUtils.isNull(loginName) || StringUtils.isNull(neoMobile)) {
+			return null;
+		}
+		ContactUser contactUser=contactUserDao.getContactUserByLoginName(loginName);
+		if(null==contactUser) {
+			return null;
+		}
+		if(!contactUser.getValidFlag()) {
+			return contactUser;
+		}
+		contactUser.setMobile(neoMobile);
+		contactUser.getUserProfile().setTelPref(neoMobile);
+		contactUserDao.update(contactUser);
+		return contactUser;
+	}
+
+	@Override
+	public ContactUser editPassword(String loginName, String neoPassword) {
+		if(StringUtils.isNull(loginName) || StringUtils.isNull(neoPassword)) {
+			return null;
+		}
+		ContactUser contactUser=contactUserDao.getContactUserByLoginName(loginName);
+		if(null==contactUser) {
+			return null;
+		}
+		if(!contactUser.getValidFlag()) {
+			return contactUser;
+		}
+		contactUser.setPassword(neoPassword);
+		contactUserDao.update(contactUser);
+		return contactUser;
+	}
 
 }

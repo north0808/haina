@@ -23,38 +23,38 @@ public interface IPassportService extends InitializingBean {
 	
 	/**
 	 * 更新护照。<br/>
-	 * @param loginName 登录名
+	 * @param passport 护照
 	 * @return
 	 */
-	public LoginPassport updatePassport(String loginName);
+	public LoginPassport updatePassport(String passport);
 	
 	/**
-	 * 取得护照。<br/>
-	 * @param loginName 登录名
+	 * 取得登录护照对象。<br/>
+	 * @param passport 护照
 	 * @return
 	 */
-	public LoginPassport getPassport(String loginName);
-	
-	/**
-	 * 是否过期的护照。<br/>
-	 * @param loginName 登录名
-	 * @return
-	 */
-	public boolean isExpiredPassport(String loginName);
+	public LoginPassport getPassport(String passport);
 	
 	/**
 	 * 是否过期的护照。<br/>
-	 * @param passportDto 护照对象
+	 * @param passport 护照
+	 * @return
+	 */
+	public boolean isExpiredPassport(String passport);
+	
+	/**
+	 * 是否过期的护照。<br/>
+	 * @param loginPassport 护照对象
 	 * @return
 	 */
 	public boolean isExpiredPassport(LoginPassport loginPassport); 
 	
 	/**
 	 * 删除单个护照。<br/>
-	 * @param loginName 登录名
+	 * @param passport 护照
 	 * @return
 	 */
-	public boolean removePassport(String loginName);
+	public boolean removePassport(String passport);
 	
 	/**
 	 * 删除所有护照。<br/>
@@ -64,15 +64,15 @@ public interface IPassportService extends InitializingBean {
 	
 	/**
 	 * 是否过期的登录。<br/>
-	 * @param loginName 登录名
+	 * @param passport 登录名
 	 * @return
 	 */
-	public boolean isExpiredLogin(String loginName);
+	public boolean isExpiredLogin(String passport);
 	
 	/**
 	 * 使登录失效。<br/>
-	 * @param loginName
+	 * @param passport
 	 * @return
 	 */
-	public boolean expireLogin(String loginName);
+	public boolean expireLogin(String passport);
 }
