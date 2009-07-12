@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 import com.haina.beluga.core.util.StringUtils;
 import com.haina.beluga.domain.ContactUser;
-import com.haina.beluga.service.ContactUserToken;
+import com.haina.beluga.service.LoginPassport;
 import com.haina.beluga.service.IContactUserService;
 import com.haina.beluga.service.IPassportService;
 import com.haina.beluga.webservice.data.hessian.HessianRemoteReturning;
@@ -71,13 +71,13 @@ public class PriService implements IPriService {
 			return ret;
 		}
 		//$3 生成护照
-		ContactUserToken passportDto=passportService.addPassport(contactUser);
-		if(null==passportDto) {
+		LoginPassport loginPassport=passportService.addPassport(contactUser);
+		if(null==loginPassport) {
 			ret.setStatusCode(IStatusCode.LOGIN_PASSPORT_FAILD);
 			contactUserService.editContactUserToOffline(contactUser);
 		} else {
 			ret.setStatusCode(IStatusCode.SUCCESS);
-			ret.setValue(passportDto);
+			ret.setValue(loginPassport);
 		}
 		return ret;
 	}
@@ -131,13 +131,13 @@ public class PriService implements IPriService {
 		//TODO暂时不实现。
 		
 		//$3 生成护照
-		ContactUserToken passportDto=passportService.addPassport(contactUser);
-		if(null==passportDto) {
+		LoginPassport loginPassport=passportService.addPassport(contactUser);
+		if(null==loginPassport) {
 			ret.setStatusCode(IStatusCode.REGISTER_SUCCESS_PASSPORT_FAILD);
 			contactUserService.editContactUserToOffline(contactUser);
 		} else {
 			ret.setStatusCode(IStatusCode.SUCCESS);
-			ret.setValue(passportDto);
+			ret.setValue(loginPassport);
 		}
 		return ret;
 	}
