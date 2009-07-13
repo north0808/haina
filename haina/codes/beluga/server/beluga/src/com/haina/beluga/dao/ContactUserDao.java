@@ -18,7 +18,7 @@ import com.haina.beluga.domain.ContactUser;
  * @date 2009-07-03
  */
 
-@Repository(value="contactUserDao")
+//@Repository(value="contactUserDao")
 public class ContactUserDao extends BaseDao<ContactUser,String> implements IContactUserDao {
 
 	@SuppressWarnings("unchecked")
