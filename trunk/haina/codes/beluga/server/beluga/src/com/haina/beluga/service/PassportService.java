@@ -9,6 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.stereotype.Component;
 
 import com.haina.beluga.core.util.DESUtil;
 import com.haina.beluga.core.util.StringUtils;
@@ -22,6 +23,7 @@ import com.haina.beluga.domain.ContactUser;
  * @data 2009-07-11
  *
  */
+@Component
 public class PassportService implements IPassportService {
 	
 	private static final Log LOG=LogFactory.getLog(PassportService.class);
