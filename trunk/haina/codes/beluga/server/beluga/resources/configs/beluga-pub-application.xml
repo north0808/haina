@@ -54,7 +54,7 @@
 			<ref bean="loadLiveDatasByApi" />
 		</property>
 		<property name="cronExpression">
-			<value>0 0/55 * ? * *</value>
+			<value>0 0/50 * ? * *</value>
 		</property>
 	</bean>
 
