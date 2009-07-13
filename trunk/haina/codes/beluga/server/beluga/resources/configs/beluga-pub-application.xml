@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+
+	
+
+
+	<!--调用实现类里面的某个方法 七天预报天气-->
+
+	<bean id="loadWeatherDatasByApi"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="weatherService" />
+		</property>
+		<property name="targetMethod">
+			<value>loadWeatherDatasByApi</value>
+		</property>
+	</bean>
+
+	<!--定义调用任务的时间 七天预报天气-->
+	<bean id="loadWeatherDatasByApiTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail">
+			<ref bean="loadWeatherDatasByApi" />
+		</property>
+		<property name="cronExpression">
+			<value>0 0 0/4 ? * *</value>
+		</property>
+	</bean>
+	<!--调用实现类里面的某个方法 实时天气-->
+
+	<bean id="loadLiveDatasByApi"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="weatherService" />
+		</property>
+		<property name="targetMethod">
+			<value>loadLiveDatasByApi</value>
+		</property>
+	</bean>
+
+	<!--定义调用任务的时间 实时天气-->
+	<bean id="loadLiveDatasByApiTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail">
+			<ref bean="loadLiveDatasByApi" />
+		</property>
+		<property name="cronExpression">
+			<value>0 0/55 * ? * *</value>
+		</property>
+	</bean>
+
+
+	<!--管理触发器 -->
+
+	<bean
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref local="loadLiveDatasByApiTrigger" />
+				<ref local="loadWeatherDatasByApiTrigger" />
+			</list>
+		</property>
+	</bean>
+
+	
+	<!--Hessian调用 -->
+	<bean name="/pub"
+		class="com.haina.beluga.webservice.OUServiceExporter">
+		<property name="method">
+			<value>call</value>
+		</property>
+		<property name="serverAPI">
+			<value>com.haina.beluga.webservice.IPubService</value>
+		</property>
+		<property name="serverImpl">
+			<ref bean="pubService" />
+		</property>
+	</bean>
+	
+	
+</beans>
+
+
+
+
