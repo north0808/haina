@@ -179,13 +179,9 @@ public class WeatherService extends BaseSerivce<IWeatherDao,Weather,String> impl
 				weather.setIcon(getIcon(afd.getImage()));
 				weather.setNight(afd.isIsNight());
 				weather.setIssuetime(MfTime.toNow());
-				//weather.setVersion((long)1);
 				weatherList.add(weather);
-//				getBaseDao().create(weather);
 			}
-//			break;57065
 		} catch (RemoteException e) {
-//			logger.error(e.getMessage());
 			if(no < 3){
 				loadWDbyCityCode(cityCode,weatherList,no++);
 				logger.info(cityCode+":reload... "+no);
