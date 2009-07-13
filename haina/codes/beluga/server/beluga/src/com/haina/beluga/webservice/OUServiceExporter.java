@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -128,6 +129,9 @@ public class OUServiceExporter implements HttpRequestHandler, InitializingBean {
 		// Class<?> homeClass = loadClass(getServerImpl());
 		uuSkeleton = new OUSkeleton(getServerImpl(), loadClass(getServerAPI()));
 		jsonSerializer=new JSONSerializer();
+		if(null==validatedMethod) {
+			validatedMethod=new HashMap<String, List<String>>(0);
+		}
 
 	}
 
