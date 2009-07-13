@@ -3,8 +3,10 @@ package com.haina.beluga.service;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import net.wxbug.api.ApiForecastData;
 import net.wxbug.api.LiveWeatherData;
@@ -31,6 +33,7 @@ public class WeatherService extends BaseSerivce<IWeatherDao,Weather,String> impl
 	@Autowired(required=true)
 	private IPhoneDistrictDao phoneDistrictDao;
 	private final static String ACode="A3432136345";
+	private static Map<String,WeatherDto> liveWeatherPool = new HashMap<String,WeatherDto>(); 
 	 static Logger logger = Logger.getLogger(WeatherService.class.getName());
 	 private static WeatherBugWebServicesSoap   weatherBugWebServicesSoap ;
 		static{
@@ -64,19 +67,31 @@ public class WeatherService extends BaseSerivce<IWeatherDao,Weather,String> impl
 		long t2 = System.currentTimeMillis();
 		logger.info("loadWeatherDatasByApi-complete:"+(t2-t1));
 	}
-
+	@Override
+	public void loadLiveDatasByApi() {
+		long t1 = System.currentTimeMillis();
+		String[] codes = phoneDistrictDao.getWeatherCityCodes();
+		for(String cityCode:codes){
+			try {
+				initLivePoolByApi(cityCode);
+			} catch (RemoteException e) {
+				logger.error(e.getMessage());
+			}
+		}
+		
+		long t2 = System.currentTimeMillis();
+		logger.info("loadLiveDatasByApi-complete:"+(t2-t1));
+	}
 	@Override
 	public HessianRemoteReturning getLiveWeather(String cityCode) {
 		HessianRemoteReturning hrr = new HessianRemoteReturning();
+		WeatherDto livePoolData = liveWeatherPool.get(cityCode);
+		if(livePoolData!=null){
+			hrr.setValue(livePoolData);
+			return hrr;
+		}
 		try {
-			LiveWeatherData livedata = weatherBugWebServicesSoap.getLiveWeatherByCityCode(cityCode, UnitType.Metric, ACode);
-			WeatherDto dto = new WeatherDto();
-			dto.setWeatherType(livedata.getCurrDesc());
-//			dto.setLow(Integer.valueOf(livedata.getTemperatureLow()));
-//			dto.setHigh(Integer.valueOf(livedata.getTemperatureHigh()));
-			dto.setTemperature(livedata.getTemperature());
-			dto.setIssuetime(MfTime.toNow());
-			dto.setIcon(livedata.getCurrIcon());
+			WeatherDto dto =  initLivePoolByApi(cityCode);
 			hrr.setValue(dto);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
@@ -85,7 +100,18 @@ public class WeatherService extends BaseSerivce<IWeatherDao,Weather,String> impl
 		}
 		return hrr;
 	}
-
+	public WeatherDto initLivePoolByApi(String cityCode) throws RemoteException{
+		LiveWeatherData livedata = weatherBugWebServicesSoap.getLiveWeatherByCityCode(cityCode, UnitType.Metric, ACode);
+		WeatherDto dto = new WeatherDto();
+		dto.setWeatherType(livedata.getCurrDesc());
+//		dto.setLow(Integer.valueOf(livedata.getTemperatureLow()));
+//		dto.setHigh(Integer.valueOf(livedata.getTemperatureHigh()));
+		dto.setTemperature(livedata.getTemperature());
+		dto.setIssuetime(MfTime.toNow());
+		dto.setIcon(livedata.getCurrIcon());
+		liveWeatherPool.put(cityCode, dto);
+		return dto;
+	}
 	@Override
 	public HessianRemoteReturning get7Weatherdatas(String cityCode) {
 		List<WeatherDto> list = new ArrayList<WeatherDto>();

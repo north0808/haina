@@ -10,4 +10,5 @@ public interface IWeatherService extends IBaseSerivce<IWeatherDao,Weather,String
 	public void loadWeatherDatasByApi();
 	public HessianRemoteReturning getLiveWeather(String cityCode);
 	public HessianRemoteReturning get7Weatherdatas(String cityCode);
+	void loadLiveDatasByApi();
 }
