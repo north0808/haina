@@ -109,6 +109,7 @@ public class WeatherService extends BaseSerivce<IWeatherDao,Weather,String> impl
 		dto.setTemperature(livedata.getTemperature());
 		dto.setIssuetime(MfTime.toNow());
 		dto.setIcon(livedata.getCurrIcon());
+		dto.setIssuetime(MfTime.toNow());
 		liveWeatherPool.put(cityCode, dto);
 		return dto;
 	}
