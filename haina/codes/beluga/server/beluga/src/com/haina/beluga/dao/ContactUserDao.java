@@ -2,6 +2,8 @@ package com.haina.beluga.dao;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 //import org.springframework.stereotype.Repository;
 
 import com.haina.beluga.core.dao.BaseDao;
@@ -16,7 +18,7 @@ import com.haina.beluga.domain.ContactUser;
  * @date 2009-07-03
  */
 
-//@Repository(value="contactUserDao")
+@Repository(value="contactUserDao")
 public class ContactUserDao extends BaseDao<ContactUser,String> implements IContactUserDao {
 
 	@SuppressWarnings("unchecked")
@@ -25,7 +27,7 @@ public class ContactUserDao extends BaseDao<ContactUser,String> implements ICont
 		ContactUser contactUser=null;
 		if(!StringUtils.isNull(loginName)) {
 			List<ContactUser> list=this.getHibernateTemplate().findByNamedParam(
-					"from ContactUser u where u.logingName = :logingName", "logingName", loginName);
+					"from ContactUser u where u.loginName = :loginName", "loginName", loginName);
 			if(list!=null && list.size()>0) {
 				contactUser=list.get(0);
 			}
