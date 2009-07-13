@@ -1,7 +1,5 @@
 package genericdaotest;
 
-import java.util.Iterator;
-
 import junit.framework.TestCase;
 
 import org.hibernate.Session;
@@ -14,13 +12,13 @@ import org.springframework.orm.hibernate3.SessionHolder;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import com.haina.beluga.dao.PhoneDistrictDao;
-import com.haina.beluga.domain.PhoneDistrict;
-import com.haina.beluga.dto.PhoneDistrictDto;
 import com.haina.beluga.log.service.LogService;
 import com.haina.beluga.service.IPhoneDistrictService;
 import com.haina.beluga.service.IWeatherService;
 import com.haina.beluga.service.PhoneDistrictService;
 import com.haina.beluga.service.WeatherService;
+import com.haina.beluga.webservice.PriService;
+import com.haina.beluga.webservice.data.hessian.HessianRemoteReturning;
 
 /**
  * Simple test of the PersonDao
@@ -110,9 +108,12 @@ public class LogDaoTest extends TestCase
 //			PhoneDistrict w = iterator.next();
 //			System.out.println(w.getDistrictCity()+i++);
 //		}
-    	getPhoneDistrictService().getOrUpdatePhoneDistricts(1);
+//    	getPhoneDistrictService().getOrUpdatePhoneDistricts(1);
     }
-
+    public void testPri() throws Exception {
+    	HessianRemoteReturning h = getPriService().register("fuxiang", "fuxiang", "15901819287");
+    	System.out.println(h);
+    }
     protected void setUp() throws Exception
     {
     	
@@ -150,7 +151,13 @@ public class LogDaoTest extends TestCase
     {
         return (SessionFactory) factory.getBean("sessionFactory");
     }
-
+    
+    private PriService getPriService()
+    {
+    	PriService priService = (PriService) factory.getBean("priService");
+    	
+        return priService;
+    }
     private LogService getLogService()
     {
     	LogService logService = (LogService) factory.getBean("logService");
