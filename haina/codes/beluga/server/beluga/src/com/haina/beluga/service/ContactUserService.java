@@ -12,6 +12,7 @@ import com.haina.beluga.dao.IContactUserDao;
 import com.haina.beluga.domain.ContactUser;
 import com.haina.beluga.domain.UserProfile;
 import com.haina.beluga.domain.UserProfileExt;
+import com.haina.beluga.domain.enumerate.SexEnum;
 
 /**
  * 联系人用户业务处理接口实现类。<br/>
@@ -26,7 +27,7 @@ import com.haina.beluga.domain.UserProfileExt;
 public class ContactUserService extends BaseSerivce<IContactUserDao,ContactUser,String> implements
 		IContactUserService {
 
-	private IContactUserDao contactUserDao=this.getBaseDao();
+//	private IContactUserDao contactUserDao=this.getBaseDao();
 	
 	@Override
 	public ContactUser addContactUser(String loginName, String password,
@@ -34,10 +35,10 @@ public class ContactUserService extends BaseSerivce<IContactUserDao,ContactUser,
 		if(StringUtils.isNull(loginName) || StringUtils.isNull(mobile)) {
 			return null;
 		}
-		ContactUser contactUser=contactUserDao.getContactUserByLoginName(loginName);
+		ContactUser contactUser=getBaseDao().getContactUserByLoginName(loginName);
 		if(null==contactUser) {
 			/*新用户。*/
-			contactUser=contactUserDao.getContactUserByMobile(mobile);
+			contactUser=getBaseDao().getContactUserByMobile(mobile);
 			if(null!=contactUser && contactUser.getValidFlag()) {
 				return null;
 			}
@@ -55,10 +56,12 @@ public class ContactUserService extends BaseSerivce<IContactUserDao,ContactUser,
 			}
 			UserProfile userProfile=new UserProfile();
 			userProfile.setTelPref(mobile);
+			//TODO:setSex.
+			userProfile.setSex(SexEnum.male);
 			
 			contactUser.setUserProfile(userProfile);
 			userProfile.setContactUser(contactUser);
-			contactUserDao.create(contactUser);
+			getBaseDao().create(contactUser);
 			return contactUser;
 		} else {
 			contactUser=this.editContactUserToValid(loginName, password, mobile, userStatus, userIp);
@@ -74,13 +77,13 @@ public class ContactUserService extends BaseSerivce<IContactUserDao,ContactUser,
 		if(contactUser.isNew()) {
 			return null;
 		}
-		ContactUser tempContactUser=contactUserDao.read(contactUser.getId());
+		ContactUser tempContactUser=getBaseDao().read(contactUser.getId());
 		if(!tempContactUser.getPassword().equals(contactUser.getPassword())) {
 			return null;
 		}
 		if(!contactUser.getValidFlag()) {
 			contactUser.setValidFlag(Boolean.TRUE);
-			contactUserDao.update(contactUser);
+			getBaseDao().update(contactUser);
 		}
 		return contactUser;
 	}
@@ -92,7 +95,7 @@ public class ContactUserService extends BaseSerivce<IContactUserDao,ContactUser,
 				StringUtils.isNull(mobile)) {
 			return null;
 		}
-		ContactUser contactUser=contactUserDao.getContactUserByLoginName(loginName);
+		ContactUser contactUser=getBaseDao().getContactUserByLoginName(loginName);
 		if(null==contactUser || !contactUser.getPassword().equals(password)) {
 			return null;
 		}
@@ -107,53 +110,53 @@ public class ContactUserService extends BaseSerivce<IContactUserDao,ContactUser,
 			contactUser.setLastLoginTime(new Date());
 		}
 		contactUser.getUserProfile().setTelPref(mobile);
-		contactUserDao.update(contactUser);
+		getBaseDao().update(contactUser);
 		return contactUser;
 	}
 	
 	@Override
 	public List<ContactUser> getContactUser(int first, int maxSize) {
-		return contactUserDao.getModelByPage(null, first, maxSize);
+		return getBaseDao().getModelByPage(null, first, maxSize);
 	}
 
 	@Override
 	public ContactUser getContactUserById(String userId) {
-		return contactUserDao.read(userId);
+		return getBaseDao().read(userId);
 	}
 
 	@Override
 	public ContactUser getContactUserByLoginName(String loginName) {
-		return contactUserDao.getContactUserByLoginName(loginName);
+		return getBaseDao().getContactUserByLoginName(loginName);
 	}
 
 	@Override
 	public List<ContactUser> getInvalidContactUser(int first, int maxSize) {
 		ContactUser contactUser=new ContactUser();
 		contactUser.setValidFlag(Boolean.FALSE);
-		return contactUserDao.getModelByPage(contactUser, first, maxSize);
+		return getBaseDao().getModelByPage(contactUser, first, maxSize);
 	}
 
 	@Override
 	public UserProfile getUserProfileById(String id) {
-		ContactUser contactUser=contactUserDao.read(id);
+		ContactUser contactUser=getBaseDao().read(id);
 		return contactUser!=null ? contactUser.getUserProfile() : null;
 	}
 
 	@Override
 	public UserProfile getUserProfileByLoginName(String loginName) {
-		ContactUser contactUser=contactUserDao.getContactUserByLoginName(loginName);
+		ContactUser contactUser=getBaseDao().getContactUserByLoginName(loginName);
 		return contactUser!=null ? contactUser.getUserProfile() : null;
 	}
 
 	@Override
 	public Set<UserProfileExt> getUserProfileExtById(String id) {
-		ContactUser contactUser=contactUserDao.read(id);
+		ContactUser contactUser=getBaseDao().read(id);
 		return contactUser!=null ? contactUser.getUserProfileExts() : null;
 	}
 
 	@Override
 	public Set<UserProfileExt> getUserProfileExtByLoginName(String loginName) {
-		ContactUser contactUser=contactUserDao.getContactUserByLoginName(loginName);
+		ContactUser contactUser=getBaseDao().getContactUserByLoginName(loginName);
 		return contactUser!=null ? contactUser.getUserProfileExts() : null;
 	}
 
@@ -161,7 +164,7 @@ public class ContactUserService extends BaseSerivce<IContactUserDao,ContactUser,
 	public List<ContactUser> getValidContactUser(int first, int maxSize) {
 		ContactUser contactUser=new ContactUser();
 		contactUser.setValidFlag(Boolean.TRUE);
-		return contactUserDao.getModelByPage(contactUser, first, maxSize);
+		return getBaseDao().getModelByPage(contactUser, first, maxSize);
 	}
 
 	@Override
@@ -170,7 +173,7 @@ public class ContactUserService extends BaseSerivce<IContactUserDao,ContactUser,
 		if(null!=user && user.isOnline()) {
 			user.setUserStatus(ContactUser.USER_STATUS_OFFLINE);
 		}
-		this.contactUserDao.update(user);
+		this.getBaseDao().update(user);
 		return user;
 	}
 
@@ -180,7 +183,7 @@ public class ContactUserService extends BaseSerivce<IContactUserDao,ContactUser,
 		if(StringUtils.isNull(loginName) || StringUtils.isNull(password)) {
 			return null;
 		}
-		ContactUser contactUser=contactUserDao.getContactUserByLoginName(loginName);
+		ContactUser contactUser=getBaseDao().getContactUserByLoginName(loginName);
 		if(null==contactUser) {
 			return null;
 		}
@@ -191,7 +194,7 @@ public class ContactUserService extends BaseSerivce<IContactUserDao,ContactUser,
 			contactUser.setUserStatus(ContactUser.USER_STATUS_ONLINE);
 			contactUser.setLastLoginIp(userLoginIp);
 			contactUser.setLastLoginTime(new Date());
-			contactUserDao.update(contactUser);
+			getBaseDao().update(contactUser);
 		}
 		return contactUser;
 	}
@@ -201,7 +204,7 @@ public class ContactUserService extends BaseSerivce<IContactUserDao,ContactUser,
 		if(StringUtils.isNull(loginName)) {
 			return null;
 		}
-		ContactUser contactUser=contactUserDao.getContactUserByLoginName(loginName);
+		ContactUser contactUser=getBaseDao().getContactUserByLoginName(loginName);
 		if(null==contactUser) {
 			return null;
 		}
@@ -210,7 +213,7 @@ public class ContactUserService extends BaseSerivce<IContactUserDao,ContactUser,
 		}
 		if(contactUser.getUserStatus().equals(ContactUser.USER_STATUS_ONLINE)) {
 			contactUser.setUserStatus(ContactUser.USER_STATUS_OFFLINE);
-			contactUserDao.update(contactUser);
+			getBaseDao().update(contactUser);
 		}
 		return contactUser;
 	}
@@ -220,7 +223,7 @@ public class ContactUserService extends BaseSerivce<IContactUserDao,ContactUser,
 		ContactUser user=contactUser;
 		if(null!=user && user.isOnline()) {
 			user.setLoginNumber(user.getLoginNumber()!=null ? user.getLoginNumber()+1 : 1);
-			this.contactUserDao.update(user);
+			this.getBaseDao().update(user);
 		}
 		return user;
 	}
@@ -230,7 +233,7 @@ public class ContactUserService extends BaseSerivce<IContactUserDao,ContactUser,
 		if(StringUtils.isNull(loginName) || StringUtils.isNull(newLoginName)) {
 			return null;
 		}
-		ContactUser contactUser=contactUserDao.getContactUserByLoginName(loginName);
+		ContactUser contactUser=getBaseDao().getContactUserByLoginName(loginName);
 		if(null==contactUser) {
 			return null;
 		}
@@ -239,7 +242,7 @@ public class ContactUserService extends BaseSerivce<IContactUserDao,ContactUser,
 		}
 		contactUser.setLoginName(newLoginName);
 		contactUser.getUserProfile().setEmailPref(newLoginName);
-		contactUserDao.update(contactUser);
+		getBaseDao().update(contactUser);
 		return contactUser;
 	}
 
@@ -248,7 +251,7 @@ public class ContactUserService extends BaseSerivce<IContactUserDao,ContactUser,
 		if(StringUtils.isNull(loginName) || StringUtils.isNull(neoMobile)) {
 			return null;
 		}
-		ContactUser contactUser=contactUserDao.getContactUserByLoginName(loginName);
+		ContactUser contactUser=getBaseDao().getContactUserByLoginName(loginName);
 		if(null==contactUser) {
 			return null;
 		}
@@ -257,7 +260,7 @@ public class ContactUserService extends BaseSerivce<IContactUserDao,ContactUser,
 		}
 		contactUser.setMobile(neoMobile);
 		contactUser.getUserProfile().setTelPref(neoMobile);
-		contactUserDao.update(contactUser);
+		getBaseDao().update(contactUser);
 		return contactUser;
 	}
 
@@ -266,7 +269,7 @@ public class ContactUserService extends BaseSerivce<IContactUserDao,ContactUser,
 		if(StringUtils.isNull(loginName) || StringUtils.isNull(neoPassword)) {
 			return null;
 		}
-		ContactUser contactUser=contactUserDao.getContactUserByLoginName(loginName);
+		ContactUser contactUser=getBaseDao().getContactUserByLoginName(loginName);
 		if(null==contactUser) {
 			return null;
 		}
@@ -274,7 +277,7 @@ public class ContactUserService extends BaseSerivce<IContactUserDao,ContactUser,
 			return contactUser;
 		}
 		contactUser.setPassword(neoPassword);
-		contactUserDao.update(contactUser);
+		getBaseDao().update(contactUser);
 		return contactUser;
 	}
 
