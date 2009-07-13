@@ -3,6 +3,8 @@ package com.haina.beluga.core.service;
 import java.io.Serializable;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.haina.beluga.core.dao.IBaseDao;
@@ -16,6 +18,7 @@ import com.haina.beluga.core.model.IModel;
 
 public  class BaseSerivce<D extends IBaseDao<T,PK>,T extends IModel,PK extends Serializable> implements IBaseSerivce<D,T,PK> {
 	
+	protected Log log=LogFactory.getLog(this.getClass());
 	
 	private D baseDao;
 	
