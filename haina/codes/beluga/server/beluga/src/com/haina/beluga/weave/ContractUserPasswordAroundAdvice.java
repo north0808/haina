@@ -34,6 +34,7 @@ public class ContractUserPasswordAroundAdvice implements MethodInterceptor, Init
 		for(String m:decryptPasswordMethod) {
 			if(m.equals(methodName)) {
 				Object retObj=invocation.proceed();
+				if(retObj == null) break;
 				if(retObj.getClass().equals(List.class)) {
 					List<ContactUser> list=(List<ContactUser>)retObj;
 					if(!list.isEmpty()) {
