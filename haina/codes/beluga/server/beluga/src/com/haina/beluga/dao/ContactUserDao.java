@@ -44,4 +44,20 @@ public class ContactUserDao extends BaseDao<ContactUser,String> implements ICont
 		}
 		return contactUser;
 	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public ContactUser getContactUserByLoginNameAndPwd(String loginName,
+			String password) {
+		ContactUser contactUser=null;
+		if(!StringUtils.isNull(loginName) && !StringUtils.isNull(password)) {
+			List<ContactUser> list=this.getHibernateTemplate().findByNamedParam(
+					"from ContactUser u where u.loginName = :loginName and u.password = :password", 
+					new String[]{"loginName","password"}, new Object[]{loginName,password});
+			if(list!=null && list.size()>0) {
+				contactUser=list.get(0);
+			}
+		}
+		return contactUser;
+	}
 }
