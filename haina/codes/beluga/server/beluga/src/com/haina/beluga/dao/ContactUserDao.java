@@ -23,7 +23,8 @@ public class ContactUserDao extends BaseDao<ContactUser,String> implements ICont
 		ContactUser contactUser=null;
 		if(!StringUtils.isNull(loginName)) {
 			List<ContactUser> list=this.getHibernateTemplate().findByNamedParam(
-					"from ContactUser u where u.loginName = :loginName", "loginName", loginName);
+					"from ContactUser u where u.loginName = :loginName and u.validFlag = :validFlag", 
+					new String[]{"loginName","validFlag"}, new Object[]{loginName,Boolean.TRUE});
 			if(list!=null && list.size()>0) {
 				contactUser=list.get(0);
 			}
@@ -37,7 +38,8 @@ public class ContactUserDao extends BaseDao<ContactUser,String> implements ICont
 		ContactUser contactUser=null;
 		if(!StringUtils.isNull(mobile)) {
 			List<ContactUser> list=this.getHibernateTemplate().findByNamedParam(
-					"from ContactUser u where u.mobile = :mobile", "mobile", mobile);
+					"from ContactUser u where u.mobile = :mobile and u.validFlag = :validFlag", 
+					new String[]{"mobile","validFlag"}, new Object[]{mobile,Boolean.TRUE});
 			if(list!=null && list.size()>0) {
 				contactUser=list.get(0);
 			}
@@ -52,12 +54,20 @@ public class ContactUserDao extends BaseDao<ContactUser,String> implements ICont
 		ContactUser contactUser=null;
 		if(!StringUtils.isNull(loginName) && !StringUtils.isNull(password)) {
 			List<ContactUser> list=this.getHibernateTemplate().findByNamedParam(
-					"from ContactUser u where u.loginName = :loginName and u.password = :password", 
-					new String[]{"loginName","password"}, new Object[]{loginName,password});
+					"from ContactUser u where u.loginName = :loginName and u.password = :password and u.validFlag = :validFlag", 
+					new String[]{"loginName","password","validFlag"}, new Object[]{loginName,password,Boolean.TRUE});
 			if(list!=null && list.size()>0) {
 				contactUser=list.get(0);
 			}
 		}
 		return contactUser;
+	}
+	
+	public void deleteToInvalid(ContactUser contactUser) {
+		if(contactUser!=null && !contactUser.isNew() 
+				&& contactUser.getValidFlag()) {
+			contactUser.setValidFlag(Boolean.FALSE);
+			getHibernateTemplate().update(contactUser);
+		}
 	}
 }
