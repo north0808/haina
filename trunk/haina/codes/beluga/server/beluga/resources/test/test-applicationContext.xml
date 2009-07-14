@@ -52,19 +52,39 @@
 	</property> 
 	
 </bean>
-    <bean id="contractUserPasswordAdvice" class="org.springframework.aop.framework.ProxyFactoryBean">
+   <bean id="contactUserDaoAroundAdvice" class="com.haina.beluga.weave.ContactUserDaoAroundAdvice">
+		<property name="encryptPasswordMethod">
+			<map>
+				<entry key="create" value="create" />
+				<entry key="update" value="update" />
+				<entry key="saveOrUpdate" value="saveOrUpdate" />
+			</map>
+		</property>
+		<property name="decryptPasswordMethod">
+			<map>
+				<entry key="read" value="read" />
+				<entry key="load" value="load" />
+				<entry key="getModels" value="getModels" />
+				<entry key="getContactUserByLoginName" value="getContactUserByLoginName" />
+				<entry key="getContactUserByMobile" value="getContactUserByMobile" />
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="contactUserDaoAdviceProxy" class="org.springframework.aop.framework.ProxyFactoryBean">
     	<property name="proxyInterfaces">
             <value> com.haina.beluga.dao.IContactUserDao</value>
         </property>
         <property name="interceptorNames">
         	<list>
-        		<value>contractUserPasswordAroundAdvice</value>
+        		<value>contactUserDaoAroundAdvice</value>
         	</list>
         </property>
         <property name="target">
            <bean class="com.haina.beluga.dao.ContactUserDao"/>
         </property>
      </bean>
+	
     <!-- I18N config -->
     <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
     	<property name="basenames">
