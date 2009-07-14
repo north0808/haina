@@ -107,7 +107,7 @@ public class ContactUser extends VersionalModel {
 	public void setUserStatus(Integer userStatus) {
 		Integer status=userStatus;
 		if(null==status || !status.equals(USER_STATUS_OFFLINE) 
-				|| !status.equals(USER_STATUS_ONLINE)) {
+				&& !status.equals(USER_STATUS_ONLINE)) {
 			status=USER_STATUS_OFFLINE;
 		}
 		this.userStatus=status;

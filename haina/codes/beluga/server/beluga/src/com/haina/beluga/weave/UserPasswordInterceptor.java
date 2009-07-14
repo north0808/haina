@@ -82,8 +82,8 @@ public class UserPasswordInterceptor {
 	}
 	
 	public static void main(String[] args) {
-		System.out.println("123456789012345678901234567890123456789012345678901234567890jklm".length());
-		String s=DESUtil.encrypt("123abc");
+		System.out.println("079EA1AC815499200C88A5102203BC4078939864E74D42F3AA2E7800A7600D8AE3B272739A0CE2F9".length());
+		String s=DESUtil.encrypt("fuxiang1");
 		System.out.println(s);
 		System.out.println(s.length());
 		System.out.println(DESUtil.decrypt(s));

@@ -9,7 +9,7 @@ import javax.crypto.spec.DESKeySpec;
 
 public class DESUtil {
 
-	private static final String PASSWORD_CRYPT_KEY = "__jDlog_"; 
+	private static final String PASSWORD_CRYPT_KEY = "_^_jDlog_@(%%"; 
 	private final static String DES = "DES"; 
 
 	/** 
