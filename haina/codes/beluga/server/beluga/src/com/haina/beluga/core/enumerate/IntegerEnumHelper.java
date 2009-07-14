@@ -21,12 +21,13 @@ public class IntegerEnumHelper {
 				if(IntegerEnumAbbr.class.isAssignableFrom(clazz)) {
 					Object[] objs =clazz.getEnumConstants();
 					for(Object o:objs) {
-						if(((IntegerEnumAbbr)o).equals(name)) {
+						if(((IntegerEnumAbbr)o).getEnumAbbreviation().equals(Integer.valueOf(name))) {
 							result=o;
 							break;
 						}
 					}
-					throw new IllegalArgumentException("没有找到枚举类型 "+ clazz+"."+name);
+					if(result == null)
+						throw new IllegalArgumentException("没有找到枚举类型 "+ clazz+"."+name);
 				}
 			} else {
 				throw new NotEnumException();
