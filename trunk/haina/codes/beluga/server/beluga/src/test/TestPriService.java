@@ -27,7 +27,7 @@ public class TestPriService extends TestCase
     }
     
     public void testPri() throws Exception {
-    	HessianRemoteReturning h = getPriService().register("fuxiang1", "fuxiang1", "15901819288");
+    	HessianRemoteReturning h = getPriService().register("fuxiang14", "fuxiang12", "15901819285");
     	System.out.println(h);
     }
     public void testLogin() throws Exception {

@@ -4,14 +4,12 @@ import java.lang.Thread.State;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Component;
 
-import com.haina.beluga.core.util.DESUtil;
 import com.haina.beluga.core.util.StringUtils;
 import com.haina.beluga.domain.ContactUser;
 
@@ -180,7 +178,7 @@ public class PassportService implements IPassportService {
 	}
 	
 	private String generatePassport() {
-		return DESUtil.encrypt(UUID.randomUUID().toString().replace("-", ""));
+		return StringUtils.getRandom(8);//DESUtil.encrypt(UUID.randomUUID().toString().replace("-", ""));
 	}
 	
 	private void startMonitoring() {
