@@ -4,9 +4,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.haina.beluga.core.service.BaseSerivce;
@@ -15,7 +12,7 @@ import com.haina.beluga.dao.IContactUserDao;
 import com.haina.beluga.domain.ContactUser;
 import com.haina.beluga.domain.UserProfile;
 import com.haina.beluga.domain.UserProfileExt;
-//import com.haina.beluga.domain.enumerate.SexEnum;
+import com.haina.beluga.domain.enumerate.SexEnum;
 
 /**
  * 联系人用户业务处理接口实现类。<br/>
@@ -28,11 +25,9 @@ import com.haina.beluga.domain.UserProfileExt;
 
 @Service(value="contactUserService")
 public class ContactUserService extends BaseSerivce<IContactUserDao,ContactUser,String> implements
-		IContactUserService, InitializingBean {
-	
-	@Autowired(required=true)
-	@Qualifier(value="contactUserDaoAdviceProxy")
-	private IContactUserDao contactUserDao;
+		IContactUserService {
+
+//	private IContactUserDao contactUserDao=this.getBaseDao();
 	
 	@Override
 	public ContactUser addContactUser(String loginName, String password,
@@ -62,7 +57,7 @@ public class ContactUserService extends BaseSerivce<IContactUserDao,ContactUser,
 			UserProfile userProfile=new UserProfile();
 			userProfile.setTelPref(mobile);
 			//TODO:setSex.
-//			userProfile.setSex(SexEnum.male);
+			userProfile.setSex(SexEnum._default);
 			
 			contactUser.setUserProfile(userProfile);
 			userProfile.setContactUser(contactUser);
@@ -284,12 +279,6 @@ public class ContactUserService extends BaseSerivce<IContactUserDao,ContactUser,
 		contactUser.setPassword(neoPassword);
 		getBaseDao().update(contactUser);
 		return contactUser;
-	}
-
-	@Override
-	public void afterPropertiesSet() throws Exception {
-		log.debug("****************"+contactUserDao+"************************");
-		
 	}
 
 }
