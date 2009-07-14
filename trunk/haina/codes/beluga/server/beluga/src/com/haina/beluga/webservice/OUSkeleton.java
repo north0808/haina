@@ -71,7 +71,7 @@ public class OUSkeleton extends AbstractSkeleton {
 			long t2 = System.currentTimeMillis();
 			String rs=new JSONSerializer().deepSerialize(result);
 			out.writeString(rs);
-			logger.info("JSON:"+rs);
+//			logger.info("JSON:"+rs);
 			logger.info(_method.getName() + ":" + (t2 - t1));
 	    } catch (Throwable e) {
 	    	logger.error(e.getMessage());
