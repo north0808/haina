@@ -40,7 +40,7 @@ public interface IPubService extends Serializable {
 	 * 2.不在线 value=10001
 	 * 
 	 */
-	public HessianRemoteReturning getQQStatus(int qqCode);
+	public HessianRemoteReturning getQQStatus(String qqCode);
 	/**
 	 * 状态包括：
 	 * 1.成功 statusCode=0
@@ -49,7 +49,7 @@ public interface IPubService extends Serializable {
 	 * List集合，集合对象为PhoneDistrictDto.
 	 * 
 	 */
-	public HessianRemoteReturning getOrUpdatePD(int updateFlg);
+	public HessianRemoteReturning getOrUpdatePD(String updateFlg);
 	
 	public HessianRemoteReturning testCN(String cn);
 	

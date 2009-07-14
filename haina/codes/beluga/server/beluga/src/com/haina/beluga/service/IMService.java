@@ -11,9 +11,9 @@ import com.haina.beluga.webservice.data.hessian.HessianRemoteReturning;
 @Component
 public class IMService implements IIMService{
 
-	public HessianRemoteReturning getQQStatus(int qqCode){
+	public HessianRemoteReturning getQQStatus(String qqCode){
 		HessianRemoteReturning hrr = new HessianRemoteReturning();
-		if(qqCode <= 10000 || qqCode >1425000000){
+		if(Integer.valueOf(qqCode) <= 10000 || Integer.valueOf(qqCode) >1425000000){
 			hrr.setStatusCode(Constant.QQ_ARG_ERROE);
 			return hrr;
 		}

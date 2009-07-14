@@ -31,12 +31,12 @@ public class PubService  implements IPubService {
 		return weatherService.getLiveWeather(cityCode);
 	}
 	@Override
-	public HessianRemoteReturning getQQStatus(int qqCode) {
+	public HessianRemoteReturning getQQStatus(String qqCode) {
 		return iMservice.getQQStatus(qqCode);
 	}
 	@Override
-	public HessianRemoteReturning getOrUpdatePD(int updateFlg) {
-		return phoneDistrictService.getOrUpdatePhoneDistricts(updateFlg);
+	public HessianRemoteReturning getOrUpdatePD(String updateFlg) {
+		return phoneDistrictService.getOrUpdatePhoneDistricts(Integer.valueOf(updateFlg));
 	}
 	@Override
 	public HessianRemoteReturning testCN(String cn) {
