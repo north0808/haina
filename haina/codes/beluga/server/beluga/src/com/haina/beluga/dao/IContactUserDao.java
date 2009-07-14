@@ -26,4 +26,11 @@ public interface IContactUserDao extends IBaseDao<ContactUser,String> {
 	 * @return
 	 */
 	public ContactUser getContactUserByMobile(String mobile);
+	
+	/**
+	 * 通过登录名和密码得到用户。<br/>
+	 * @param loginName
+	 * @return
+	 */
+	public ContactUser getContactUserByLoginNameAndPwd(String loginName,String password);
 }
