@@ -63,6 +63,7 @@ public class ContactUserDao extends BaseDao<ContactUser,String> implements ICont
 		return contactUser;
 	}
 	
+	@Override
 	public void deleteToInvalid(ContactUser contactUser) {
 		if(contactUser!=null && !contactUser.isNew() 
 				&& contactUser.getValidFlag()) {
