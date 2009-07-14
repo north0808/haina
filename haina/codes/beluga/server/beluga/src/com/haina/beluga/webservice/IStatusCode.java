@@ -55,14 +55,14 @@ public interface IStatusCode {
 	int INVALID_CONTACT_USER=LOGIN_PASSPORT_FAILD+1;
 	
 	/**
-	 * 登录名无效。<br/>
+	 * 登录名或密码无效。<br/>
 	 */
-	int LOGINNAME_INVALID=INVALID_CONTACT_USER+1;
+	int LOGINNAME_OR_PASSWORD_INVALID=INVALID_CONTACT_USER+1;
 	
 	/**
 	 * 登录护照无效或已过期。<br/>
 	 */
-	int INVALID_LOGIN_PASSPORT=LOGINNAME_INVALID+1;
+	int INVALID_LOGIN_PASSPORT=LOGINNAME_OR_PASSWORD_INVALID+1;
 	
 	/**
 	 * 无效的电子邮件地址。<br/>
