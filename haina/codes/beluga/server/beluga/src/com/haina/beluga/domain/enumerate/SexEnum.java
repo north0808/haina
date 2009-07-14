@@ -11,8 +11,8 @@ import com.haina.beluga.core.enumerate.IntegerEnumAbbr;
  */
 public enum SexEnum implements IntegerEnumAbbr {
 	
-	/*分别表示男性，女性。*/
-	_default(0),male(1),famale(2);
+	/*分别表示未知，男性，女性。*/
+	unknown(0),male(1),famale(2);
 	
 	private Integer sex;
 	
