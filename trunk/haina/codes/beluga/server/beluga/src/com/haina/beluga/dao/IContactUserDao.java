@@ -33,4 +33,10 @@ public interface IContactUserDao extends IBaseDao<ContactUser,String> {
 	 * @return
 	 */
 	public ContactUser getContactUserByLoginNameAndPwd(String loginName,String password);
+	
+	/**
+	 * 设置用户为无效，即逻辑删除。<br/>
+	 * @param contactUser
+	 */
+	public void deleteToInvalid(ContactUser contactUser);
 }
