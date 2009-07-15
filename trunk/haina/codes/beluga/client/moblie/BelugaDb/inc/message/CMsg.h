@@ -30,7 +30,7 @@ enum MsgField
 class CMsg : public CDbEntity
 {
 public:
-	CMsg(CEntityDb * pEntityDb): CDbEntity(pEntityDb)
+	IMPORT_C CMsg(CEntityDb * pEntityDb): CDbEntity(pEntityDb)
 	{
 	m_pFieldsIndex = g_array_sized_new(FALSE, TRUE, sizeof(guint32), MsgField_EndFlag);
 	m_pFieldsValue = g_ptr_array_sized_new(MsgField_EndFlag);
@@ -42,7 +42,7 @@ public:
 		}
 	}
 	
-	~CMsg()
+	IMPORT_C ~CMsg()
 		{
 		
 		}

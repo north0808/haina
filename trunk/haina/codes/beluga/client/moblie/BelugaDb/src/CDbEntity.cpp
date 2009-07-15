@@ -13,7 +13,7 @@
 GLDEF_C void freeGStringArray(GPtrArray * pArray);
 
 
-CDbEntity::~CDbEntity()
+EXPORT_C CDbEntity::~CDbEntity()
 	{
 	if (m_pFieldsValue)
 		freeGStringArray(m_pFieldsValue);

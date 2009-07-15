@@ -14,11 +14,11 @@
 #include "CTag.h"
 
 
-CTagDb::CTagDb()
+EXPORT_C CTagDb::CTagDb()
 	{
 	}
     
-CTagDb::~CTagDb()
+EXPORT_C CTagDb::~CTagDb()
 	{
 	}
     

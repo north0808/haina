@@ -17,12 +17,12 @@
 class CMsgFaceIterator : public CDbEntityIterator
 {
 public:
-	CMsgFaceIterator(CEntityDb * pEntityDb): 
+	IMPORT_C CMsgFaceIterator(CEntityDb * pEntityDb): 
 		CDbEntityIterator(pEntityDb)
 		{
 		}
 	
-	~CMsgFaceIterator()
+	IMPORT_C ~CMsgFaceIterator()
 		{
 		}
 /*	

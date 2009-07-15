@@ -17,12 +17,12 @@
 class CConfigIterator : public CDbEntityIterator
 {
 public:
-	CConfigIterator(CEntityDb * pEntityDb): 
+	IMPORT_C CConfigIterator(CEntityDb * pEntityDb): 
 		CDbEntityIterator(pEntityDb)
 		{
 		}
 	
-	~CConfigIterator()
+	IMPORT_C ~CConfigIterator()
 		{
 		}
 	

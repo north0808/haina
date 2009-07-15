@@ -19,8 +19,8 @@ class CConfigIterator;
 class CConfigDb : public CEntityDb
 {
 public:
-	CConfigDb();
-    ~CConfigDb();
+	IMPORT_C CConfigDb();
+    IMPORT_C ~CConfigDb();
 
     IMPORT_C gint32 InitEntityDb();
     IMPORT_C gint32 GetMaxId(guint32 * nMaxId);

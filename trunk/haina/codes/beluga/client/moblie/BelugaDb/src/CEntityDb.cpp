@@ -9,10 +9,11 @@
 
 #include "CEntityDb.h"
 #include "Beluga.h"
+#include <io.h>
 
 GLDEF_C void freeGStringArray(GPtrArray * pArray);
 
-CEntityDb::CEntityDb()
+EXPORT_C CEntityDb::CEntityDb()
 	{
 	m_nSortFieldIndex = -1;
 	m_ndbCount = 0;
@@ -20,7 +21,7 @@ CEntityDb::CEntityDb()
 	m_pFieldsName = NULL;
 	}
 
-CEntityDb::~CEntityDb()
+EXPORT_C CEntityDb::~CEntityDb()
 	{
 	if (m_pFieldsName)
 		freeGStringArray(m_pFieldsName);
@@ -46,8 +47,7 @@ gint32 CEntityDb::OpenDatabase()
 	{
 	if (m_ndbCount == 0)
 		m_dbBeluga.open(BELUGA_DATABASE);
-	else 
-		m_ndbCount++;
+	m_ndbCount++;
 	
 	return 0;
 	}

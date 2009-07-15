@@ -15,11 +15,11 @@
 #include "CGroupDb.h"
 
 
-CGroupDb::CGroupDb()
+EXPORT_C CGroupDb::CGroupDb()
 	{
 	}
     
-CGroupDb::~CGroupDb()
+EXPORT_C CGroupDb::~CGroupDb()
 	{
 	}
     

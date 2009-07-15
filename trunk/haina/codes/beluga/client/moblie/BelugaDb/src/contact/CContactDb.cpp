@@ -26,7 +26,7 @@ static void insert_contact_ext_row(gpointer key, gpointer value, gpointer user_d
 	CPhoneContact * contact = (CPhoneContact*)user_data;
 	contact->GetEntityDb()->GetMaxId(&nContactId);
 	
-	sprintf(sql, "insert into contact_ext values(NULL, %d, %d, %s);", 
+	sprintf(sql, "insert into contact_ext values(NULL, %d, %d, '%s');", 
 			nContactId, *((guint32*)key), (char*)value);
 	
 	contact->GetEntityDb()->GetDatabase()->execDML(sql);
@@ -39,19 +39,19 @@ static void update_contact_ext_row(gpointer key, gpointer value, gpointer user_d
 	CPhoneContact * contact = (CPhoneContact*)user_data;
 	contact->GetFieldValue(ContactField_Id, &fieldValue);
 	
-	sprintf(sql, "insert into contact_ext values(NULL, %d, %d, %s);", 
+	sprintf(sql, "insert into contact_ext values(NULL, %d, %d, '%s');", 
 			atoi(fieldValue->str), *((guint32*)key), (char*)value);
 	g_string_free(fieldValue, TRUE);
 	contact->GetEntityDb()->GetDatabase()->execDML(sql);
 	}
 
 
-CContactDb::CContactDb()
+EXPORT_C CContactDb::CContactDb()
 	{
 	m_nDbErrCode = ECode_No_Error;
 	}
     
-CContactDb::~CContactDb()
+EXPORT_C CContactDb::~CContactDb()
 	{
 	}
     
@@ -180,7 +180,7 @@ EXPORT_C gint32 CContactDb::SaveEntity(CDbEntity * pEntity)
 				memset(sql, 0, sizeof(sql));
 				GetMaxId(&nContactId);
 				stAddress * addr = (stAddress*)g_ptr_array_index(addresses, j);
-				sprintf(sql, "insert into address values(NULL, %d, %s, %s %s, %s, %s, %s);", 
+				sprintf(sql, "insert into address values(NULL, %d, '%s', '%s', '%s', '%s', '%s', '%s');", 
 									addr->atype, addr->block, addr->street, addr->district,
 									addr->city, addr->state, addr->country, addr->postcode);
 				m_dbBeluga.execDML(sql);
@@ -297,7 +297,7 @@ EXPORT_C gint32 CContactDb::UpdateEntity(CDbEntity * pEntity)
 				{
 				memset(sql, 0, sizeof(sql));
 				stAddress * addr = (stAddress*)g_ptr_array_index(addresses, j);
-				sprintf(sql, "insert into address values(NULL, %d, %s, %s %s, %s, %s, %s);", 
+				sprintf(sql, "insert into address values(NULL, %d, '%s', '%s', '%s', '%s', '%s', '%s');", 
 									addr->atype, addr->block, addr->street, addr->district,
 									addr->city, addr->state, addr->country, addr->postcode);
 									
@@ -441,7 +441,7 @@ EXPORT_C gint32 CContactDb::SearchContactsByTag(guint32 nTagId, GArray * fieldsI
 		
 	m_dbQuery = m_dbBeluga.execQuery(sql);
 	*ppContactIterator = NULL;
-	*ppContactIterator = new CContactIterator(this);
+	*ppContactIterator = new CContactIterator(this, onlyPref);
 	if (NULL == *ppContactIterator)
 		{
 		CloseDatabase();
@@ -471,7 +471,7 @@ EXPORT_C gint32 CContactDb::SearchPhoneContactsByPhoneOrEmail(gchar * commValue,
 		
 	m_dbQuery = m_dbBeluga.execQuery(sql);
 	*ppContactIterator = NULL;
-	*ppContactIterator = new CContactIterator(this);
+	*ppContactIterator = new CContactIterator(this, onlyPref);
 	if (NULL == *ppContactIterator)
 		{
 		CloseDatabase();
@@ -489,18 +489,18 @@ EXPORT_C gint32 CContactDb::SearchContactsByName(guint32 nTagId, gchar* name, gb
 	OpenDatabase();
 	
 	if (nTagId != ContactType_Phone)
-		sprintf(sql, "select * from contact where nickname_spell like \'%%s%\' order by nikename_spell asc;", name);
+		sprintf(sql, "select * from contact where nickname_spell like '%%%s%%' order by nikename_spell asc;", name);
 	else if (onlyPref)
-		sprintf(sql, "select * from contact where name_spell like \'%%s%\' order by name_spell asc;", name);
+		sprintf(sql, "select * from contact where name_spell like '%%%s%%' order by name_spell asc;", name);
 	else
 		sprintf(sql, "select c.*, ext.* from contact c "\
 					"left join (select ce.cid ,ce.comm_key, ce.comm_value, a.* from contact_ext ce "\
 					"left join address a on ce.comm_value = a.aid) ext "\
-					"on c.cid = ext.cid where name_spell like \'%%s%\' order by name_spell asc;", name);
+					"on c.cid = ext.cid where name_spell like '%%%s%%' order by name_spell asc;", name);
 							
 	m_dbQuery = m_dbBeluga.execQuery(sql);
 	*ppContactIterator = NULL;
-	*ppContactIterator = new CContactIterator(this);
+	*ppContactIterator = new CContactIterator(this, onlyPref);
 	if (NULL == *ppContactIterator)
 		{
 		CloseDatabase();
@@ -518,18 +518,18 @@ EXPORT_C gint32 CContactDb::SearchContactsByWordsFirstLetter(guint32 nTagId, gch
 	OpenDatabase();
 	
 	if (nTagId != ContactType_Phone)
-		sprintf(sql, "select * from contact where nickname_spell like '\%%s\%' order by nickname_spell asc;", nameLetters);
+		sprintf(sql, "select * from contact where nickname_spell like '%%%s%%' order by nickname_spell asc;", nameLetters);
 	else if (onlyPref)
-		sprintf(sql, "select * from contact where name_spell like '\%%s\%' order by name_spell asc;", nameLetters);
+		sprintf(sql, "select * from contact where name_spell like '%%%s%%' order by name_spell asc;", nameLetters);
 	else
 		sprintf(sql, "select c.*, ext.* from contact c "\
 					"left join (select ce.cid ,ce.comm_key, ce.comm_value, a.* from contact_ext ce "\
 					"left join address a on ce.comm_value = a.aid) ext "\
-					"on c.cid = ext.cid where name_spell like '\%%s\%' order by name_spell asc;", nameLetters);
+					"on c.cid = ext.cid where name_spell like '%%%s%%' order by name_spell asc;", nameLetters);
 		
 	m_dbQuery = m_dbBeluga.execQuery(sql);
 	*ppContactIterator = NULL;
-	*ppContactIterator = new CContactIterator(this);
+	*ppContactIterator = new CContactIterator(this, onlyPref);
 	if (NULL == *ppContactIterator)
 		{
 		CloseDatabase();
@@ -577,7 +577,7 @@ EXPORT_C gint32 CContactDb::GetMostMatchingContactByTag(guint32 nTagId, GArray *
 		
 	m_dbQuery = m_dbBeluga.execQuery(sql);
 	*ppContactIterator = NULL;
-	*ppContactIterator = new CContactIterator(this);
+	*ppContactIterator = new CContactIterator(this, onlyPref);
 	if (NULL == *ppContactIterator)
 		{
 		CloseDatabase();
@@ -593,7 +593,7 @@ EXPORT_C gint32 CContactDb::GetMostMatchingPhoneContactByPhoneOrEmail(gchar * co
 	{
 	gint32 ret;
 	guint32 nContactId;
-	guint32 nMostMatchingId;
+	guint32 nMostMatchingId = (guint32)-1;
 	guint8 nBaseLen = 7, nLimitLen = 12;
 	guint8 nMatchingBit = CONTACT_PHONE_PREF_LEN;
 	char sql[512] = {0};
@@ -720,7 +720,7 @@ EXPORT_C gint32 CContactDb::GetAllContactsByTag(guint32 nTagId, gboolean onlyPre
 		
 	m_dbQuery = m_dbBeluga.execQuery(sql);
 	*ppContactIterator = NULL;
-	*ppContactIterator = new CContactIterator(this);
+	*ppContactIterator = new CContactIterator(this, onlyPref);
 	if (NULL == *ppContactIterator)
 		{
 		CloseDatabase();
@@ -753,7 +753,7 @@ EXPORT_C gint32 CContactDb::GetAllContactsNotInGroupByTag(guint32 nTagId, gboole
 		
 	m_dbQuery = m_dbBeluga.execQuery(sql);
 	*ppContactIterator = NULL;
-	*ppContactIterator = new CContactIterator(this);
+	*ppContactIterator = new CContactIterator(this, onlyPref);
 	if (NULL == *ppContactIterator)
 		{
 		CloseDatabase();
@@ -787,7 +787,7 @@ EXPORT_C gint32 CContactDb::GetAllContactsByGroup(guint32 nGroupId, gboolean onl
 		
 	m_dbQuery = m_dbBeluga.execQuery(sql);
 	*ppContactIterator = NULL;
-	*ppContactIterator = new CContactIterator(this);
+	*ppContactIterator = new CContactIterator(this, onlyPref);
 	if (NULL == *ppContactIterator)
 		{
 		CloseDatabase();
@@ -916,7 +916,7 @@ EXPORT_C gint32 CContactDb::SaveRecentContact(stRecentContact * contact)
 		m_dbBeluga.execDML("delete from recent_contact where time = (select max(time) from recent_contact);");
 		}
 
-	sprintf(sql, "insert into recent_contact values(null, %d, %d, %s, %d-%d-%d %02d:%02d:%02d);", 
+	sprintf(sql, "insert into recent_contact values(null, %d, %d, '%s', %d-%d-%d %02d:%02d:%02d);", 
 				contact->nContactId, contact->event, contact->eventCommInfo,
 				contact->time->tm_year, contact->time->tm_mon, contact->time->tm_mday,
 				contact->time->tm_hour, contact->time->tm_min, contact->time->tm_sec);

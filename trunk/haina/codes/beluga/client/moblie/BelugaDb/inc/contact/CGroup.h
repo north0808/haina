@@ -34,7 +34,7 @@ enum GroupField
 class CGroup : public CDbEntity
 {
 public:
-	CGroup(CEntityDb * pEntityDb): CDbEntity(pEntityDb)
+	IMPORT_C CGroup(CEntityDb * pEntityDb): CDbEntity(pEntityDb)
 	{
 	m_pFieldsIndex = g_array_sized_new(FALSE, TRUE, sizeof(guint32), GroupField_EndFlag);
 	m_pFieldsValue = g_ptr_array_sized_new(GroupField_EndFlag);
@@ -46,7 +46,7 @@ public:
 		}
 	}
 	
-	~CGroup()
+	IMPORT_C ~CGroup()
 		{
 		
 		}

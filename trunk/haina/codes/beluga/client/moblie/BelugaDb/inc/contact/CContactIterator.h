@@ -17,14 +17,14 @@
 class CContactIterator : public CDbEntityIterator
 {
 public:
-	CContactIterator(CEntityDb * pEntityDb): 
-		CDbEntityIterator(pEntityDb)
+	IMPORT_C CContactIterator(CEntityDb * pEntityDb, gboolean bOnlyPref): 
+		CDbEntityIterator(pEntityDb), m_bOnlyPref(bOnlyPref)
 		{
 		m_bAlreadyNext = FALSE;
 		m_nSameContactId = (guint32)-1;
 		}
 	
-	~CContactIterator()
+	IMPORT_C ~CContactIterator()
 		{
 		}
 	
@@ -35,6 +35,7 @@ public:
 private:
 	gboolean	m_bAlreadyNext;
 	guint32		m_nSameContactId;
+	gboolean    m_bOnlyPref;
 };
 
 #endif

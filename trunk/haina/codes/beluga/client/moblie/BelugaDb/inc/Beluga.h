@@ -10,6 +10,7 @@
 #ifndef BELUGA_H_
 #define BELUGA_H_
 
+#include <glib.h>
 
 /**
 @publishedAll
@@ -58,7 +59,7 @@
 
 
 /* database name */
-#define	BELUGA_DATABASE		"beluga.db"
+#define	BELUGA_DATABASE		"..\\..\\beluga.db"
 
 
 
@@ -89,5 +90,8 @@ enum ECode
 
 #define	ERROR(side, module, code)	((side << 24)|(module << 16)|(code))
 
+
+IMPORT_C void freeGStringArray(GPtrArray * pArray);
+IMPORT_C void freeAddressArray(GPtrArray * pArray);
 
 #endif /* BELUGA_H_ */

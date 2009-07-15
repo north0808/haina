@@ -19,7 +19,7 @@
 class CDbEntityIterator
 {
 public:
-	CDbEntityIterator(CEntityDb * pEntityDb): 
+	IMPORT_C CDbEntityIterator(CEntityDb * pEntityDb): 
 		m_pEntityDb(pEntityDb)
 		{
 		m_pEntityDb->OpenDatabase();
@@ -27,7 +27,7 @@ public:
 		m_dbQuery = pEntityDb->GetDbQuery();
 		}
 	
-	~CDbEntityIterator()
+	IMPORT_C ~CDbEntityIterator()
 		{
 		m_pEntityDb->CloseDatabase();
 		}

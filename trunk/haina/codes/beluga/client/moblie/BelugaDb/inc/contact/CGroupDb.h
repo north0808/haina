@@ -20,8 +20,8 @@ class CGroupIterator;
 class CGroupDb : public CEntityDb
 {
 public:
-	CGroupDb();
-    ~CGroupDb();
+	IMPORT_C CGroupDb();
+    IMPORT_C ~CGroupDb();
 
     IMPORT_C gint32 InitEntityDb();
     IMPORT_C gint32 GetMaxId(guint32 * nMaxId);

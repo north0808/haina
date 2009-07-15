@@ -24,7 +24,7 @@ static void free_address_struct(gpointer data, gpointer user_data)
 	}
 
 //  Exported Functions
-GLDEF_C void freeGStringArray(GPtrArray * pArray)
+EXPORT_C void freeGStringArray(GPtrArray * pArray)
 	{
 	if (pArray)
 		{
@@ -33,7 +33,7 @@ GLDEF_C void freeGStringArray(GPtrArray * pArray)
 		}
 	}
 
-GLDEF_C void freeAddressArray(GPtrArray * pArray)
+EXPORT_C void freeAddressArray(GPtrArray * pArray)
 	{
 	if (pArray)
 		{

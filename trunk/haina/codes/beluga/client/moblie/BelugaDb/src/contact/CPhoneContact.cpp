@@ -14,12 +14,14 @@
 
 static ECommType eCommInfoType;
 static guint32	 nTotality = 0;
+static guint32 * pHashKey = NULL;
 
 GLREF_C void freeAddressArray(GPtrArray * pArray);
 
 static void fill_hashtable (gpointer key, gpointer value, gpointer user_data)
 	{
-	g_hash_table_insert((GHashTable*)user_data, key, g_strdup((gchar*)value));
+	pHashKey[*((guint32*)key)] = *((guint32*)key);
+	g_hash_table_insert((GHashTable*)user_data, &pHashKey[*((guint32*)key)], g_strdup((gchar*)value));
 	}
 
 static void fill_hashtable_by_phonetype(gpointer key, gpointer value, gpointer user_data)
@@ -82,7 +84,7 @@ static void copy_address(gpointer data, gpointer user_data)
 	g_stpcpy(pAddr->block, ((stAddress*)data)->block);
 	g_stpcpy(pAddr->street, ((stAddress*)data)->street);
 	g_stpcpy(pAddr->district, ((stAddress*)data)->district);
-	g_stpcpy(pAddr->city, ((stAddress*)data)->district);
+	g_stpcpy(pAddr->city, ((stAddress*)data)->city);
 	g_stpcpy(pAddr->state, ((stAddress*)data)->state);
 	g_stpcpy(pAddr->country, ((stAddress*)data)->country);
 	g_stpcpy(pAddr->postcode, ((stAddress*)data)->postcode);
@@ -90,7 +92,16 @@ static void copy_address(gpointer data, gpointer user_data)
 	}
 
 
-CPhoneContact::~CPhoneContact()
+EXPORT_C CPhoneContact::CPhoneContact(CEntityDb * pEntityDb) :
+    CContact(pEntityDb)
+	{
+	m_hCommInfoHashTable = NULL;
+	m_aAddressArray = NULL;
+	memset(m_aHashKey, 0, sizeof(m_aHashKey));
+	pHashKey = m_aHashKey;
+	}
+
+EXPORT_C CPhoneContact::~CPhoneContact()
 	{
 	if (m_hCommInfoHashTable)
 		{
@@ -181,6 +192,7 @@ EXPORT_C gint32 CPhoneContact::SetEmails(GHashTable * hEmails)
 
 EXPORT_C gint32 CPhoneContact::SetAddresses(GPtrArray * hAddresses)
 	{
+	guint32 i, j;
 /*	if (NULL == m_aAddressArray)
 		{
 		GetAllCommInfo();
@@ -188,8 +200,9 @@ EXPORT_C gint32 CPhoneContact::SetAddresses(GPtrArray * hAddresses)
 	if (NULL == m_aAddressArray)
 		m_aAddressArray = g_ptr_array_new();
 	
-	for (guint32 i=0; i<hAddresses->len; i++)
-		for (guint32 j=0; j<m_aAddressArray->len; j++)
+	for (i=0; i<hAddresses->len; i++)
+		{
+		for (j=0; j<m_aAddressArray->len; j++)
 			{
 			stAddress * srcAddr = (stAddress*)g_ptr_array_index(hAddresses, i);
 			stAddress * DestAddr = (stAddress*)g_ptr_array_index(m_aAddressArray, j);
@@ -200,12 +213,32 @@ EXPORT_C gint32 CPhoneContact::SetAddresses(GPtrArray * hAddresses)
 				g_stpcpy(DestAddr->block, srcAddr->block);
 				g_stpcpy(DestAddr->street, srcAddr->street);
 				g_stpcpy(DestAddr->district, srcAddr->district);
-				g_stpcpy(DestAddr->city, srcAddr->district);
+				g_stpcpy(DestAddr->city, srcAddr->city);
 				g_stpcpy(DestAddr->state, srcAddr->state);
 				g_stpcpy(DestAddr->country, srcAddr->country);
 				g_stpcpy(DestAddr->postcode, srcAddr->postcode);
+				break;
 				}
 			}
+
+		if (j == m_aAddressArray->len)
+			{
+			stAddress * srcAddr = (stAddress*)g_ptr_array_index(hAddresses, i);
+			stAddress * DestAddr = (stAddress*)g_malloc0(sizeof(stAddress));
+	
+			DestAddr->aid = srcAddr->aid;
+			DestAddr->atype = srcAddr->atype;
+			g_stpcpy(DestAddr->block, srcAddr->block);
+			g_stpcpy(DestAddr->street, srcAddr->street);
+			g_stpcpy(DestAddr->district, srcAddr->district);
+			g_stpcpy(DestAddr->city, srcAddr->city);
+			g_stpcpy(DestAddr->state, srcAddr->state);
+			g_stpcpy(DestAddr->country, srcAddr->country);
+			g_stpcpy(DestAddr->postcode, srcAddr->postcode);
+			g_ptr_array_add(m_aAddressArray, DestAddr);
+			}
+		}
+
 	return 0;
 	}
 
@@ -284,7 +317,7 @@ EXPORT_C gint32 CPhoneContact::GetAddress(ECommType eAddrType, stAddress ** sAdd
 				g_stpcpy((*sAddress)->block, srcAddr->block);
 				g_stpcpy((*sAddress)->street, srcAddr->street);
 				g_stpcpy((*sAddress)->district, srcAddr->district);
-				g_stpcpy((*sAddress)->city, srcAddr->district);
+				g_stpcpy((*sAddress)->city, srcAddr->city);
 				g_stpcpy((*sAddress)->state, srcAddr->state);
 				g_stpcpy((*sAddress)->country, srcAddr->country);
 				g_stpcpy((*sAddress)->postcode, srcAddr->postcode);
@@ -316,7 +349,8 @@ EXPORT_C gint32 CPhoneContact::SetPhone(ECommType ePhoneType, gchar * sPhone)
 	if (NULL == m_hCommInfoHashTable)
 		m_hCommInfoHashTable = g_hash_table_new_full(g_int_hash, g_int_equal, NULL, g_free);
 	
-	g_hash_table_insert(m_hCommInfoHashTable, &ePhoneType, g_strdup((gchar*)sPhone));
+	m_aHashKey[(guint32)ePhoneType] = (guint32)ePhoneType;
+	g_hash_table_insert(m_hCommInfoHashTable, &m_aHashKey[(guint32)ePhoneType], g_strdup((gchar*)sPhone));
 	return 0;
 	}
 
@@ -325,7 +359,8 @@ EXPORT_C gint32 CPhoneContact::SetEmail(ECommType eEmailType, gchar * sEmail)
 	if (NULL == m_hCommInfoHashTable)
 		m_hCommInfoHashTable = g_hash_table_new_full(g_int_hash, g_int_equal, NULL, g_free);
 	
-	g_hash_table_insert(m_hCommInfoHashTable, &eEmailType, g_strdup((gchar*)sEmail));
+	m_aHashKey[(guint32)eEmailType] = (guint32)eEmailType;
+	g_hash_table_insert(m_hCommInfoHashTable, &m_aHashKey[(guint32)eEmailType], g_strdup((gchar*)sEmail));
 	return 0;
 	}
 
@@ -368,7 +403,8 @@ EXPORT_C gint32 CPhoneContact::SetIM(ECommType eIMType, gchar * sIM)
 	if (NULL == m_hCommInfoHashTable)
 		m_hCommInfoHashTable = g_hash_table_new_full(g_int_hash, g_int_equal, NULL, g_free);	
 	
-	g_hash_table_insert(m_hCommInfoHashTable, &eIMType, g_strdup((gchar*)sIM));
+	m_aHashKey[(guint32)eIMType] = (guint32)eIMType;
+	g_hash_table_insert(m_hCommInfoHashTable, &m_aHashKey[(guint32)eIMType], g_strdup((gchar*)sIM));
 	return 0;
 	}
 

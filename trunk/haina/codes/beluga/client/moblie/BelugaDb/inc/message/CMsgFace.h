@@ -21,7 +21,7 @@ enum MsgFaceField
 class CMsgFace : public CDbEntity
 {
 public:
-	CMsgFace(CEntityDb * pEntityDb): CDbEntity(pEntityDb)
+	IMPORT_C CMsgFace(CEntityDb * pEntityDb): CDbEntity(pEntityDb)
 	{
 	m_pFieldsIndex = g_array_sized_new(FALSE, TRUE, sizeof(guint32), MsgFaceField_EndFlag);
 	m_pFieldsValue = g_ptr_array_sized_new(MsgFaceField_EndFlag);
@@ -33,7 +33,7 @@ public:
 		}
 	}
 	
-	~CMsgFace()
+	IMPORT_C ~CMsgFace()
 		{
 		
 		}

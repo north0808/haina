@@ -20,8 +20,8 @@ class CTagIterator;
 class CTagDb : public CEntityDb
 {
 public:
-	CTagDb();
-    ~CTagDb();
+	IMPORT_C CTagDb();
+    IMPORT_C ~CTagDb();
 
     IMPORT_C gint32 InitEntityDb();
     IMPORT_C gint32 GetMaxId(guint32 * nMaxId);
