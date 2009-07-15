@@ -51,28 +51,7 @@
 		</property>
 	</bean>
 	
-	<!--Hessian调用 -->
-	
-	
-	<bean id="priMethhod" class="java.util.ArrayList">
-		<constructor-arg>
-	    	<list>
-	     		<value>editLoginName</value>
-	     		<value>editMobile</value>
-	     		<value>editPassword</value>
-	     		<value>logout</value>
-	    	</list>
-	   	</constructor-arg>
-	</bean>
-	
-	<bean id="priValidatedMethod" class="java.util.HashMap">
-   		<constructor-arg>
-    		<map>
-     			<entry key="/pri" value-ref="priMethhod" />
-    		</map>
-   		</constructor-arg>
-	</bean>
-	
+	<!--Hessian调用 -->	
 	<bean name="/pri"
 		class="com.haina.beluga.webservice.OUServiceExporter">
 		<property name="method">
@@ -88,7 +67,16 @@
 			<value>passport</value>
 		</property>
 		<property name="validatedMethod">
-			<ref bean="priValidatedMethod" />
+			<map>
+     			<entry key="/pri">
+     				<list>
+     					<value>editLoginName</value>
+			     		<value>editMobile</value>
+			     		<value>editPassword</value>
+			     		<value>logout</value>
+     				</list>
+     			</entry>
+    		</map>
 		</property>
 	</bean>
 		
