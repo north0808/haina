@@ -132,6 +132,17 @@ public class OUServiceExporter implements HttpRequestHandler, InitializingBean {
 		if(null==validatedMethod) {
 			validatedMethod=new HashMap<String, List<String>>(0);
 		}
+//		if(validatedMethod.size()>0) {
+//			Iterator<String> keys=validatedMethod.keySet().iterator();
+//			while(keys.hasNext()) {
+//				String key=keys.next();
+//				System.out.println("*************path: "+key+" ***************");
+//				List<String> value=validatedMethod.get(key);
+//				for(String m:value) {
+//					System.out.println("*************method: "+m+" ***************");
+//				}
+//			}
+//		}
 
 	}
 
