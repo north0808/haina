@@ -1,7 +1,5 @@
 package com.haina.beluga.webservice;
 
-// Filename: HelloServlet.java
-// Compile: javac HelloServlet.java
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -14,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.caucho.hessian.micro.MicroHessianInput;
 import com.caucho.hessian.micro.MicroHessianOutput;
-import com.haina.beluga.util.SpringContext;
 
 public class HelloServlet extends HttpServlet {
 	/**
@@ -56,9 +53,5 @@ public class HelloServlet extends HttpServlet {
 	}
 
 	public void testSpring() {
-		SpringContext springContext = SpringContext.getInstance();
-		IPubService pubService = (IPubService) springContext
-				.getBean("pubService");
-		System.out.println(pubService.getClass());
 	}
 }
