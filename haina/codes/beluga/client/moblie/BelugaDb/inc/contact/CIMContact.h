@@ -15,12 +15,12 @@ class CIMContact : public CContact
 {
 public:
     
-	CIMContact(CEntityDb * pEntityDb) :
+	IMPORT_C CIMContact(CEntityDb * pEntityDb) :
     CContact(pEntityDb)
 		{
 		}
     
-    ~CIMContact()
+    IMPORT_C ~CIMContact()
     	{ 	
     	}
 };

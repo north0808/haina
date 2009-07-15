@@ -21,7 +21,7 @@ enum QuickMsgField
 class CQuickMsg : public CDbEntity
 {
 public:
-	CQuickMsg(CEntityDb * pEntityDb): CDbEntity(pEntityDb)
+	IMPORT_C CQuickMsg(CEntityDb * pEntityDb): CDbEntity(pEntityDb)
 	{
 	m_pFieldsIndex = g_array_sized_new(FALSE, TRUE, sizeof(guint32), QuickMsgField_EndFlag);
 	m_pFieldsValue = g_ptr_array_sized_new(QuickMsgField_EndFlag);
@@ -33,7 +33,7 @@ public:
 		}
 	}
 	
-	~CQuickMsg()
+	IMPORT_C ~CQuickMsg()
 		{
 		
 		}

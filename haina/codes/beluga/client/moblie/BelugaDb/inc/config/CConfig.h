@@ -25,7 +25,7 @@ enum ConfigField
 class CConfig : public CDbEntity
 {
 public:
-	CConfig(CEntityDb * pEntityDb): CDbEntity(pEntityDb)
+	IMPORT_C CConfig(CEntityDb * pEntityDb): CDbEntity(pEntityDb)
 	{
 	m_pFieldsIndex = g_array_sized_new(FALSE, TRUE, sizeof(guint32), ConfigField_EndFlag);
 	m_pFieldsValue = g_ptr_array_sized_new(ConfigField_EndFlag);
@@ -37,7 +37,7 @@ public:
 		}
 	}
 	
-	~CConfig()
+	IMPORT_C ~CConfig()
 		{
 		
 		}

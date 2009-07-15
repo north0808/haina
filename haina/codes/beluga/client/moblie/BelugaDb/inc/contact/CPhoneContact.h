@@ -17,14 +17,8 @@
 class CPhoneContact : public CContact
 {
 public:
-    CPhoneContact(CEntityDb * pEntityDb) :
-    CContact(pEntityDb)
-	{
-	m_hCommInfoHashTable = NULL;
-	m_aAddressArray = NULL;
-	}
-    
-    ~CPhoneContact();
+    IMPORT_C CPhoneContact(CEntityDb * pEntityDb);
+    IMPORT_C ~CPhoneContact();
     
     IMPORT_C gint32 GetAllPhones(GHashTable ** hPhones);
     IMPORT_C gint32 GetAllEmails(GHashTable ** hEmails);
@@ -75,6 +69,7 @@ private:
 private:
 	GHashTable	  * m_hCommInfoHashTable;
 	GPtrArray	  * m_aAddressArray;
+	guint32			m_aHashKey[0x46 + 1];
 };
 
 #endif

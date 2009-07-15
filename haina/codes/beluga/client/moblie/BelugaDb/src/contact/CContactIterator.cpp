@@ -58,7 +58,7 @@ EXPORT_C gint32 CContactIterator::Current(CDbEntity ** ppEntity)
 		}
 	
 	/* fill contact_ext table and address table fields */
-	if (ContactType_Phone == contactType)
+	if (ContactType_Phone == contactType && FALSE == m_bOnlyPref)
 		{
 		CPhoneContact * phoneContact = (CPhoneContact*)pContact;
 		do 	

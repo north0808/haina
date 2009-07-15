@@ -18,12 +18,12 @@
 class CGroupIterator : public CDbEntityIterator
 {
 public:
-	CGroupIterator(CEntityDb * pEntityDb): 
+	IMPORT_C CGroupIterator(CEntityDb * pEntityDb): 
 		CDbEntityIterator(pEntityDb)
 		{
 		}
 	
-	~CGroupIterator()
+	IMPORT_C ~CGroupIterator()
 		{
 		}
 	

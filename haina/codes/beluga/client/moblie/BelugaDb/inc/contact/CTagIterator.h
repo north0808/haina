@@ -18,12 +18,12 @@
 class CTagIterator : public CDbEntityIterator
 {
 public:
-	CTagIterator(CEntityDb * pEntityDb): 
+	IMPORT_C CTagIterator(CEntityDb * pEntityDb): 
 		CDbEntityIterator(pEntityDb)
 		{
 		}
 	
-	~CTagIterator()
+	IMPORT_C ~CTagIterator()
 		{
 		}
 	

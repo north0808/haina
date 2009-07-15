@@ -62,8 +62,8 @@ class CPhoneContact;
 class CContactDb : public CEntityDb
 {
 public:
-    CContactDb();
-    ~CContactDb();
+    IMPORT_C CContactDb();
+    IMPORT_C ~CContactDb();
     
     IMPORT_C gint32 InitEntityDb();
     IMPORT_C gint32 GetMaxId(guint32 * nMaxId);

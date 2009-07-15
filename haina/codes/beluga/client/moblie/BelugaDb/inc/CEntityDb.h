@@ -19,8 +19,8 @@ class CDbEntity;
 class CEntityDb
 {
 public:
-	CEntityDb();
-    ~CEntityDb();
+	IMPORT_C CEntityDb();
+    IMPORT_C ~CEntityDb();
     
 	
     IMPORT_C gint32 SetSortKey(guint32 fieldIndex, gboolean ascending);
@@ -35,11 +35,11 @@ public:
     virtual gint32 DeleteEntity(guint32 nEntityId) = 0;
     virtual gint32 UpdateEntity(CDbEntity * pEntity) = 0;
     
-    CppSQLite3DB * GetDatabase();
-    CppSQLite3Query * GetDbQuery();
+    IMPORT_C CppSQLite3DB * GetDatabase();
+    IMPORT_C CppSQLite3Query * GetDbQuery();
     
-	gint32 OpenDatabase();
-	gint32 CloseDatabase();
+	IMPORT_C gint32 OpenDatabase();
+	IMPORT_C gint32 CloseDatabase();
 	
 protected:
 	guint32 		m_nSortFieldIndex;

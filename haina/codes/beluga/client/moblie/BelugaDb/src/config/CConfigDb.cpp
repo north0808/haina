@@ -14,11 +14,11 @@
 #include "CConfig.h"
 
 
-CConfigDb::CConfigDb()
+EXPORT_C CConfigDb::CConfigDb()
 	{
 	}
     
-CConfigDb::~CConfigDb()
+EXPORT_C CConfigDb::~CConfigDb()
 	{
 	}
     

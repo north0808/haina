@@ -20,14 +20,14 @@ class CEntityDb;
 class CDbEntity
 {
 public:
-	CDbEntity(CEntityDb * pEntityDb)
+	IMPORT_C CDbEntity(CEntityDb * pEntityDb)
 	{
 	m_pEntityDb = pEntityDb;
 	m_pFieldsValue = NULL;
 	m_pFieldsIndex = NULL;
 	}
 
-	~CDbEntity();
+	IMPORT_C ~CDbEntity();
 
 	IMPORT_C gint32 GetFieldsName(GPtrArray ** fieldsName);
 	IMPORT_C gint32 GetFieldsValue(GArray * fieldsIndex, GPtrArray ** fieldsValue);

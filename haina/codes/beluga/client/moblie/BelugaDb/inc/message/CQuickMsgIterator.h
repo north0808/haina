@@ -17,12 +17,12 @@
 class CQuickMsgIterator : public CDbEntityIterator
 {
 public:
-	CQuickMsgIterator(CEntityDb * pEntityDb): 
+	IMPORT_C CQuickMsgIterator(CEntityDb * pEntityDb): 
 		CDbEntityIterator(pEntityDb)
 		{
 		}
 	
-	~CQuickMsgIterator()
+	IMPORT_C ~CQuickMsgIterator()
 		{
 		}
 /*	

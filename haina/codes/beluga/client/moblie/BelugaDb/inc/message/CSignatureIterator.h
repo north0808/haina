@@ -18,12 +18,12 @@
 class CSignatureIterator : public CDbEntityIterator
 {
 public:
-	CSignatureIterator(CEntityDb * pEntityDb): 
+	IMPORT_C CSignatureIterator(CEntityDb * pEntityDb): 
 		CDbEntityIterator(pEntityDb)
 		{
 		}
 	
-	~CSignatureIterator()
+	IMPORT_C ~CSignatureIterator()
 		{
 		}
 	/*
