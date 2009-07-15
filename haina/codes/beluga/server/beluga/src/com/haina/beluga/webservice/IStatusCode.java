@@ -78,4 +78,9 @@ public interface IStatusCode {
 	 * 无效的密码。<br/>
 	 */
 	int INVALID_PASSWORD=INVALID_MOBILE+1;
+	
+	/**
+	 * 错误的旧密码。<br/>
+	 */
+	int WRONG_OLD_PASSWORD=INVALID_PASSWORD+1;
 }
