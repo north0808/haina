@@ -31,42 +31,52 @@ public class ContactUserService extends BaseSerivce<IContactUserDao,ContactUser,
 	
 	@Override
 	public ContactUser addContactUser(String loginName, String password,
-			String mobile,Integer userStatus,String userIp) {
+			String mobile,Integer userStatus,String userIp, Date time) {
 		if(StringUtils.isNull(loginName) || StringUtils.isNull(mobile)) {
 			return null;
 		}
-		ContactUser contactUser=getBaseDao().getContactUserByLoginName(loginName);
-		if(null==contactUser) {
-			/*新用户。*/
-			contactUser=getBaseDao().getContactUserByMobile(mobile);
-			if(null!=contactUser && contactUser.getValidFlag()) {
-				return null;
-			}
-			Date now=new Date();
-			contactUser=new ContactUser();
-			contactUser.setLoginName(loginName);
-			contactUser.setPassword(password);
-			contactUser.setMobile(mobile);
-			contactUser.setRegisterTime(now);
-			contactUser.setLastLoginTime(now);
-			contactUser.setValidFlag(Boolean.TRUE);
-			contactUser.setUserStatus(userStatus);
-			if(userStatus!=null && userStatus.equals(ContactUser.USER_STATUS_ONLINE)) {
-				contactUser.setLastLoginIp(userIp);
-			}
-			UserProfile userProfile=new UserProfile();
-			userProfile.setTelPref(mobile);
-			//TODO:setSex.
-			userProfile.setSex(SexEnum.unknown);
-			
-			contactUser.setUserProfile(userProfile);
-			userProfile.setContactUser(contactUser);
-			getBaseDao().create(contactUser);
+		ContactUser contactUser=getBaseDao().getValidUserByLoginName(loginName);
+		if(null!=contactUser) {
+			/*存在登录名相同的有效用户。*/
 			return contactUser;
-		} else {
+		}
+		contactUser=getBaseDao().getInvalidUserByLoginName(loginName);
+		if(contactUser!=null) {
+			/*存在登录名相同的无效用户，把用户设为有效。*/
 			contactUser=this.editContactUserToValid(loginName, password, mobile, userStatus, userIp);
 			return contactUser;
 		}
+		
+		contactUser=getBaseDao().getValidUserByMobile(mobile);
+		if(null!=contactUser) {
+			/*手机号码重复。*/
+			return contactUser;
+		}
+		
+		Integer status=(userStatus!=null ? userStatus : ContactUser.USER_STATUS_OFFLINE);
+		Date addedTime=(time!=null ? time : new Date());
+		contactUser=new ContactUser();
+		contactUser.setLoginName(loginName);
+		contactUser.setPassword(password);
+		contactUser.setMobile(mobile);
+		contactUser.setRegisterTime(addedTime);
+		contactUser.setValidFlag(Boolean.TRUE);
+		contactUser.setUserStatus(status);
+		if(status.equals(ContactUser.USER_STATUS_ONLINE)) {
+			contactUser.setLastLoginIp(userIp);
+			contactUser.setLoginNumber(1);
+			contactUser.setLastLoginTime(addedTime);
+		}
+		UserProfile userProfile=new UserProfile();
+		userProfile.setTelPref(mobile);
+		userProfile.setEmailPref(loginName);
+		//TODO:setSex.
+		userProfile.setSex(SexEnum.unknown);
+		
+		contactUser.setUserProfile(userProfile);
+		userProfile.setContactUser(contactUser);
+		getBaseDao().create(contactUser);
+		return contactUser;
 	}
 
 	@Override
@@ -95,21 +105,22 @@ public class ContactUserService extends BaseSerivce<IContactUserDao,ContactUser,
 				StringUtils.isNull(mobile)) {
 			return null;
 		}
-		ContactUser contactUser=getBaseDao().getContactUserByLoginName(loginName);
-		if(null==contactUser || !contactUser.getPassword().equals(password)) {
+		ContactUser contactUser=getBaseDao().getInvalidUserByLoginNameAndPwd(loginName, password);
+		if(null==contactUser) {
 			return null;
 		}
-		if(contactUser.getValidFlag()) {
-			return contactUser;
-		}
+		Integer status=(userStatus!=null ? userStatus : ContactUser.USER_STATUS_OFFLINE);
 		contactUser.setMobile(mobile);
 		contactUser.setValidFlag(Boolean.TRUE);
-		contactUser.setUserStatus(userStatus);
-		if(userStatus!=null && userStatus.equals(ContactUser.USER_STATUS_ONLINE)) {
+		contactUser.setUserStatus(status);
+		if(status.equals(ContactUser.USER_STATUS_ONLINE)) {
 			contactUser.setLastLoginIp(userIp);
 			contactUser.setLastLoginTime(new Date());
+			contactUser.setLoginNumber(contactUser.getLoginNumber()!=null ? contactUser.getLoginNumber()+1 : 1);
 		}
+		contactUser.setLastUpdateTime(new Date());
 		contactUser.getUserProfile().setTelPref(mobile);
+		contactUser.getUserProfile().setEmailPref(loginName);
 		getBaseDao().update(contactUser);
 		return contactUser;
 	}
@@ -126,7 +137,7 @@ public class ContactUserService extends BaseSerivce<IContactUserDao,ContactUser,
 
 	@Override
 	public ContactUser getContactUserByLoginName(String loginName) {
-		return getBaseDao().getContactUserByLoginName(loginName);
+		return getBaseDao().getValidUserByLoginName(loginName);
 	}
 
 	@Override
@@ -144,7 +155,7 @@ public class ContactUserService extends BaseSerivce<IContactUserDao,ContactUser,
 
 	@Override
 	public UserProfile getUserProfileByLoginName(String loginName) {
-		ContactUser contactUser=getBaseDao().getContactUserByLoginName(loginName);
+		ContactUser contactUser=getBaseDao().getValidUserByLoginName(loginName);
 		return contactUser!=null ? contactUser.getUserProfile() : null;
 	}
 
@@ -156,7 +167,7 @@ public class ContactUserService extends BaseSerivce<IContactUserDao,ContactUser,
 
 	@Override
 	public Set<UserProfileExt> getUserProfileExtByLoginName(String loginName) {
-		ContactUser contactUser=getBaseDao().getContactUserByLoginName(loginName);
+		ContactUser contactUser=getBaseDao().getValidUserByLoginName(loginName);
 		return contactUser!=null ? contactUser.getUserProfileExts() : null;
 	}
 
@@ -183,17 +194,15 @@ public class ContactUserService extends BaseSerivce<IContactUserDao,ContactUser,
 		if(StringUtils.isNull(loginName) || StringUtils.isNull(password)) {
 			return null;
 		}
-		ContactUser contactUser=getBaseDao().getContactUserByLoginName(loginName);
+		ContactUser contactUser=getBaseDao().getValidUserByLoginNameAndPwd(loginName, password);
 		if(null==contactUser) {
 			return null;
-		}
-		if(!contactUser.getValidFlag()) {
-			return contactUser;
 		}
 		if(contactUser.getUserStatus().equals(ContactUser.USER_STATUS_OFFLINE)) {
 			contactUser.setUserStatus(ContactUser.USER_STATUS_ONLINE);
 			contactUser.setLastLoginIp(userLoginIp);
 			contactUser.setLastLoginTime(new Date());
+			contactUser.setLoginNumber(contactUser.getLoginNumber()!=null ? contactUser.getLoginNumber()+1 : 1);
 			getBaseDao().update(contactUser);
 		}
 		return contactUser;
@@ -204,12 +213,9 @@ public class ContactUserService extends BaseSerivce<IContactUserDao,ContactUser,
 		if(StringUtils.isNull(loginName)) {
 			return null;
 		}
-		ContactUser contactUser=getBaseDao().getContactUserByLoginName(loginName);
+		ContactUser contactUser=getBaseDao().getValidUserByLoginName(loginName);
 		if(null==contactUser) {
 			return null;
-		}
-		if(!contactUser.getValidFlag()) {
-			return contactUser;
 		}
 		if(contactUser.getUserStatus().equals(ContactUser.USER_STATUS_ONLINE)) {
 			contactUser.setUserStatus(ContactUser.USER_STATUS_OFFLINE);
@@ -233,14 +239,12 @@ public class ContactUserService extends BaseSerivce<IContactUserDao,ContactUser,
 		if(StringUtils.isNull(loginName) || StringUtils.isNull(newLoginName)) {
 			return null;
 		}
-		ContactUser contactUser=getBaseDao().getContactUserByLoginName(loginName);
+		ContactUser contactUser=getBaseDao().getValidUserByLoginName(loginName);
 		if(null==contactUser) {
 			return null;
 		}
-		if(!contactUser.getValidFlag()) {
-			return contactUser;
-		}
 		contactUser.setLoginName(newLoginName);
+		contactUser.setLastLoginTime(new Date());
 		contactUser.getUserProfile().setEmailPref(newLoginName);
 		getBaseDao().update(contactUser);
 		return contactUser;
@@ -251,32 +255,33 @@ public class ContactUserService extends BaseSerivce<IContactUserDao,ContactUser,
 		if(StringUtils.isNull(loginName) || StringUtils.isNull(neoMobile)) {
 			return null;
 		}
-		ContactUser contactUser=getBaseDao().getContactUserByLoginName(loginName);
+		ContactUser contactUser=getBaseDao().getValidUserByLoginName(loginName);
 		if(null==contactUser) {
 			return null;
 		}
-		if(!contactUser.getValidFlag()) {
-			return contactUser;
-		}
 		contactUser.setMobile(neoMobile);
+		contactUser.setLastLoginTime(new Date());
 		contactUser.getUserProfile().setTelPref(neoMobile);
 		getBaseDao().update(contactUser);
 		return contactUser;
 	}
 
 	@Override
-	public ContactUser editPassword(String loginName, String neoPassword) {
-		if(StringUtils.isNull(loginName) || StringUtils.isNull(neoPassword)) {
+	public ContactUser editPassword(String loginName, String oldPassword, String neoPassword) {
+		if(StringUtils.isNull(loginName) || StringUtils.isNull(oldPassword) 
+				|| StringUtils.isNull(neoPassword)) {
 			return null;
 		}
-		ContactUser contactUser=getBaseDao().getContactUserByLoginName(loginName);
+		ContactUser contactUser=getBaseDao().getValidUserByLoginName(loginName);
 		if(null==contactUser) {
 			return null;
 		}
-		if(!contactUser.getValidFlag()) {
+		if(!contactUser.getPassword().equals(oldPassword)) {
+			/*旧密码不正确，返回用户对象，用于调用方法判断。*/
 			return contactUser;
 		}
 		contactUser.setPassword(neoPassword);
+		contactUser.setLastLoginTime(new Date());
 		getBaseDao().update(contactUser);
 		return contactUser;
 	}

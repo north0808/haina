@@ -1,5 +1,7 @@
 package com.haina.beluga.webservice;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -49,7 +51,7 @@ public class PriService implements IPriService {
 		}
 		
 		//$2 修改电子邮件
-		LoginPassport loginPassport=passportService.getPassport(passport);
+		LoginPassport loginPassport=passportService.getLoginPassport(passport);
 		if(null==loginPassport) {
 			ret.setStatusCode(IStatusCode.INVALID_LOGIN_PASSPORT);
 			return ret;
@@ -77,7 +79,7 @@ public class PriService implements IPriService {
 		}
 		
 		//$2 修改手机号码
-		LoginPassport loginPassport=passportService.getPassport(passport);
+		LoginPassport loginPassport=passportService.getLoginPassport(passport);
 		if(null==loginPassport) {
 			ret.setStatusCode(IStatusCode.INVALID_LOGIN_PASSPORT);
 			return ret;
@@ -92,26 +94,35 @@ public class PriService implements IPriService {
 	}
 
 	@Override
-	public HessianRemoteReturning editPassword(String passport, String neoPassword) {
+	public HessianRemoteReturning editPassword(String passport, String oldPassword, String neoPassword) {
 		HessianRemoteReturning ret = new HessianRemoteReturning();
 		//$1 验证合法性
 		if(StringUtils.isNull(passport)) {
 			ret.setStatusCode(IStatusCode.INVALID_LOGIN_PASSPORT);
 			return ret;
 		}
-		if(StringUtils.isNull(neoPassword)) {
+		if(StringUtils.isNull(oldPassword) || StringUtils.isNull(neoPassword)) {
 			ret.setStatusCode(IStatusCode.INVALID_PASSWORD);
 			return ret;
 		}
 		//$2 修改密码
-		LoginPassport loginPassport=passportService.getPassport(passport);
+		LoginPassport loginPassport=passportService.getLoginPassport(passport);
 		if(null==loginPassport) {
 			ret.setStatusCode(IStatusCode.INVALID_LOGIN_PASSPORT);
 			return ret;
 		}
-		ContactUser contactUser=contactUserService.editPassword(loginPassport.getLoginName(),neoPassword);
-		if(null==contactUser || !contactUser.getValidFlag()) {
-			ret.setStatusCode(IStatusCode.INVALID_CONTACT_USER);
+		if(oldPassword.equals(neoPassword)) {
+			/*旧密码与新密码一样，直接返回修改成功。*/
+			ret.setStatusCode(IStatusCode.SUCCESS);
+			return ret;
+		}
+		ContactUser contactUser=contactUserService.editPassword(loginPassport.getLoginName(),oldPassword,neoPassword);
+		if(null==contactUser) {
+			ret.setStatusCode(IStatusCode.LOGINNAME_OR_PASSWORD_INVALID);
+			return ret;
+		}
+		if(contactUser.getPassword().equals(oldPassword)) {
+			ret.setStatusCode(IStatusCode.WRONG_OLD_PASSWORD);
 			return ret;
 		}
 		ret.setStatusCode(IStatusCode.SUCCESS);
@@ -123,25 +134,25 @@ public class PriService implements IPriService {
 		HessianRemoteReturning ret = new HessianRemoteReturning();
 		//$1 验证合法性
 		if(StringUtils.isNull(loginName) || StringUtils.isNull(password)) {
-			ret.setStatusCode(IStatusCode.LOGINNAME_PASSWORD_INVALID);
+			ret.setStatusCode(IStatusCode.LOGINNAME_OR_PASSWORD_INVALID);
 			return ret;
 		}
 		//$2 设置用户在线状态
 		ContactUser contactUser=contactUserService.editContactUserToOnline(loginName, password, null);
-		if(null==contactUser || !contactUser.getValidFlag()) {
-			ret.setStatusCode(IStatusCode.INVALID_CONTACT_USER);
+		if(null==contactUser) {
+			ret.setStatusCode(IStatusCode.LOGINNAME_OR_PASSWORD_INVALID);
+			return ret;
+		}
+		if(contactUser.isOnline()) {
+			ret.setStatusCode(IStatusCode.SUCCESS);
+			LoginPassport loginPassport=passportService.getLoginPassportByLoginName(loginName);
+			ret.setValue(loginPassport.getPassport());
 			return ret;
 		}
 		//$3 生成护照
 		LoginPassport loginPassport=passportService.addPassport(contactUser);
-		if(null==loginPassport) {
-			ret.setStatusCode(IStatusCode.LOGIN_PASSPORT_FAILD);
-			contactUserService.editContactUserToOffline(contactUser);
-		} else {
-			contactUserService.addContactUserLoginNumber(contactUser);
-			ret.setStatusCode(IStatusCode.SUCCESS);
-			ret.setValue(loginPassport.getPassport());
-		}
+		ret.setStatusCode(IStatusCode.SUCCESS);
+		ret.setValue(loginPassport.getPassport());
 		return ret;
 	}
 
@@ -153,7 +164,7 @@ public class PriService implements IPriService {
 			ret.setStatusCode(IStatusCode.INVALID_LOGIN_PASSPORT);
 			return ret;
 		}
-		LoginPassport loginPassport=passportService.getPassport(passport);
+		LoginPassport loginPassport=passportService.getLoginPassport(passport);
 		if(null==loginPassport) {
 			ret.setStatusCode(IStatusCode.INVALID_LOGIN_PASSPORT);
 			return ret;
@@ -175,7 +186,7 @@ public class PriService implements IPriService {
 		HessianRemoteReturning ret = new HessianRemoteReturning();
 		//$1 验证合法性
 		if(StringUtils.isNull(loginName) || StringUtils.isNull(password)) {
-			ret.setStatusCode(IStatusCode.LOGINNAME_PASSWORD_INVALID);
+			ret.setStatusCode(IStatusCode.LOGINNAME_OR_PASSWORD_INVALID);
 //			ret.setStatusText(localeMessageService
 //					.getI18NMessage("com.haina.shield.message.passportuser.register.failure.email.and.passpord"));
 			return ret;
@@ -186,10 +197,15 @@ public class PriService implements IPriService {
 //					.getI18NMessage("com.haina.shield.message.passportuser.register.failure.mobile"));
 			return ret;
 		}
+		Date now = new Date();
 		ContactUser contactUser=contactUserService.addContactUser(
-				loginName, password, mobile, ContactUser.USER_STATUS_ONLINE,null);
-		if(null!=contactUser && !contactUser.getMobile().equals(mobile.trim())) {
-			ret.setStatusCode(IStatusCode.CONTACT_USER_EXISTENT);
+				loginName, password, mobile, ContactUser.USER_STATUS_ONLINE,null,now);
+		if(null==contactUser) {
+			ret.setStatusCode(IStatusCode.LOGINNAME_OR_PASSWORD_INVALID);
+			return ret;
+		}
+		if(null!=contactUser) {
+			ret.setStatusCode(IStatusCode.LOGINNAME_OR_MOBILE_EXISTENT);
 //			ret.setStatusText(localeMessageService
 //					.getI18NMessage("com.haina.shield.message.passportuser.register.failure.existent.email.or.mobile"));
 			return ret;
@@ -200,14 +216,8 @@ public class PriService implements IPriService {
 		
 		//$3 生成护照
 		LoginPassport loginPassport=passportService.addPassport(contactUser);
-		if(null==loginPassport) {
-			ret.setStatusCode(IStatusCode.REGISTER_SUCCESS_PASSPORT_FAILD);
-			contactUserService.editContactUserToOffline(contactUser);
-		} else {
-			contactUserService.addContactUserLoginNumber(contactUser);
-			ret.setStatusCode(IStatusCode.SUCCESS);
-			ret.setValue(loginPassport.getPassport());
-		}
+		ret.setStatusCode(IStatusCode.SUCCESS);
+		ret.setValue(loginPassport.getPassport());
 		return ret;
 	}
 }

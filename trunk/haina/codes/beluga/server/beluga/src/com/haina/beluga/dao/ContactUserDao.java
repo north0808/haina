@@ -19,7 +19,7 @@ public class ContactUserDao extends BaseDao<ContactUser,String> implements ICont
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public ContactUser getContactUserByLoginName(String loginName) {
+	public ContactUser getValidUserByLoginName(String loginName) {
 		ContactUser contactUser=null;
 		if(!StringUtils.isNull(loginName)) {
 			List<ContactUser> list=this.getHibernateTemplate().findByNamedParam(
@@ -34,7 +34,7 @@ public class ContactUserDao extends BaseDao<ContactUser,String> implements ICont
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public ContactUser getContactUserByMobile(String mobile) {
+	public ContactUser getValidUserByMobile(String mobile) {
 		ContactUser contactUser=null;
 		if(!StringUtils.isNull(mobile)) {
 			List<ContactUser> list=this.getHibernateTemplate().findByNamedParam(
@@ -49,13 +49,29 @@ public class ContactUserDao extends BaseDao<ContactUser,String> implements ICont
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public ContactUser getContactUserByLoginNameAndPwd(String loginName,
+	public ContactUser getValidUserByLoginNameAndPwd(String loginName,
 			String password) {
 		ContactUser contactUser=null;
 		if(!StringUtils.isNull(loginName) && !StringUtils.isNull(password)) {
 			List<ContactUser> list=this.getHibernateTemplate().findByNamedParam(
 					"from ContactUser u where u.loginName = :loginName and u.password = :password and u.validFlag = :validFlag", 
 					new String[]{"loginName","password","validFlag"}, new Object[]{loginName,password,Boolean.TRUE});
+			if(list!=null && list.size()>0) {
+				contactUser=list.get(0);
+			}
+		}
+		return contactUser;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public ContactUser getInvalidUserByLoginNameAndPwd(String loginName,
+			String password) {
+		ContactUser contactUser=null;
+		if(!StringUtils.isNull(loginName) && !StringUtils.isNull(password)) {
+			List<ContactUser> list=this.getHibernateTemplate().findByNamedParam(
+					"from ContactUser u where u.loginName = :loginName and u.password = :password and u.validFlag = :validFlag", 
+					new String[]{"loginName","password","validFlag"}, new Object[]{loginName,password,Boolean.FALSE});
 			if(list!=null && list.size()>0) {
 				contactUser=list.get(0);
 			}
@@ -70,5 +86,20 @@ public class ContactUserDao extends BaseDao<ContactUser,String> implements ICont
 			contactUser.setValidFlag(Boolean.FALSE);
 			getHibernateTemplate().update(contactUser);
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public ContactUser getInvalidUserByLoginName(String loginName) {
+		ContactUser contactUser=null;
+		if(!StringUtils.isNull(loginName)) {
+			List<ContactUser> list=this.getHibernateTemplate().findByNamedParam(
+					"from ContactUser u where u.loginName = :loginName and u.validFlag = :validFlag", 
+					new String[]{"loginName","validFlag"}, new Object[]{loginName,Boolean.FALSE});
+			if(list!=null && list.size()>0) {
+				contactUser=list.get(0);
+			}
+		}
+		return contactUser;
 	}
 }

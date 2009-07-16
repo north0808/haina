@@ -27,7 +27,7 @@ public interface IStatusCode {
 	/**
 	 * 登录名或密码无效。<br/>
 	 */
-	int LOGINNAME_PASSWORD_INVALID=1002;
+	int LOGINNAME_OR_PASSWORD_INVALID=1002;
 	
 	/**
 	 * 手机号码无效。<br/>
@@ -55,37 +55,32 @@ public interface IStatusCode {
 	int INVALID_CONTACT_USER=1007;
 	
 	/**
-	 * 登录名或密码无效。<br/>
-	 */
-	int LOGINNAME_OR_PASSWORD_INVALID=1008;
-	
-	/**
 	 * 登录护照无效或已过期。<br/>
 	 */
-	int INVALID_LOGIN_PASSPORT=1009;
+	int INVALID_LOGIN_PASSPORT=1008;
 	
 	/**
 	 * 无效的电子邮件地址。<br/>
 	 */
-	int INVALID_EMAIL=1010;
+	int INVALID_EMAIL=1009;
 	
 	/**
 	 * 无效的电子邮件地址。<br/>
 	 */
-	int INVALID_MOBILE=1011;
+	int INVALID_MOBILE=1010;
 	
 	/**
 	 * 无效的密码。<br/>
 	 */
-	int INVALID_PASSWORD=1012;
+	int INVALID_PASSWORD=1011;
 	
 	/**
 	 * 错误的旧密码。<br/>
 	 */
-	int WRONG_OLD_PASSWORD=1013;
+	int WRONG_OLD_PASSWORD=1012;
 	
 	/**
 	 * 登录名或手机号码已存在。<br/>
 	 */
-	int LOGINNAME_OR_MOBILE_EXISTENT=1014;
+	int LOGINNAME_OR_MOBILE_EXISTENT=1013;
 }

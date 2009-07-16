@@ -33,7 +33,7 @@ public interface IPassportService extends InitializingBean {
 	 * @param passport 护照
 	 * @return
 	 */
-	public LoginPassport getPassport(String passport);
+	public LoginPassport getLoginPassport(String passport);
 	
 	/**
 	 * 是否过期的护照。<br/>
@@ -75,4 +75,11 @@ public interface IPassportService extends InitializingBean {
 	 * @return
 	 */
 	public boolean expireLogin(String passport);
+	
+	/**
+	 * 通过登录名取得登录护照对象。<br/>
+	 * @param loginName
+	 * @return
+	 */
+	public LoginPassport getLoginPassportByLoginName(String loginName);
 }

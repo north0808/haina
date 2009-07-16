@@ -40,9 +40,10 @@ public interface IPriService extends Serializable {
 	 * 修改密码。<br/>
 	 * 
 	 * @param passport 登录护照
+	 * @param oldPassword 旧密码
 	 * @param neoPassword 新密码
 	 */
-	public HessianRemoteReturning editPassword(String passport, String neoPassword);
+	public HessianRemoteReturning editPassword(String passport, String oldPassword, String neoPassword);
 
 	/**
 	 * 修改手机号码。<br/>
