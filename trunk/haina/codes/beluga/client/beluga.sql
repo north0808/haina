@@ -121,9 +121,11 @@ create table phone_district(
     pd_id integer primary key autoincrement,
     district_number varchar(10),
     district_name varchar(64),
-    range_start bigint,
-    range_end bigint,
-    fee_type varchar(64));
+    owner_state varchar(64),
+    phone_range varchar(45000),
+    fee_type varchar(64),
+    update_flag smallint,
+    weather_code varchar(20));
 GO
 
 create table message(
