@@ -83,4 +83,9 @@ public interface IStatusCode {
 	 * 错误的旧密码。<br/>
 	 */
 	int WRONG_OLD_PASSWORD=1013;
+	
+	/**
+	 * 登录名或手机号码已存在。<br/>
+	 */
+	int LOGINNAME_OR_MOBILE_EXISTENT=1014;
 }
