@@ -14,25 +14,39 @@ import com.haina.beluga.domain.ContactUser;
 public interface IContactUserDao extends IBaseDao<ContactUser,String> {
 	
 	/**
-	 * 通过登录名得到用户。<br/>
+	 * 通过登录名得到有效用户。<br/>
 	 * @param loginName
 	 * @return
 	 */
-	public ContactUser getContactUserByLoginName(String loginName);
+	public ContactUser getValidUserByLoginName(String loginName);
 	
 	/**
-	 * 通过手机号码得到用户。<br/>
+	 * 通过登录名得到无效用户。<br/>
+	 * @param loginName
+	 * @return
+	 */
+	public ContactUser getInvalidUserByLoginName(String loginName);
+	
+	/**
+	 * 通过手机号码得到有效用户。<br/>
 	 * @param mobile
 	 * @return
 	 */
-	public ContactUser getContactUserByMobile(String mobile);
+	public ContactUser getValidUserByMobile(String mobile);
 	
 	/**
-	 * 通过登录名和密码得到用户。<br/>
+	 * 通过登录名和密码得到有效用户。<br/>
 	 * @param loginName
 	 * @return
 	 */
-	public ContactUser getContactUserByLoginNameAndPwd(String loginName,String password);
+	public ContactUser getValidUserByLoginNameAndPwd(String loginName,String password);
+	
+	/**
+	 * 通过登录名和密码得到无效用户。<br/>
+	 * @param loginName
+	 * @return
+	 */
+	public ContactUser getInvalidUserByLoginNameAndPwd(String loginName,String password);
 	
 	/**
 	 * 设置用户为无效，即逻辑删除。<br/>

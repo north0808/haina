@@ -59,7 +59,7 @@ public class PassportService implements IPassportService {
 	@Override
 	public LoginPassport addPassport(ContactUser contactUser) {
 		LoginPassport loginPassport=null;
-		if(null!=contactUser && contactUser.isOnline()) {
+		if(null!=contactUser) {
 			loginPassport=new LoginPassport();
 			loginPassport.setLoginName(contactUser.getLoginName());
 			loginPassport.setLoginExpiry(loginExpiry);
@@ -89,10 +89,26 @@ public class PassportService implements IPassportService {
 	}
 	
 	@Override
-	public LoginPassport getPassport(String passport) {
+	public LoginPassport getLoginPassport(String passport) {
 		LoginPassport loginPassport=null;
 		if(passport!=null && passportPool.containsKey(passport)) {
 			loginPassport=passportPool.get(passport);
+		}
+		return loginPassport;
+	}
+	
+	@Override
+	public LoginPassport getLoginPassportByLoginName(String loginName) {
+		LoginPassport loginPassport=null;
+		if(loginName!=null) {
+			Iterator<String> keys=passportPool.keySet().iterator();
+			while(keys.hasNext()) {
+				LoginPassport value=passportPool.get(keys.next());
+				if(value.getLoginName().equals(loginName)) {
+					loginPassport=value;
+					break;
+				}
+			}
 		}
 		return loginPassport;
 	}

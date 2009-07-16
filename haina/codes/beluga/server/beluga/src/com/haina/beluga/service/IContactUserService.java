@@ -1,5 +1,6 @@
 package com.haina.beluga.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -26,10 +27,11 @@ public interface IContactUserService extends IBaseSerivce<IContactUserDao,Contac
 	 * @param mobile 手机号码
 	 * @param userStatus 用户状态
 	 * @param userIp 用户使用的IP地址
+	 * @param time 添加的时间
 	 * @return
 	 */
 	public ContactUser addContactUser(String loginName, String password, String mobile,Integer userStatus
-			,String userIp);
+			,String userIp, Date time);
 	
 	/**
 	 * 设置联系人用户有效。<br/>
@@ -165,10 +167,11 @@ public interface IContactUserService extends IBaseSerivce<IContactUserDao,Contac
 	/**
 	 * 修改密码。<br/>
 	 * @param loginName 登录名
+	 * @param oldPassword 旧密码
 	 * @param neoPassword 新的密码
 	 * @return
 	 */
-	public ContactUser editPassword(String loginName, String neoPassword);
+	public ContactUser editPassword(String loginName, String oldPassword, String neoPassword);
 	
 	
 }
