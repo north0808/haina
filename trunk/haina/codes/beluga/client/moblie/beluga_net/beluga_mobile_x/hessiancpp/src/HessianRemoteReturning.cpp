@@ -39,12 +39,33 @@ int HessianRemoteReturning::getOperationCode()
 }
 
 
-void HessianRemoteReturning::setValue(void* aValue)
+// void HessianRemoteReturning::setValue(void* aValue)
+// {
+// 	value = aValue;
+// }
+// 
+// void* HessianRemoteReturning::getValue()
+// {
+// 	return value;
+// }
+
+// void HessianRemoteReturning::setValue(std::string aValue)
+// {
+// 	value = aValue;
+// }
+// 
+// std::string HessianRemoteReturning::getValue()
+// {
+// 	return value;
+// }
+
+void HessianRemoteReturning::setValue(Json::Value aValue)
 {
 	value = aValue;
 }
 
-void* HessianRemoteReturning::getValue()
+Json::Value HessianRemoteReturning::getValue()
 {
 	return value;
 }
+

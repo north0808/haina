@@ -55,6 +55,7 @@ string WeatherDto::getIcon()
 	return icon;
 }
 
+/*
 void WeatherDto::setIsNight(bool aIsNight)
 {
 	isNight = aIsNight;
@@ -62,7 +63,8 @@ void WeatherDto::setIsNight(bool aIsNight)
 bool WeatherDto::getIsNight()
 {
 	return isNight;
-}
+}*/
+
 
 void WeatherDto::setHigh(int aHigh)
 {

@@ -25,8 +25,11 @@ public:
 	void	setIcon(string aIconPath);
 	string	getIcon();
 
+	/*
 	void	setIsNight(bool aIsNight);
 	bool	getIsNight();
+	*/
+
 
 	void	setHigh(int aHigh);
 	int		getHigh();
@@ -44,7 +47,7 @@ private:
 	string	wind;				/*风速*/				
 	string	temperature;		/*实时温度*/				
 	string	icon;				/*天气图片URI*/				
-	bool	isNight;			/*是否夜里*/				
+//	bool	isNight;			/*是否夜里*/				
 	int		high;				/*最高气温*/				
 	int		low;				/*最低气温*/				
 	string	issuetime;			/*发布时间*/				

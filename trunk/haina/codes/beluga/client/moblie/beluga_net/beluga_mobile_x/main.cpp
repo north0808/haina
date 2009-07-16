@@ -3,6 +3,8 @@
 #include "acNetEngine.h"
 #include "xconfig.h"
 
+#include "WeatherDto.h"
+
 using namespace std;
 
 int main(int argc, TCHAR* argv[])
@@ -27,18 +29,53 @@ int main(int argc, TCHAR* argv[])
 // 		cout << "<<< CHttpInternet SetHostName failed!" << endl;
 // 	}
 	/************************************************************************/
-	string qq = "95467703";
 
+	
+
+
+	/************************************************************************/
+	/*     获取QQ在线状态示例                  
 	CacNetEngine* acNetEngine = new CacNetEngine(KHostName,KHostNamePort);
+
+	string qq = "95467703";
 	int ret = acNetEngine->getQQStatus(qq);
-	if(ret == 10000)
+	switch(ret)
+	{
+	case 10000:
 		cout << qq << "\tonline" << endl;
-	else if(ret == 10001)
+		break;
+	case 10001:
 		cout << qq << "\toffline" << endl;
-	else
+		break;
+	default:
 		cout << "error" << endl;
+	}
 
 	delete acNetEngine;
+	*/
+	/************************************************************************/
+		
+
+	/************************************************************************/
+	/*		获取当天天气信息示例                    
+	CacNetEngine* acNetEngine = new CacNetEngine(KHostName,KHostNamePort);
+
+	WeatherDto weatherDto = acNetEngine->getLiveWeather("W56985");
+	cout << "Date:\t" << weatherDto.getDate() << endl;
+	cout << "High:\t" << weatherDto.getHigh() << endl;
+	cout << "Low:\t" << weatherDto.getLow() << endl;
+	cout << "Icon:\t" << weatherDto.getIcon() << endl;
+	cout << "Issuetime:\t" << weatherDto.getIssuetime() << endl;
+	cout << "Temperature:\t" << weatherDto.getTemperature() << endl;
+	cout << "CityCode:\t" << weatherDto.getWeatherCityCode() << endl;
+	cout << "WeatherType:\t" << weatherDto.getWeatherType() << endl;
+	cout << "Wind:\t" << weatherDto.getWind() << endl;
+
+	delete acNetEngine;
+	*/
+	/************************************************************************/
+
+	
 
 
 
