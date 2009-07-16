@@ -26,7 +26,7 @@ public class TestPriService extends TestCase
         factory = new ClassPathXmlApplicationContext("test/test-applicationContext.xml");
     }
     
-    public void testPri() throws Exception {
+    public void testRegister() throws Exception {
     	HessianRemoteReturning h = getPriService().register("fuxiang14", "fuxiang12", "15901819285");
     	System.out.println(h);
     }
