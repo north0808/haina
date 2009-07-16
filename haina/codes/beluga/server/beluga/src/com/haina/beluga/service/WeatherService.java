@@ -56,10 +56,8 @@ public class WeatherService extends BaseSerivce<IWeatherDao,Weather,String> impl
 		String[] codes = phoneDistrictDao.getWeatherCityCodes();
 		List<Weather> weatherList = new ArrayList<Weather>();
 		logger.info("loadWeatherDatasByApiSize:"+codes.length);
-		int i = 0;
 		for(String cityCode:codes){
 			loadWDbyCityCode(cityCode,weatherList,0);
-			logger.info(cityCode+":in "+i++);
 		}
 		getBaseDao().saveAll(weatherList);
 		//所有更新后的天气加载到缓存
