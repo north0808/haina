@@ -204,7 +204,7 @@ public class PriService implements IPriService {
 			ret.setStatusCode(IStatusCode.LOGINNAME_OR_PASSWORD_INVALID);
 			return ret;
 		}
-		if(null!=contactUser) {
+		if(null!=contactUser && !contactUser.getMobile().equals(mobile)) {
 			ret.setStatusCode(IStatusCode.LOGINNAME_OR_MOBILE_EXISTENT);
 //			ret.setStatusText(localeMessageService
 //					.getI18NMessage("com.haina.shield.message.passportuser.register.failure.existent.email.or.mobile"));
