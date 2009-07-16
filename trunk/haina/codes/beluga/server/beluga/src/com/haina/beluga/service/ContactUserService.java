@@ -57,7 +57,7 @@ public class ContactUserService extends BaseSerivce<IContactUserDao,ContactUser,
 			UserProfile userProfile=new UserProfile();
 			userProfile.setTelPref(mobile);
 			//TODO:setSex.
-			userProfile.setSex(SexEnum._default);
+			userProfile.setSex(SexEnum.unknown);
 			
 			contactUser.setUserProfile(userProfile);
 			userProfile.setContactUser(contactUser);
