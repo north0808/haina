@@ -4,6 +4,8 @@
 
     <!-- Directory structure of the project -->
     <property name="web.dir" value="${basedir}/WebRoot"/>
+	<property name="webapp.name" value="beluga"/>
+	<property name="webapp.war" value="${webapp.name}.war"/>
     <property name="data.dir" value="${basedir}/data"/>
     <property name="build.dir" value="${web.dir}/WEB-INF/classes"/>
     <property name="dist.dir" value="${basedir}/dist"/>
@@ -270,10 +272,9 @@
         <war destfile="${dist.dir}/${webapp.war}"
             webxml="${web.dir}/WEB-INF/web.xml" compress="true" duplicate="preserve">
             <manifest>
-              <attribute name="Built-By" value="${user.name.dev}"/>
-              <attribute name="Implementation-Version" value="${webapp.version},_b_${now.date}"/>
-              <attribute name="Implementation-Vendor-Id" value="jp.co.softbrain"/>
-              <attribute name="Implementation-Vendor" value="${user.name.saler}"/>
+              <attribute name="Built-By" value="fuxiang"/>
+              <attribute name="Implementation-Version" value="_b_${now.date}"/>
+              <attribute name="Implementation-Vendor-Id" value="com.haina"/>
               <attribute name="Implementation-Title" value="${webapp.name}"/>
 
             </manifest>
