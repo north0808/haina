@@ -4,6 +4,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import com.haina.beluga.webservice.data.AbstractRemoteReturning;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
  * 基于Hessian协议的远程调用返回值类。<br/>
@@ -107,5 +108,17 @@ public class HessianRemoteReturning extends AbstractRemoteReturning {
 				this.hessianStatusCode).append(
 				this.httpStatusCode)*/.toHashCode();
 	}
+
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	public String toString() {
+		return new ToStringBuilder(this).append("value", this.value)
+			/*.append("statusText", this.getStatusText())
+			.append("operationCode",this.getOperationCode())*/
+			.append("statusCode",this.getStatusCode()).toString();
+	}
+	
+	
 
 }
