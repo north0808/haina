@@ -53,15 +53,46 @@ int CacNetEngine::getQQStatus(string aQQId)
 	if(hes_return.getStatusCode() != 0)
 		return -1;
 
-	int online = *(int*)hes_return.getValue();
+	int online = hes_return.getValue().asInt();
 	return online;
 }
 
-/*
+
 WeatherDto CacNetEngine::getLiveWeather(string aCityCode)
 {
-	return ;
+	WeatherDto weatherDto;
+
+	iSendHes.clear();
+	ihes_output.write_string(iSendHes,aCityCode);
+	string retData = iHttpNet.SyncPostData(KGetLiveWeatherUrl,iSendHes);
+
+	Json::Value jsonValue;
+	string retstring = getHessianString(retData);
+	HessianRemoteReturning hes_return = parse_json(retstring,jsonValue);
+
+	if(hes_return.getStatusCode() != 0)
+	{
+
+	}
+	else
+	{
+		Json::Value jVal = hes_return.getValue();
+		weatherDto.setDate(jVal["date"].asString());
+		weatherDto.setHigh(jVal["high"].asInt());
+		weatherDto.setIcon(jVal["icon"].asString());
+		weatherDto.setIssuetime(jVal["issuetime"].asString());
+		weatherDto.setLow(jVal["low"].asInt());
+		weatherDto.setTemperature(jVal["temperature"].asString());
+		weatherDto.setWeatherCityCode(jVal["weatherCityCode"].asString());
+		weatherDto.setWeatherType(jVal["weatherType"].asString());
+		weatherDto.setWind(jVal["wind"].asString());
+	}
+
+	return weatherDto;
 }
+
+
+/*
 vector<WeatherDto> CacNetEngine::get7WeatherDatas(string aCityCode)
 {
 	return ;
@@ -103,10 +134,11 @@ HessianRemoteReturning CacNetEngine::parse_json(string& aJson_string,Json::Value
 	Json::Reader	reader;
 	if(reader.parse(aJson_string,jsonValue))
 	{
-		remoteRet.setStatusCode(jsonValue["statusCode"].asInt());
-		remoteRet.setStatusText(jsonValue["statusText"].asString());
-		remoteRet.setOperationCode(jsonValue["operationCode"].asInt());
-		remoteRet.setValue(&(jsonValue["value"]));
+ 		remoteRet.setStatusCode(jsonValue["statusCode"].asInt());
+ 		remoteRet.setStatusText(jsonValue["statusText"].asString());
+ 		remoteRet.setOperationCode(jsonValue["operationCode"].asInt());
+//		remoteRet.setValue(&(jsonValue["value"]));
+ 		remoteRet.setValue(jsonValue["value"]);
 	}
 	return remoteRet;
 }

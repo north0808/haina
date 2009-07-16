@@ -30,8 +30,8 @@ public:
 
 public:
 	int			getQQStatus(string aQQId);
-/*	WeatherDto	getLiveWeather(string aCityCode);
-	vector<WeatherDto>	get7WeatherDatas(string aCityCode);
+	WeatherDto	getLiveWeather(string aCityCode);
+/*	vector<WeatherDto>	get7WeatherDatas(string aCityCode);
 	vector<PhoneDistrictDto>	getOrUpdatePD(int aFlag);*/
 	
 private:
