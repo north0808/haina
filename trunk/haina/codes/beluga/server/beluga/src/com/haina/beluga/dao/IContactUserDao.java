@@ -1,5 +1,8 @@
 package com.haina.beluga.dao;
 
+import java.util.List;
+
+import org.hibernate.criterion.DetachedCriteria;
 
 import com.haina.beluga.core.dao.IBaseDao;
 import com.haina.beluga.domain.ContactUser;
@@ -35,22 +38,67 @@ public interface IContactUserDao extends IBaseDao<ContactUser,String> {
 	public ContactUser getValidUserByMobile(String mobile);
 	
 	/**
-	 * 通过登录名和密码得到有效用户。<br/>
+	 * 通过密码和登录名得到有效用户。<br/>
+	 * 密码必须放第一位。
+	 * @param password
 	 * @param loginName
 	 * @return
 	 */
-	public ContactUser getValidUserByLoginNameAndPwd(String loginName,String password);
+	public ContactUser getValidUserByPwdAndLoginName(String password,String loginName);
 	
 	/**
-	 * 通过登录名和密码得到无效用户。<br/>
+	 * 通过密码和登录名得到无效用户。<br/>
+	 * 密码必须放第一位。
+	 * @param password
 	 * @param loginName
 	 * @return
 	 */
-	public ContactUser getInvalidUserByLoginNameAndPwd(String loginName,String password);
+	public ContactUser getInvalidUserByPwdAndLoginName(String password,String loginName);
 	
 	/**
 	 * 设置用户为无效，即逻辑删除。<br/>
 	 * @param contactUser
 	 */
 	public void deleteToInvalid(ContactUser contactUser);
+
+	
+	/**
+	 * 通过手机号码或登录名得到用户。<br/>
+	 * @param mobile
+	 * @param loginName
+	 * @return
+	 */
+	public List<ContactUser> getUserByMobileOrLoginName(String mobile,String loginName);
+	
+	/**
+	 * 通过属性表达式查找用户。<br/>
+	 * @param criteria
+	 * @param begin
+	 * @param count
+	 * @return
+	 */
+	public List<ContactUser> getUserByHibernateCriteria(DetachedCriteria criteria,int begin, int count);
+	
+	/**
+	 * 通过属性表达式查找用户。<br/>
+	 * @param criteria
+	 * @return
+	 */
+	public List<ContactUser> getUserByHibernateCriteria(DetachedCriteria criteria);
+	
+	/**
+	 * 通过手机号码或登录名取得用户。<br/>
+	 * @param mobile
+	 * @param loginName
+	 * @return
+	 */
+	public List<ContactUser> getInvalidUserByMobileOrLoginName(String mobile, String loginName);
+	
+	/**
+	 * 通过参考用户查找用户。<br/>
+	 * @param contactUser
+	 * @return
+	 */
+	public List<ContactUser> getUserByExample(ContactUser contactUser);
+	
 }
