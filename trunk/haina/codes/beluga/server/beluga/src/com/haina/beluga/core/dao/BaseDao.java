@@ -95,11 +95,19 @@ public class BaseDao<T extends IModel, PK extends Serializable> extends
 	}
 
 	public List<T> getModelByPage(T exampleEntity, int begin, int count) {
+		int first=begin;
+		int size=count;
+		if(first<0) {
+			first=1;
+		}
+		if(size<0) {
+			size=1;
+		}
 		List<T> ret = null;
 		if (exampleEntity == null) {
 			exampleEntity = type;
 		}
-		ret = getHibernateTemplate().findByExample(exampleEntity, begin, count);
+		ret = getHibernateTemplate().findByExample(exampleEntity, first, size);
 		return ret;
 	}
 
