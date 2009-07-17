@@ -58,6 +58,12 @@ int CacNetEngine::getQQStatus(string aQQId)
 }
 
 
+/************************************************************************/
+// 函数：getLiveWeather
+// 功能：获取当天天气的数据
+// 参数：归属地表中的城市ID
+// 返回：天气数据（WeatherDto）
+/************************************************************************/
 WeatherDto CacNetEngine::getLiveWeather(string aCityCode)
 {
 	WeatherDto weatherDto;
