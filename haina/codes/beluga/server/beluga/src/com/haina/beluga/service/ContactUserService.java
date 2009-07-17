@@ -35,48 +35,54 @@ public class ContactUserService extends BaseSerivce<IContactUserDao,ContactUser,
 		if(StringUtils.isNull(loginName) || StringUtils.isNull(mobile)) {
 			return null;
 		}
-		ContactUser contactUser=getBaseDao().getValidUserByLoginName(loginName);
-		if(null!=contactUser) {
-			/*存在登录名相同的有效用户。*/
+		List<ContactUser> list=getBaseDao().getUserByMobileOrLoginName(mobile, loginName);
+		ContactUser contactUser=null;
+		if(null==list || list.size()<1) {
+			/*不存在同名的用户。*/
+			Integer status=(userStatus!=null ? userStatus : ContactUser.USER_STATUS_OFFLINE);
+			Date addedTime=(time!=null ? time : new Date());
+			
+			contactUser=new ContactUser();
+			contactUser.setLoginName(loginName.trim());
+			contactUser.setPassword(password.trim());
+			contactUser.setMobile(mobile);
+			contactUser.setRegisterTime(addedTime);
+			contactUser.setValidFlag(Boolean.TRUE);
+			contactUser.setUserStatus(status);
+			if(status.equals(ContactUser.USER_STATUS_ONLINE)) {
+				contactUser.setLastLoginIp(userIp);
+				contactUser.setLoginNumber(1);
+				contactUser.setLastLoginTime(addedTime);
+			}
+			UserProfile userProfile=new UserProfile();
+			userProfile.setTelPref(mobile);
+			userProfile.setEmailPref(loginName);
+			//TODO:setSex.
+			userProfile.setSex(SexEnum.unknown);
+			
+			contactUser.setUserProfile(userProfile);
+			userProfile.setContactUser(contactUser);
+			getBaseDao().create(contactUser);
 			return contactUser;
+		} else {
+			for(ContactUser user : list) {
+				if(user.getValidFlag()) {
+					/*有效用户。*/
+					/*说明登录名或手机号码重复。*/
+					return user;
+				} else {
+					/*无效用户。*/
+					if(user.getLoginName().equals(loginName)) {
+						/*老用户。*/
+						contactUser=this.editContactUserToValid(loginName, password, mobile, userStatus, userIp);
+						if(contactUser!=null) {
+							return contactUser;
+						}
+					}
+				}
+			}
 		}
-		contactUser=getBaseDao().getInvalidUserByLoginName(loginName);
-		if(contactUser!=null) {
-			/*存在登录名相同的无效用户，把用户设为有效。*/
-			contactUser=this.editContactUserToValid(loginName, password, mobile, userStatus, userIp);
-			return contactUser;
-		}
-		
-		contactUser=getBaseDao().getValidUserByMobile(mobile);
-		if(null!=contactUser) {
-			/*手机号码重复。*/
-			return contactUser;
-		}
-		
-		Integer status=(userStatus!=null ? userStatus : ContactUser.USER_STATUS_OFFLINE);
-		Date addedTime=(time!=null ? time : new Date());
-		contactUser=new ContactUser();
-		contactUser.setLoginName(loginName);
-		contactUser.setPassword(password);
-		contactUser.setMobile(mobile);
-		contactUser.setRegisterTime(addedTime);
-		contactUser.setValidFlag(Boolean.TRUE);
-		contactUser.setUserStatus(status);
-		if(status.equals(ContactUser.USER_STATUS_ONLINE)) {
-			contactUser.setLastLoginIp(userIp);
-			contactUser.setLoginNumber(1);
-			contactUser.setLastLoginTime(addedTime);
-		}
-		UserProfile userProfile=new UserProfile();
-		userProfile.setTelPref(mobile);
-		userProfile.setEmailPref(loginName);
-		//TODO:setSex.
-		userProfile.setSex(SexEnum.unknown);
-		
-		contactUser.setUserProfile(userProfile);
-		userProfile.setContactUser(contactUser);
-		getBaseDao().create(contactUser);
-		return contactUser;
+		return null;
 	}
 
 	@Override
@@ -105,7 +111,7 @@ public class ContactUserService extends BaseSerivce<IContactUserDao,ContactUser,
 				StringUtils.isNull(mobile)) {
 			return null;
 		}
-		ContactUser contactUser=getBaseDao().getInvalidUserByLoginNameAndPwd(loginName, password);
+		ContactUser contactUser=getBaseDao().getInvalidUserByPwdAndLoginName(password,loginName);
 		if(null==contactUser) {
 			return null;
 		}
@@ -113,12 +119,13 @@ public class ContactUserService extends BaseSerivce<IContactUserDao,ContactUser,
 		contactUser.setMobile(mobile);
 		contactUser.setValidFlag(Boolean.TRUE);
 		contactUser.setUserStatus(status);
+		Date now=new Date();
 		if(status.equals(ContactUser.USER_STATUS_ONLINE)) {
 			contactUser.setLastLoginIp(userIp);
-			contactUser.setLastLoginTime(new Date());
+			contactUser.setLastLoginTime(now);
 			contactUser.setLoginNumber(contactUser.getLoginNumber()!=null ? contactUser.getLoginNumber()+1 : 1);
 		}
-		contactUser.setLastUpdateTime(new Date());
+		contactUser.setLastUpdateTime(now);
 		contactUser.getUserProfile().setTelPref(mobile);
 		contactUser.getUserProfile().setEmailPref(loginName);
 		getBaseDao().update(contactUser);
@@ -190,18 +197,18 @@ public class ContactUserService extends BaseSerivce<IContactUserDao,ContactUser,
 
 	@Override
 	public ContactUser editContactUserToOnline(String loginName, String password,
-			String userLoginIp) {
+			String userLoginIp,Date onlineTime) {
 		if(StringUtils.isNull(loginName) || StringUtils.isNull(password)) {
 			return null;
 		}
-		ContactUser contactUser=getBaseDao().getValidUserByLoginNameAndPwd(loginName, password);
+		ContactUser contactUser=getBaseDao().getValidUserByPwdAndLoginName(password,loginName);
 		if(null==contactUser) {
 			return null;
 		}
 		if(contactUser.getUserStatus().equals(ContactUser.USER_STATUS_OFFLINE)) {
 			contactUser.setUserStatus(ContactUser.USER_STATUS_ONLINE);
 			contactUser.setLastLoginIp(userLoginIp);
-			contactUser.setLastLoginTime(new Date());
+			contactUser.setLastLoginTime(onlineTime!=null ? onlineTime : new Date());
 			contactUser.setLoginNumber(contactUser.getLoginNumber()!=null ? contactUser.getLoginNumber()+1 : 1);
 			getBaseDao().update(contactUser);
 		}
