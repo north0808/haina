@@ -3,6 +3,8 @@ package com.haina.beluga.core.dao;
 import java.io.Serializable;
 import java.util.List;
 
+import org.hibernate.criterion.DetachedCriteria;
+
 import com.haina.beluga.core.model.IModel;
 
 /**
@@ -46,4 +48,20 @@ public interface IBaseDao<T extends IModel, PK extends Serializable> {
 	 * @return
 	 */
 	public List<T> getModelByPage(T exampleEntity, int begin, int count);
+	
+	/**
+	 * 根据Hibernate的Criteria属性查找模型类。<br/>
+	 * @param criteria
+	 * @return
+	 */
+	public List<T> getUserByHibernateCriteria(DetachedCriteria criteria);
+	
+	/**
+	 * 根据Hibernate的Criteria属性查找模型类。<br/>
+	 * @param criteria
+	 * @param begin
+	 * @param count
+	 * @return
+	 */
+	public List<T> getUserByHibernateCriteria(DetachedCriteria criteria,int begin, int count);
 }
