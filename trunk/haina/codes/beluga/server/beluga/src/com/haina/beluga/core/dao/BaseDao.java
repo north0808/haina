@@ -7,6 +7,7 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.DetachedCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
@@ -109,6 +110,33 @@ public class BaseDao<T extends IModel, PK extends Serializable> extends
 		}
 		ret = getHibernateTemplate().findByExample(exampleEntity, first, size);
 		return ret;
+	}
+
+	@Override
+	public List<T> getUserByHibernateCriteria(DetachedCriteria criteria) {
+		List<T> list=null;
+		if(criteria!=null) {
+			list=this.getHibernateTemplate().findByCriteria(criteria);
+		}
+		return list;
+	}
+
+	@Override
+	public List<T> getUserByHibernateCriteria(DetachedCriteria criteria,
+			int begin, int count) {
+		int first=begin;
+		int size=count;
+		if(first<0) {
+			first=1;
+		}
+		if(size<0) {
+			size=1;
+		}
+		List<T> list=null;
+		if(criteria!=null) {
+			list=this.getHibernateTemplate().findByCriteria(criteria, first, size);
+		}
+		return list;
 	}
 
 }
