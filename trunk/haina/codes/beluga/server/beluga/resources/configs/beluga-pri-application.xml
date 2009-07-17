@@ -80,26 +80,21 @@
 		</property>
 	</bean>
 		
+	<!--
 	<bean id="contactUserDaoAroundAdvice" class="com.haina.beluga.weave.ContactUserDaoAroundAdvice">
 		<property name="encryptPasswordMethod">
 			<map>
 				<entry key="create" value="create" />
 				<entry key="update" value="update" />
 				<entry key="saveOrUpdate" value="saveOrUpdate" />
-				<entry key="deleteToInvalid" value="deleteToInvalid" />
+				<entry key="getUserByExample" value="getUserByExample" />
 			</map>
 		</property>
 		<property name="decryptPasswordMethod">
 			<map>
 				<entry key="read" value="read" />
 				<entry key="load" value="load" />
-				<entry key="getModels" value="getModels" />
-				<entry key="getValidUserByLoginName" value="getValidUserByLoginName" />
-				<entry key="getInvalidUserByLoginName" value="getInvalidUserByLoginName" />
-				<entry key="getValidUserByMobile" value="getValidUserByMobile" />
-				<entry key="getValidUserByLoginNameAndPwd" value="getValidUserByLoginNameAndPwd" />
-				<entry key="getInvalidUserByLoginNameAndPwd" value="getInvalidUserByLoginNameAndPwd" />
-				<entry key="getInvalidUserByLoginName" value="getInvalidUserByLoginName" />
+				<entry key="getUserByExample" value="getUserByExample" />
 			</map>
 		</property>
 	</bean>
@@ -117,6 +112,7 @@
            <bean class="com.haina.beluga.dao.ContactUserDao"/>
         </property>
      </bean>
+	-->
 	
 </beans>
 
