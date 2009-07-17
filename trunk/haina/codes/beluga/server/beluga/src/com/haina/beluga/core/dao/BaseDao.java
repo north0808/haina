@@ -113,7 +113,7 @@ public class BaseDao<T extends IModel, PK extends Serializable> extends
 	}
 
 	@Override
-	public List<T> getUserByHibernateCriteria(DetachedCriteria criteria) {
+	public List<T> getModelByHibernateCriteria(DetachedCriteria criteria) {
 		List<T> list=null;
 		if(criteria!=null) {
 			list=this.getHibernateTemplate().findByCriteria(criteria);
@@ -122,7 +122,7 @@ public class BaseDao<T extends IModel, PK extends Serializable> extends
 	}
 
 	@Override
-	public List<T> getUserByHibernateCriteria(DetachedCriteria criteria,
+	public List<T> getModelByHibernateCriteria(DetachedCriteria criteria,
 			int begin, int count) {
 		int first=begin;
 		int size=count;
