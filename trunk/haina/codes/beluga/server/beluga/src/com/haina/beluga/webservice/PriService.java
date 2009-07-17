@@ -137,18 +137,20 @@ public class PriService implements IPriService {
 			ret.setStatusCode(IStatusCode.LOGINNAME_OR_PASSWORD_INVALID);
 			return ret;
 		}
+		
 		//$2 设置用户在线状态
-		ContactUser contactUser=contactUserService.editContactUserToOnline(loginName, password, null);
+		Date now=new Date();
+		ContactUser contactUser=contactUserService.editContactUserToOnline(loginName, password, null,now);
 		if(null==contactUser) {
 			ret.setStatusCode(IStatusCode.LOGINNAME_OR_PASSWORD_INVALID);
 			return ret;
 		}
-		if(contactUser.isOnline()) {
-			ret.setStatusCode(IStatusCode.SUCCESS);
-			LoginPassport loginPassport=passportService.getLoginPassportByLoginName(loginName);
-			ret.setValue(loginPassport.getPassport());
-			return ret;
-		}
+//		if(contactUser.isOnline()) {
+//			ret.setStatusCode(IStatusCode.SUCCESS);
+//			LoginPassport loginPassport=passportService.getLoginPassportByLoginName(loginName);
+//			ret.setValue(loginPassport.getPassport());
+//			return ret;
+//		}
 		//$3 生成护照
 		LoginPassport loginPassport=passportService.addPassport(contactUser);
 		ret.setStatusCode(IStatusCode.SUCCESS);
@@ -204,7 +206,7 @@ public class PriService implements IPriService {
 			ret.setStatusCode(IStatusCode.LOGINNAME_OR_PASSWORD_INVALID);
 			return ret;
 		}
-		if(null!=contactUser && !contactUser.getMobile().equals(mobile)) {
+		if(null!=contactUser && !contactUser.getRegisterTime().equals(now)) {
 			ret.setStatusCode(IStatusCode.LOGINNAME_OR_MOBILE_EXISTENT);
 //			ret.setStatusText(localeMessageService
 //					.getI18NMessage("com.haina.shield.message.passportuser.register.failure.existent.email.or.mobile"));
@@ -212,7 +214,7 @@ public class PriService implements IPriService {
 		}
 		
 		//$2 向认证中心注册
-		//TODO暂时不实现。
+		//TODO 暂时不实现。
 		
 		//$3 生成护照
 		LoginPassport loginPassport=passportService.addPassport(contactUser);
