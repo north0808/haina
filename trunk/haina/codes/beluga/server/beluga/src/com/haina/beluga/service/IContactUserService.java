@@ -137,9 +137,10 @@ public interface IContactUserService extends IBaseSerivce<IContactUserDao,Contac
 	 * @param loginName
 	 * @param password
 	 * @param userLoginIp
+	 * @param onlineTime
 	 * @return
 	 */
-	public ContactUser editContactUserToOnline(String loginName, String password, String userLoginIp);
+	public ContactUser editContactUserToOnline(String loginName, String password, String userLoginIp,Date onlineTime);
 	
 	/**
 	 * 用户登录次数增加一次。<br/>
