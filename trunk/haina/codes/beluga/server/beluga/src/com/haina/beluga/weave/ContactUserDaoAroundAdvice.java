@@ -1,10 +1,13 @@
 package com.haina.beluga.weave;
 
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.Map;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.haina.beluga.core.util.DESUtil;
 import com.haina.beluga.core.util.StringUtils;
@@ -17,8 +20,9 @@ import com.haina.beluga.domain.ContactUser;
  * @since 1.0
  * @date 2009-06-15
  */
-
+@Deprecated
 public class ContactUserDaoAroundAdvice implements MethodInterceptor {
+	private static final Log LOG=LogFactory.getLog(ContactUserDaoAroundAdvice.class);
 
 	/*需要对对密码编码的方法。*/
 	private Map<String,String> encryptPasswordMethod;
@@ -57,16 +61,21 @@ public class ContactUserDaoAroundAdvice implements MethodInterceptor {
 		if(decryptPasswordMethod!=null && decryptPasswordMethod.size()>0
 				&& !StringUtils.isNull(methodName) && retObj!=null) {
 			if(decryptPasswordMethod.containsKey(methodName)) {
+				LOG.info(MessageFormat.format(">>>>>>>>>>>>>>>>>>>decryptPasswordMethod:  {0} >>>>>>>>>>>>>>>>>>", methodName));
 				if(retObj.getClass().equals(List.class)) {
 					List<ContactUser> list=(List<ContactUser>)retObj;
 					if(list!=null && !list.isEmpty()) {
 						for(ContactUser user:list) {
+							LOG.info(MessageFormat.format(">>>>>>>>>>>>>>>>>>>password before decrypted:  {0} >>>>>>>>>>>>>>>>>>", user.getPassword()));
 							user.setPassword(DESUtil.decrypt(user.getPassword()));
+							LOG.info(MessageFormat.format(">>>>>>>>>>>>>>>>>>>password after decrypted:  {0} >>>>>>>>>>>>>>>>>>", user.getPassword()));
 						}
 					}
 				} else if(retObj.getClass().equals(ContactUser.class)) {
 					ContactUser contactUser=(ContactUser)retObj;
+					LOG.info(MessageFormat.format(">>>>>>>>>>>>>>>>>>>password before decrypted:  {0} >>>>>>>>>>>>>>>>>>", contactUser.getPassword()));
 					contactUser.setPassword(DESUtil.decrypt(contactUser.getPassword()));
+					LOG.info(MessageFormat.format(">>>>>>>>>>>>>>>>>>>password after decrypted:  {0} >>>>>>>>>>>>>>>>>>", contactUser.getPassword()));
 				}
 				return true;
 			}
@@ -82,10 +91,13 @@ public class ContactUserDaoAroundAdvice implements MethodInterceptor {
 				&& !StringUtils.isNull(methodName) && args!=null
 				&& args.length>0) {
 			if(encryptPasswordMethod.containsKey(methodName)) {
+				LOG.info(MessageFormat.format(">>>>>>>>>>>>>>>>>>>encryptPasswordMethod:  {0} >>>>>>>>>>>>>>>>>>", methodName));
 				for(Object o:args) {
 					if(o!=null && o.getClass().equals(ContactUser.class)) {
 						ContactUser contactUser=(ContactUser)o;
+						LOG.info(MessageFormat.format(">>>>>>>>>>>>>>>>>>>password before ecrypted:  {0} >>>>>>>>>>>>>>>>>>", contactUser.getPassword()));
 						contactUser.setPassword(DESUtil.encrypt(contactUser.getPassword()));
+						LOG.info(MessageFormat.format(">>>>>>>>>>>>>>>>>>>password after ecrypted:  {0} >>>>>>>>>>>>>>>>>>", contactUser.getPassword()));
 						return true;
 					}
 				}
