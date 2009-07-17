@@ -8,104 +8,133 @@
            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
- 
- 
- <context:component-scan base-package="com.haina.beluga">    
- </context:component-scan> 
 
-<bean id="dataSource"  class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-     <property name="driverClassName">
-     <value>org.postgresql.Driver</value>
-     </property>
-     <property name="url">
-     <value>jdbc:postgresql://127.0.0.1:5432/haina_beluga:utf8</value>
-     </property>
-     <property name="username">
-     <value>postgres</value>
-     </property>
-     <property name="password">
-     <value>root</value>
-     </property>
-   </bean>
 
-<!--Hibernate��l��,����������sessionFactroy��ʼ-->
+	<context:component-scan base-package="com.haina.beluga">
+	</context:component-scan>
 
-<bean id="sessionFactory"
-			class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
-			
-	<property name="dataSource">
-		<ref local="dataSource" />
-	</property>
-	<property name="mappingDirectoryLocations">
-		<list>
-		<value>classpath:hbmxml/com/haina/beluga/</value>
-		<!-- add your application hbm.xml -->
-		</list>
-	</property>
-	<property name="hibernateProperties">
-		<props>
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName">
+			<value>org.postgresql.Driver</value>
+		</property>
+		<property name="url">
+			<value>jdbc:postgresql://127.0.0.1:5432/haina_beluga:utf8</value>
+		</property>
+		<property name="username">
+			<value>postgres</value>
+		</property>
+		<property name="password">
+			<value>root</value>
+		</property>
+	</bean>
+
+	<!--Hibernate��l��,����������sessionFactroy��ʼ-->
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+
+		<property name="dataSource">
+			<ref local="dataSource" />
+		</property>
+		<property name="mappingDirectoryLocations">
+			<list>
+				<value>classpath:hbmxml/com/haina/beluga/</value>
+				<!-- add your application hbm.xml -->
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
 				<prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
 				<prop key="hibernate.show_sql">true</prop>
 				<prop key="hibernate.jdbc.fetch_size">100</prop>
 				<prop key="hibernate.jdbc.batch_size">50</prop>
 				<prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheProvider</prop>
 				<prop key="hibernate.cache.use_query_cache">true</prop>
-		</props>
-	</property> 
+			</props>
+		</property>
+
+	</bean>
 	
-</bean>
-   <bean id="contactUserDaoAroundAdvice" class="com.haina.beluga.weave.ContactUserDaoAroundAdvice">
+	<!--
+	<bean id="contactUserDaoAroundAdvice"
+		class="com.haina.beluga.weave.ContactUserDaoAroundAdvice">
 		<property name="encryptPasswordMethod">
 			<map>
 				<entry key="create" value="create" />
 				<entry key="update" value="update" />
 				<entry key="saveOrUpdate" value="saveOrUpdate" />
-				<entry key="deleteToInvalid" value="deleteToInvalid" />
+				<entry key="getUserByExample" value="getUserByExample" />
 			</map>
 		</property>
 		<property name="decryptPasswordMethod">
 			<map>
 				<entry key="read" value="read" />
 				<entry key="load" value="load" />
-				<entry key="getModels" value="getModels" />
-				<entry key="getValidUserByLoginName" value="getValidUserByLoginName" />
-				<entry key="getInvalidUserByLoginName" value="getInvalidUserByLoginName" />
-				<entry key="getValidUserByMobile" value="getValidUserByMobile" />
-				<entry key="getValidUserByLoginNameAndPwd" value="getValidUserByLoginNameAndPwd" />
-				<entry key="getInvalidUserByLoginNameAndPwd" value="getInvalidUserByLoginNameAndPwd" />
-				<entry key="getInvalidUserByLoginName" value="getInvalidUserByLoginName" />
+				<entry key="getUserByExample" value="getUserByExample" />
 			</map>
 		</property>
 	</bean>
 	
-	<bean id="contactUserDaoAdviceProxy" class="org.springframework.aop.framework.ProxyFactoryBean">
-    	<property name="proxyInterfaces">
-            <value> com.haina.beluga.dao.IContactUserDao</value>
-        </property>
-        <property name="interceptorNames">
-        	<list>
-        		<value>contactUserDaoAroundAdvice</value>
-        	</list>
-        </property>
-        <property name="target">
-           <bean class="com.haina.beluga.dao.ContactUserDao"/>
-        </property>
-     </bean>
+	<bean id="contactUserDaoBeforeAdvice"
+		class="com.haina.beluga.weave.ContactUserDaoBeforeAdvice">
+		<property name="encryptPasswordMethod">
+			<map>
+				<entry key="create" value="create" />
+				<entry key="update" value="update" />
+				<entry key="saveOrUpdate" value="saveOrUpdate" />
+				<entry key="getUserByExample" value="getUserByExample" />
+				<entry key="getValidUserByPwdAndLoginName" value="getValidUserByPwdAndLoginName" />
+				<entry key="getInvalidUserByPwdAndLoginName" value="getInvalidUserByPwdAndLoginName" />
+			</map>
+		</property>
+	</bean>
 	
-    <!-- I18N config -->
-    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
-    	<property name="basenames">
-    		<list>
-    			<value>res.com.haina.beluga.i18n.message</value>
-    			<value>res.com.haina.beluga.i18n.label</value>
-    		</list>
-    	</property>
-    	<property name="useCodeAsDefaultMessage">
-    		<value>true</value>
-    	</property>
-    </bean>
+	<bean id="contactUserDaoAfterAdvice"
+		class="com.haina.beluga.weave.ContactUserDaoAfterAdvice">
+		<property name="decryptPasswordMethod">
+			<map>
+				<entry key="read" value="read" />
+				<entry key="load" value="load" />
+				<entry key="getUserByExample" value="getUserByExample" />
+				<entry key="getValidUserByPwdAndLoginName" value="getValidUserByPwdAndLoginName" />
+				<entry key="getInvalidUserByPwdAndLoginName" value="getInvalidUserByPwdAndLoginName" />
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="contactUserDaoAdviceProxy"
+		class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="proxyInterfaces">
+			<value>com.haina.beluga.dao.IContactUserDao</value>
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<value>contactUserDaoBeforeAdvice</value>
+				<value>contactUserDaoAfterAdvice</value>
+			</list>
+		</property>
+		<property name="target">
+			<bean class="com.haina.beluga.dao.ContactUserDao" />
+		</property>
+	</bean>
+	-->
+	
+	<!-- I18N config -->
+	<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>res.com.haina.beluga.i18n.message</value>
+				<value>res.com.haina.beluga.i18n.label</value>
+			</list>
+		</property>
+		<property name="useCodeAsDefaultMessage">
+			<value>true</value>
+		</property>
+	</bean>
 </beans>
-   
-   
 
-   
+
+
+
