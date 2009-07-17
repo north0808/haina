@@ -54,7 +54,7 @@ public interface IBaseDao<T extends IModel, PK extends Serializable> {
 	 * @param criteria
 	 * @return
 	 */
-	public List<T> getUserByHibernateCriteria(DetachedCriteria criteria);
+	public List<T> getModelByHibernateCriteria(DetachedCriteria criteria);
 	
 	/**
 	 * 根据Hibernate的Criteria属性查找模型类。<br/>
@@ -63,5 +63,5 @@ public interface IBaseDao<T extends IModel, PK extends Serializable> {
 	 * @param count
 	 * @return
 	 */
-	public List<T> getUserByHibernateCriteria(DetachedCriteria criteria,int begin, int count);
+	public List<T> getModelByHibernateCriteria(DetachedCriteria criteria,int begin, int count);
 }
