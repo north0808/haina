@@ -64,4 +64,14 @@ public interface IBaseDao<T extends IModel, PK extends Serializable> {
 	 * @return
 	 */
 	public List<T> getModelByHibernateCriteria(DetachedCriteria criteria,int begin, int count);
+	/**
+     * 通过HQL和参数查出结果集.
+     * @param hql.
+     * @return List.
+     */
+	public List<T> getResultByHQLAndParam(String hql);
+	
+	public List<T> getResultByHQLAndParam(String hql,Object object);
+	
+	public List<T> getResultByHQLAndParam(String hql,Object[] object);
 }

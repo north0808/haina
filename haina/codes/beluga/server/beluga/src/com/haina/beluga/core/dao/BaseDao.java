@@ -138,5 +138,21 @@ public class BaseDao<T extends IModel, PK extends Serializable> extends
 		}
 		return list;
 	}
+	/**
+     * 通过HQL和参数查出结果集.
+     * @param hql.
+     * @return List.
+     */
+    public List<T> getResultByHQLAndParam(String hql){
+    	return getHibernateTemplate().find(hql);
+    }
+    
+    public List<T> getResultByHQLAndParam(String hql,Object object){
+    	return getHibernateTemplate().find(hql,object);
+    }
+    
+    public List<T> getResultByHQLAndParam(String hql,Object[] object){
+    	return getHibernateTemplate().find(hql,object);
+    }
 
 }
