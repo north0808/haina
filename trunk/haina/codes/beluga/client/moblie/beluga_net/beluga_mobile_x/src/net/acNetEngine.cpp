@@ -1,4 +1,5 @@
 #include "acNetEngine.h"
+#include "ChineseCodeLib.h"
 
 #include "xconfig.h"
 
@@ -151,7 +152,7 @@ GPtrArray* CacNetEngine::get7WeatherDatas(string aCityCode)
 /************************************************************************/
 // 函数：getOrUpdatePD
 // 功能：获取归属地数据
-// 参数：标识位（）
+// 参数：标识位（0：全部数据 非0：增量数据）
 // 返回：归属地数据数组（GPtrArray）
 /************************************************************************/
 GPtrArray* CacNetEngine::getOrUpdatePD(string aFlag)
@@ -164,7 +165,10 @@ GPtrArray* CacNetEngine::getOrUpdatePD(string aFlag)
 
 	Json::Value jsonValue;
 	string retstring = getHessianString(retData);
-	HessianRemoteReturning hes_return = parse_json(retstring,jsonValue);
+	string retstring8;
+	CChineseCodeLib::UTF_8ToGB2312(retstring8,(char*)retstring.c_str(),retstring.length());
+
+	HessianRemoteReturning hes_return = parse_json(retstring8,jsonValue);
 
 	if(hes_return.getStatusCode() != 0)
 	{
@@ -179,18 +183,13 @@ GPtrArray* CacNetEngine::getOrUpdatePD(string aFlag)
 			for (int i = 0;i < valSize;i++)
 			{
 				PhoneDistrictDto* phoneDistrict = new PhoneDistrictDto();
-
-
-// 				WeatherDto* weatherDto = new WeatherDto();
-// 				weatherDto->setDate(jVal[i]["date"].asString());
-// 				weatherDto->setHigh(jVal[i]["high"].asInt());
-// 				weatherDto->setIcon(jVal[i]["icon"].asString());
-// 				weatherDto->setIssuetime(jVal[i]["issuetime"].asString());
-// 				weatherDto->setLow(jVal[i]["low"].asInt());
-// 				weatherDto->setTemperature(jVal[i]["temperature"].asString());
-// 				weatherDto->setWeatherCityCode(jVal[i]["weatherCityCode"].asString());
-// 				weatherDto->setWeatherType(jVal[i]["weatherType"].asString());
-// 				weatherDto->setWind(jVal[i]["wind"].asString());
+				phoneDistrict->setDistrictCity(jVal[i]["districtCity"].asString());
+				phoneDistrict->setDistrictNumber(jVal[i]["districtNumber"].asString());
+				phoneDistrict->setDistrictProvince(jVal[i]["districtProvince"].asString());
+				phoneDistrict->setFeeType(jVal[i]["feeType"].asString());
+				phoneDistrict->setWeatherCityCode(jVal[i]["weatherCityCode"].asString());
+				phoneDistrict->setRange(jVal[i]["range"].asString());
+				phoneDistrict->setUpdateFlg(jVal[i]["updateFlg"].asInt());
 
 				g_ptr_array_add(pd_list,phoneDistrict);
 			}
@@ -199,8 +198,6 @@ GPtrArray* CacNetEngine::getOrUpdatePD(string aFlag)
 
 	return pd_list;
 }
-
-
 
 
 /************************************************************************/
@@ -234,7 +231,6 @@ HessianRemoteReturning CacNetEngine::parse_json(string& aJson_string,Json::Value
  		remoteRet.setStatusCode(jsonValue["statusCode"].asInt());
  		remoteRet.setStatusText(jsonValue["statusText"].asString());
  		remoteRet.setOperationCode(jsonValue["operationCode"].asInt());
-//		remoteRet.setValue(&(jsonValue["value"]));
  		remoteRet.setValue(jsonValue["value"]);
 	}
 	return remoteRet;
