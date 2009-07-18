@@ -8,6 +8,7 @@
 #include "PhoneDistrictDto.h"
 #include "WeatherDto.h"
 
+#include "glib/glib.h"
 
 
 #include "json/json.h"
@@ -31,8 +32,8 @@ public:
 public:
 	int			getQQStatus(string aQQId);
 	WeatherDto	getLiveWeather(string aCityCode);
-	vector<WeatherDto>	get7WeatherDatas(string aCityCode);
-/*	vector<PhoneDistrictDto>	getOrUpdatePD(int aFlag);*/
+	GPtrArray*	get7WeatherDatas(string aCityCode);
+	GPtrArray*	getOrUpdatePD(string aFlag);
 	
 private:
 	string getHessianString(string aHessianStr);
