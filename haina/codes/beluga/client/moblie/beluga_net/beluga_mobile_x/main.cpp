@@ -2,6 +2,7 @@
 #include "HttpInternet.h"
 #include "acNetEngine.h"
 #include "xconfig.h"
+#include "glib/glib.h"
 
 #include "WeatherDto.h"
 
@@ -9,30 +10,6 @@ using namespace std;
 
 int main(int argc, TCHAR* argv[])
 {
-	/************************************************************************/
-// 	string pdata = "UserName=abcdefg&UserPassword=123456";
-// 	CHttpInternet httpInternet;
-// 	if(httpInternet.SetHostName(_T("www.sf.org.cn")))
-// 	{
-// 		string postRet = httpInternet.SyncPostData(_T("/User/User_ChkLogin.asp"),pdata);
-// 		if(!postRet.empty())
-// 		{
-// 			cout << postRet << endl << endl;
-// 		}
-// 		else
-// 		{
-// 			cout << "<<< Post data failed!" << endl;
-// 		}
-// 	}
-// 	else
-// 	{
-// 		cout << "<<< CHttpInternet SetHostName failed!" << endl;
-// 	}
-	/************************************************************************/
-
-	
-
-
 	/************************************************************************/
 	/*     获取QQ在线状态示例                  
 	CacNetEngine* acNetEngine = new CacNetEngine(KHostName,KHostNamePort);
@@ -76,8 +53,58 @@ int main(int argc, TCHAR* argv[])
 	/************************************************************************/
 
 	
+	/************************************************************************/
+	/*		获取7天天气预报数据信息示例                  
+	CacNetEngine* acNetEngine = new CacNetEngine(KHostName,KHostNamePort);
+
+	GPtrArray* weather7_list = acNetEngine->get7WeatherDatas("W56985");
+	for(int i = 0; i < weather7_list->len; i++)
+	{
+		WeatherDto* pWeather = (WeatherDto*)g_ptr_array_index(weather7_list,i);
+		cout << "========== " << i << " ==========" << endl;
+		cout << "Date:\t" << pWeather->getDate() << endl;
+		cout << "High:\t" << pWeather->getHigh() << endl;
+		cout << "Low:\t" << pWeather->getLow() << endl;
+		cout << "Icon:\t" << pWeather->getIcon() << endl;
+		cout << "Issuetime:\t" << pWeather->getIssuetime() << endl;
+		cout << "Temperature:\t" << pWeather->getTemperature() << endl;
+		cout << "CityCode:\t" << pWeather->getWeatherCityCode() << endl;
+		cout << "WeatherType:\t" << pWeather->getWeatherType() << endl;
+		cout << "Wind:\t" << pWeather->getWind() << endl;
+		cout << endl;
+	}
+	g_ptr_array_free(weather7_list,true);
+
+	delete acNetEngine;
+	*/  
+	/************************************************************************/
 
 
+	/************************************************************************/
+	/*		获取号码归属地数据示例    */              
+	CacNetEngine* acNetEngine = new CacNetEngine(KHostName,KHostNamePort);
+
+	GPtrArray* pd_list = acNetEngine->get7WeatherDatas("0");
+	for(int i = 0; i < pd_list->len; i++)
+	{
+// 	WeatherDto* pWeather = (WeatherDto*)g_ptr_array_index(weather7_list,i);
+// 	cout << "========== " << i << " ==========" << endl;
+// 	cout << "Date:\t" << pWeather->getDate() << endl;
+// 	cout << "High:\t" << pWeather->getHigh() << endl;
+// 	cout << "Low:\t" << pWeather->getLow() << endl;
+// 	cout << "Icon:\t" << pWeather->getIcon() << endl;
+// 	cout << "Issuetime:\t" << pWeather->getIssuetime() << endl;
+// 	cout << "Temperature:\t" << pWeather->getTemperature() << endl;
+// 	cout << "CityCode:\t" << pWeather->getWeatherCityCode() << endl;
+// 	cout << "WeatherType:\t" << pWeather->getWeatherType() << endl;
+// 	cout << "Wind:\t" << pWeather->getWind() << endl;
+// 	cout << endl;
+	}
+	g_ptr_array_free(pd_list,true);
+
+	delete acNetEngine;
+	  
+	/************************************************************************/
 
 
 	return 0;
