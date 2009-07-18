@@ -81,29 +81,29 @@ int main(int argc, TCHAR* argv[])
 
 
 	/************************************************************************/
-	/*		获取号码归属地数据示例    */              
+	/*		获取号码归属地数据示例                  
 	CacNetEngine* acNetEngine = new CacNetEngine(KHostName,KHostNamePort);
 
-	GPtrArray* pd_list = acNetEngine->get7WeatherDatas("0");
+	GPtrArray* pd_list = acNetEngine->getOrUpdatePD("1");
+
 	for(int i = 0; i < pd_list->len; i++)
 	{
-// 	WeatherDto* pWeather = (WeatherDto*)g_ptr_array_index(weather7_list,i);
-// 	cout << "========== " << i << " ==========" << endl;
-// 	cout << "Date:\t" << pWeather->getDate() << endl;
-// 	cout << "High:\t" << pWeather->getHigh() << endl;
-// 	cout << "Low:\t" << pWeather->getLow() << endl;
-// 	cout << "Icon:\t" << pWeather->getIcon() << endl;
-// 	cout << "Issuetime:\t" << pWeather->getIssuetime() << endl;
-// 	cout << "Temperature:\t" << pWeather->getTemperature() << endl;
-// 	cout << "CityCode:\t" << pWeather->getWeatherCityCode() << endl;
-// 	cout << "WeatherType:\t" << pWeather->getWeatherType() << endl;
-// 	cout << "Wind:\t" << pWeather->getWind() << endl;
-// 	cout << endl;
+	 	PhoneDistrictDto* phoneDistrict = (PhoneDistrictDto*)g_ptr_array_index(pd_list,i);
+	 	cout << "========== " << i << " ==========" << endl;
+	 	cout << "DistrictCity:\t" << phoneDistrict->getDistrictCity() << endl;
+		cout << "DistrictNumber:\t" << phoneDistrict->getDistrictNumber() << endl;
+		cout << "DistrictProvince:\t" << phoneDistrict->getDistrictProvince() << endl;
+		cout << "WeatherCityCode:\t" << phoneDistrict->getWeatherCityCode() << endl;
+// 		cout << "Range:\t" << phoneDistrict->getRange() << endl;
+		cout << "FeeType:\t" << phoneDistrict->getFeeType() << endl;
+		cout << "UpdateFlg:\t" << phoneDistrict->getUpdateFlg() << endl;
+	 	cout << endl;
 	}
+
 	g_ptr_array_free(pd_list,true);
 
 	delete acNetEngine;
-	  
+	*/ 
 	/************************************************************************/
 
 

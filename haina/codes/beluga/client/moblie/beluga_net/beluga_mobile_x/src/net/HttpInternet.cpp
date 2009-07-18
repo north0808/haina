@@ -1,4 +1,5 @@
 #include "HttpInternet.h"
+#include <iostream>
 
 
 using namespace std;
@@ -49,11 +50,12 @@ std::string CHttpInternet::SyncPostData(LPCTSTR aUrl,string aData)
 		return NULL;
 	}
 
-	
+	std::cout << "HttpSendRequest start " << __TIME__ << endl;
 	if (!HttpSendRequest(i_HttpRequest,http_header,_tcslen(http_header),(LPVOID)aData.c_str(),aData.size()))
 	{
 		return NULL;    
 	}
+	std::cout << "HttpSendRequest end " << __TIME__ << endl;
 
 
 	DWORD	qdwSize;     
@@ -74,6 +76,7 @@ void CHttpInternet::AsyncPostData()
 
 std::string CHttpInternet::ReadNetFile()
 {
+	std::cout << "ReadNetFile start " << GetTickCount() << endl;
 	int		allsize = 0;
 	int		sindex = 0;
 	string	httpRevData;
@@ -97,15 +100,23 @@ std::string CHttpInternet::ReadNetFile()
 
 				const char *c = httpRevData.c_str();
 				char *ch=const_cast<char *>(c);
+				
+				memcpy(ch+sindex,cTemp,dwSizeOfRead);
+				sindex += dwSizeOfRead;
+				
+				/*
 				int hesLength = dwSizeOfRead;
 				for(int i = 0;i < hesLength;i++)
 				{
 					ch[sindex] = cTemp[i];
 					sindex++;
 				}
+				*/
 			}
+			
 		}
 	}
+	std::cout << "ReadNetFile end " << GetTickCount() << endl;
 
 	return httpRevData;
 }
