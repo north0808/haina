@@ -98,16 +98,107 @@ WeatherDto CacNetEngine::getLiveWeather(string aCityCode)
 }
 
 
-/*
-vector<WeatherDto> CacNetEngine::get7WeatherDatas(string aCityCode)
+/************************************************************************/
+// 函数：get7WeatherDatas
+// 功能：获取未来7天的天气数据
+// 参数：归属地表中的城市ID
+// 返回：天气数据数组（GPtrArray）
+/************************************************************************/
+GPtrArray* CacNetEngine::get7WeatherDatas(string aCityCode)
 {
-	return ;
+	GPtrArray* weather7_list = g_ptr_array_new();
+
+	iSendHes.clear();
+	ihes_output.write_string(iSendHes,aCityCode);
+	string retData = iHttpNet.SyncPostData(KGet7WeatherUrl,iSendHes);
+
+	Json::Value jsonValue;
+	string retstring = getHessianString(retData);
+	HessianRemoteReturning hes_return = parse_json(retstring,jsonValue);
+
+	if(hes_return.getStatusCode() != 0)
+	{
+		
+	}
+	else
+	{
+		Json::Value jVal = hes_return.getValue();
+		if(jVal.isArray())
+		{
+			int valSize = jVal.size();
+			for (int i = 0;i < valSize;i++)
+			{
+				WeatherDto* weatherDto = new WeatherDto();
+				weatherDto->setDate(jVal[i]["date"].asString());
+				weatherDto->setHigh(jVal[i]["high"].asInt());
+				weatherDto->setIcon(jVal[i]["icon"].asString());
+				weatherDto->setIssuetime(jVal[i]["issuetime"].asString());
+				weatherDto->setLow(jVal[i]["low"].asInt());
+				weatherDto->setTemperature(jVal[i]["temperature"].asString());
+				weatherDto->setWeatherCityCode(jVal[i]["weatherCityCode"].asString());
+				weatherDto->setWeatherType(jVal[i]["weatherType"].asString());
+				weatherDto->setWind(jVal[i]["wind"].asString());
+
+				g_ptr_array_add(weather7_list,weatherDto);
+			}
+		}
+	}
+	
+	return weather7_list;
 }
-vector<PhoneDistrictDto> CacNetEngine::getOrUpdatePD(int aFlag)
+
+
+/************************************************************************/
+// 函数：getOrUpdatePD
+// 功能：获取归属地数据
+// 参数：标识位（）
+// 返回：归属地数据数组（GPtrArray）
+/************************************************************************/
+GPtrArray* CacNetEngine::getOrUpdatePD(string aFlag)
 {
-	return ;
+	GPtrArray* pd_list = g_ptr_array_new();
+
+	iSendHes.clear();
+	ihes_output.write_string(iSendHes,aFlag);
+	string retData = iHttpNet.SyncPostData(KGetOrUpdatePDUrl,iSendHes);
+
+	Json::Value jsonValue;
+	string retstring = getHessianString(retData);
+	HessianRemoteReturning hes_return = parse_json(retstring,jsonValue);
+
+	if(hes_return.getStatusCode() != 0)
+	{
+
+	}
+	else
+	{
+		Json::Value jVal = hes_return.getValue();
+		if(jVal.isArray())
+		{
+			int valSize = jVal.size();
+			for (int i = 0;i < valSize;i++)
+			{
+				PhoneDistrictDto* phoneDistrict = new PhoneDistrictDto();
+
+
+// 				WeatherDto* weatherDto = new WeatherDto();
+// 				weatherDto->setDate(jVal[i]["date"].asString());
+// 				weatherDto->setHigh(jVal[i]["high"].asInt());
+// 				weatherDto->setIcon(jVal[i]["icon"].asString());
+// 				weatherDto->setIssuetime(jVal[i]["issuetime"].asString());
+// 				weatherDto->setLow(jVal[i]["low"].asInt());
+// 				weatherDto->setTemperature(jVal[i]["temperature"].asString());
+// 				weatherDto->setWeatherCityCode(jVal[i]["weatherCityCode"].asString());
+// 				weatherDto->setWeatherType(jVal[i]["weatherType"].asString());
+// 				weatherDto->setWind(jVal[i]["wind"].asString());
+
+				g_ptr_array_add(pd_list,phoneDistrict);
+			}
+		}
+	}
+
+	return pd_list;
 }
-*/
 
 
 
