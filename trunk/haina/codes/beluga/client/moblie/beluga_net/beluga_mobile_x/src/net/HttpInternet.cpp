@@ -11,7 +11,8 @@ CHttpInternet::CHttpInternet():http_header(_T("Content-Type: application/x-www-f
 
 CHttpInternet::~CHttpInternet()
 {
-
+	InternetCloseHandle(i_Connect);
+	InternetCloseHandle(i_Internet);
 }
 	
 bool CHttpInternet::SetHostName(LPCTSTR aHostName,int aHttp_Port)
@@ -74,7 +75,6 @@ void CHttpInternet::AsyncPostData()
 
 std::string CHttpInternet::ReadNetFile()
 {
-	std::cout << "ReadNetFile start " << GetTickCount() << endl;
 	int		allsize = 0;
 	int		sindex = 0;
 	string	httpRevData;
@@ -114,7 +114,7 @@ std::string CHttpInternet::ReadNetFile()
 			
 		}
 	}
-	std::cout << "ReadNetFile end " << GetTickCount() << endl;
 
+	InternetCloseHandle(i_HttpRequest);
 	return httpRevData;
 }
