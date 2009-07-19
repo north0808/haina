@@ -56,6 +56,22 @@
 
 	</bean>
 	
+	<bean id="passportService"
+		class="com.haina.beluga.service.PassportService">
+		<property name="loginExpiry">
+			<value>604800000</value>
+		</property>
+		<property name="passportExpiry">
+			<value>1800000</value>
+		</property>
+		<property name="passportExpiryTimeOff">
+			<value>30000</value>
+		</property>
+		<property name="loginExpiryTimeOff">
+			<value>10000</value>
+		</property>
+	</bean>
+	
 	<!--
 	<bean id="contactUserDaoAroundAdvice"
 		class="com.haina.beluga.weave.ContactUserDaoAroundAdvice">
