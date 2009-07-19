@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.stereotype.Service;
+//import org.springframework.stereotype.Service;
 
 import com.haina.beluga.core.util.DESUtil;
 import com.haina.beluga.core.util.StringUtils;
@@ -23,7 +23,7 @@ import com.haina.beluga.domain.ContactUser;
  * @data 2009-07-11
  *
  */
-@Service(value="passportService")
+//@Service(value="passportService")
 public class PassportService implements IPassportService {
 	
 	private static final Log LOG=LogFactory.getLog(PassportService.class);
@@ -78,11 +78,13 @@ public class PassportService implements IPassportService {
 	}
 
 	@Override
-	public LoginPassport addPassport(String loginName,Date loginTime) {
+	public LoginPassport addPassport(String loginName,String password,Date loginTime) {
 		LoginPassport loginPassport=null;
-		if(!StringUtils.isNull(loginName) && loginTime!=null) {
+		if(!StringUtils.isNull(loginName) 
+				&& !StringUtils.isNull(password) && loginTime!=null) {
 			loginPassport=new LoginPassport();
-			loginPassport.setLoginName(loginName);
+			loginPassport.setLoginName(loginName.trim());
+			loginPassport.setPassword(DESUtil.encrypt(password.trim()));
 			loginPassport.setLoginExpiry(loginExpiry);
 			Long time=loginTime.getTime();
 			loginPassport.setLoginTime(time);
