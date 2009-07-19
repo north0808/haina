@@ -21,9 +21,12 @@ void ContactTest()
 		printf("create contactdb instance error.\n");
 		return;
 	}
-	
-	pContactDb->InitEntityDb(); /* 初始化联系人数据库 */
 
+#ifdef _WIN32_WCE
+	pContactDb->InitEntityDb("\\Program Files\\Beluga\\beluga.db"); /* 初始化联系人数据库 */
+#else
+	pContactDb->InitEntityDb("..\\..\\beluga.db"); /* 初始化联系人数据库 */
+#endif
 
 	/************************************ 1. 获取PhoneContact 列表 *****************/
 	// IMPORT_C gint32 GetAllContactsByTag(guint32 nTagId, gboolean onlyPref, CContactIterator ** ppContactIterator);
