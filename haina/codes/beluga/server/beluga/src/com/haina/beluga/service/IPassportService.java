@@ -25,10 +25,11 @@ public interface IPassportService {
 	/**
 	 * 添加护照。<br/>
 	 * @param loginName 登录名
+	 * @param password 密码
 	 * @param loginTime 登录时间
 	 * @return
 	 */
-	public LoginPassport addPassport(String loginName,Date loginTime);
+	public LoginPassport addPassport(String loginName,String password,Date loginTime);
 	
 	/**
 	 * 更新护照。<br/>
