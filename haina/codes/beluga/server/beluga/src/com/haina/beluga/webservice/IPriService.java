@@ -18,6 +18,10 @@ public interface IPriService extends Serializable {
 	 * 联系人用户登录。<br/>
 	 * @param loginName 用户的登录名
 	 * @param password 密码
+	 * @return 状态包括：
+	 * 		1.成功 statusCode=0
+	 * 		2.登录名或密码无效 statusCode = 1002
+	 * 		value值为护照，只有成功才有
 	 */
 	public HessianRemoteReturning login(String loginName, String password);
 	
@@ -27,18 +31,31 @@ public interface IPriService extends Serializable {
 	 * @param loginName 用户的登录名
 	 * @param password 密码
 	 * @param mobile 移动电话号码
+	 * @return 状态包括：
+	 * 		1.成功 statusCode=0
+	 * 		2.无效的手机号码 statusCode = 1010
+	 * 		value:护照，只有成功才有
 	 */
 	public HessianRemoteReturning register(String loginName, String password, String mobile);
 	
 	/**
 	 * 联系人用户通过护照退出。<br/>
 	 * @param passport 登录护照
+	 * @return 状态包括：
+	 * 		1.成功 statusCode=0
+	 * 		2.登录护照无效或已过期 statusCode = 1008
+	 * 		3.无效的登录名称 statusCode = 1009
+	 * 		4.用户不存在或用户未激活 statusCode = 1007
 	 */
 	public HessianRemoteReturning logoutByPsssport(String passport);
 	
 	/**
 	 * 联系人用户通过登录名退出。<br/>
 	 * @param loginName 登录名
+	 * @return 状态包括：
+	 * 		1.成功 statusCode=0
+	 * 		2.无效的登录名称 statusCode = 1009
+	 * 		4.用户不存在或用户未激活 statusCode = 1007
 	 */
 	public HessianRemoteReturning logoutByLoginName(String loginName);
 	
