@@ -312,7 +312,7 @@ public class PassportService implements IPassportService {
 				LoginPassport value=passportPool.get(keys.next());
 				if(!isExpiredPassport(value)) {
 					if(value.getLoginName().equals(loginName) 
-							&& value.getPassword().equals(password)) {
+							&& value.getPassword().equals(password)) {					
 						loginPassport=value;
 						break;
 					}
