@@ -1,8 +1,9 @@
 package com.haina.beluga.service;
 
-import java.lang.Thread.State;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -42,17 +43,17 @@ public class PassportService implements IPassportService {
 	private Long passportExpiryTimeOff;
 	
 	/*监控执行周期。默认604800000毫秒，即一周。*/
-	private Long monitoringCycle=604800000l;
+//	private Long monitoringCycle=604800000l;
 	
 	/*监控执行标志。*/
-	private boolean monitoringFlag=true;
+//	private boolean monitoringFlag=true;
 	
-	private PassportMonitor passportMonitor=new PassportMonitor();
-	
-	private Thread passportMonitorThread=new Thread(passportMonitor);
+//	private PassportMonitor passportMonitor=new PassportMonitor();
+//	
+//	private Thread passportMonitorThread=new Thread(passportMonitor);
 
 	public PassportService() {
-		startMonitoring();
+//		startMonitoring();
 	}
 	
 	
@@ -74,6 +75,24 @@ public class PassportService implements IPassportService {
 		return loginPassport;
 	}
 
+	@Override
+	public LoginPassport addPassport(String loginName,Date loginTime) {
+		LoginPassport loginPassport=null;
+		if(!StringUtils.isNull(loginName) && loginTime!=null) {
+			loginPassport=new LoginPassport();
+			loginPassport.setLoginName(loginName);
+			loginPassport.setLoginExpiry(loginExpiry);
+			Long time=loginTime.getTime();
+			loginPassport.setLoginTime(time);
+			String passport=generatePassport();
+			loginPassport.setPassport(passport);
+			loginPassport.setPassportTime(time);
+			loginPassport.setPassportExpiry(passportExpiry);
+			passportPool.put(passport, loginPassport);
+		}
+		return loginPassport;
+	}
+	
 	@Override
 	public LoginPassport updatePassport(String passport) {
 		LoginPassport loginPassport=null;
@@ -168,10 +187,10 @@ public class PassportService implements IPassportService {
 		}
 	}
 	
-	@Override
-	public void afterPropertiesSet() throws Exception {
-		startMonitoring();
-	}
+//	@Override
+//	public void afterPropertiesSet() throws Exception {
+//		startMonitoring();
+//	}
 
 	public void setLoginExpiry(Long loginExpiry) {
 		this.loginExpiry = loginExpiry;
@@ -189,59 +208,71 @@ public class PassportService implements IPassportService {
 		this.loginExpiryTimeOff = loginExpiryTimeOff;
 	}
 	
-	public void setMonitoringCycle(Long monitoringCycle) {
-		this.monitoringCycle = monitoringCycle;
-	}
+//	public void setMonitoringCycle(Long monitoringCycle) {
+//		this.monitoringCycle = monitoringCycle;
+//	}
 	
 	private String generatePassport() {
 		return StringUtils.getRandom(8);//DESUtil.encrypt(UUID.randomUUID().toString().replace("-", ""));
 	}
 	
-	private void startMonitoring() {
-		if(passportMonitorThread.getState().equals(State.NEW)) {
-			passportMonitorThread.start();
-			LOG.info(">>>>>>>>>>>>>>>>>>>>>PassportMonitor started>>>>>>>>>>>>>>>>>>>");
-		}
-	}
+//	private void startMonitoring() {
+//		if(passportMonitorThread.getState().equals(State.NEW)) {
+//			passportMonitorThread.start();
+//			LOG.info(">>>>>>>>>>>>>>>>>>>>>PassportMonitor started>>>>>>>>>>>>>>>>>>>");
+//		}
+//	}
 	
-	/**
-	 * 用户验证护照监视器。<br/>
-	 * @author huangyongqiang
-	 * @version 1.0
-	 * @since 1.0
-	 * @data 2009-07-11
-	 *
-	 */
-	private class PassportMonitor implements Runnable {
-
-		@SuppressWarnings("static-access")
-		@Override
-		public void run() {
-			try {
-				while(monitoringFlag) {
-					LOG.info(">>>>>>>>>>>>>>>>>>PassportMonitor start clear expired login user>>>>>>>>>>>>>>>>>>>>>");
-					if(passportPool.size()>0) {
-						Iterator<String> keys=passportPool.keySet().iterator();
-						while(keys.hasNext()) {
-							String passport=keys.next();
-//							LoginPassport loginPassport=passportPool.get(key);
-//							if(isExpiredLogin(loginPassport)) {
-//								expireLogin(key);
-//							}
-							if(isExpiredPassport(passport)) {
-								expireLogin(passport);
-							}
-						}
-					}
-					Thread.currentThread().sleep(monitoringCycle);
+	@Override
+	public List<String> clearExpiredPassport() {
+		List<String> expiredLoginName=new ArrayList<String>();
+		if(passportPool.size()>0) {
+			Iterator<String> keys=passportPool.keySet().iterator();
+			while(keys.hasNext()) {
+				String passport=keys.next();
+				if(isExpiredPassport(passport)) {
+					expiredLoginName.add(passportPool.get(passport).getLoginName());
+					expireLogin(passport);
 				}
-			} catch (Exception e) {
-				LOG.error(e);
-				e.printStackTrace();
 			}
 		}
-		
+		return expiredLoginName;
 	}
+	
+//	/**
+//	 * 用户验证护照监视器。<br/>
+//	 * @author huangyongqiang
+//	 * @version 1.0
+//	 * @since 1.0
+//	 * @data 2009-07-11
+//	 *
+//	 */
+//	private class PassportMonitor implements Runnable {
+//
+//		@SuppressWarnings("static-access")
+//		@Override
+//		public void run() {
+//			try {
+//				while(monitoringFlag) {
+//					LOG.info(">>>>>>>>>>>>>>>>>>PassportMonitor start clear expired login user>>>>>>>>>>>>>>>>>>>>>");
+//					if(passportPool.size()>0) {
+//						Iterator<String> keys=passportPool.keySet().iterator();
+//						while(keys.hasNext()) {
+//							String passport=keys.next();}
+//							if(isExpiredPassport(passport)) {
+//								expireLogin(passport);
+//							}
+//						}
+//					}
+//					Thread.currentThread().sleep(monitoringCycle);
+//				}
+//			} catch (Exception e) {
+//				LOG.error(e);
+//				e.printStackTrace();
+//			}
+//		}
+//		
+//	}
 
 	@Override
 	public boolean expireLogin(String passport) {
@@ -250,5 +281,10 @@ public class PassportService implements IPassportService {
 		}
 		passportPool.remove(passport);
 		return true;
+	}
+	
+	@Override
+	public int getPassportQuantity() {
+		return passportPool.size();
 	}
 }

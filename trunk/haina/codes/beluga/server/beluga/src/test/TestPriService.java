@@ -16,67 +16,82 @@ import com.haina.beluga.webservice.data.hessian.HessianRemoteReturning;
 /**
  * Simple test of the PersonDao
  */
-public class TestPriService extends TestCase
-{
-    private ApplicationContext factory;
- 
-    public TestPriService(String s)
-    {
-        super(s);
-        factory = new ClassPathXmlApplicationContext("test/test-applicationContext.xml");
-    }
-    
-    public void testRegister() throws Exception {
-    	HessianRemoteReturning h = getPriService().register("fuxiang14", "fuxiang12", "15901819285");
-    	System.out.println(h);
-    }
-//    public void testLogin() throws Exception {
-//    	HessianRemoteReturning h = getPriService().login("fuxiang1", "fuxiang1");
-//    	System.out.println(h);
-//    }
-    protected void setUp() throws Exception
-    {
-    	
-        openSession();
-    }
+public class TestPriService extends TestCase {
+	private ApplicationContext factory;
 
-    protected void tearDown() throws Exception
-    {
-        closeSession();
-    }
+	public TestPriService(String s) {
+		super(s);
+		factory = new ClassPathXmlApplicationContext(
+				"test/test-applicationContext.xml");
+	}
 
-    private void openSession()
-    {
-        SessionFactory sessionFactory = getSessionFactory();
-        Session session = SessionFactoryUtils.getSession(sessionFactory, true);
-        TransactionSynchronizationManager.bindResource(sessionFactory, new SessionHolder(session));
-    }
+//	public void testRegister() throws Exception {
+//		HessianRemoteReturning h = getPriService().register("testuser6", "123456", "13503280999");
+//		System.out.println(h);
+//	}
+//	public void testRegister1() throws Exception {
+//		HessianRemoteReturning h = getPriService().register("testuser6", "123456", "13503280999");
+//		System.out.println(h);
+//	}
+//	public void testLogin() throws Exception {
+//		HessianRemoteReturning h = getPriService().login("testuser6", "123456");
+//		System.out.println(h);
+//	}
+	public void testLogin1() throws Exception {
+		HessianRemoteReturning h = getPriService().login("testuser6", "123456");
+		System.out.println(h);
+		HessianRemoteReturning h1 = getPriService().logoutByPsssport(h.getValue().toString());
+		System.out.println(h1);
+	}
+//	public void testLogout() throws Exception {
+//		HessianRemoteReturning h = getPriService().logoutByPsssport("testuser6");
+//		System.out.println(h);
+//	}
+	
+//	public void testLogin() throws Exception {
+//		HessianRemoteReturning h = getPriService().login("hyqtest", "123456");
+//		System.out.println(h);
+//	}
 
-    private void closeSession()
-    {
-        SessionFactory sessionFactory = getSessionFactory();
-        SessionHolder sessionHolder = (SessionHolder) TransactionSynchronizationManager.unbindResource(sessionFactory);
-        sessionHolder.getSession().flush();
-        sessionHolder.getSession().close();
-        SessionFactoryUtils.releaseSession(sessionHolder.getSession(), sessionFactory);
-    }
+	protected void setUp() throws Exception {
 
-    private void restartSession()
-    {
-        closeSession();
-        openSession();
-    }
+		openSession();
+	}
 
-    private SessionFactory getSessionFactory()
-    {
-        return (SessionFactory) factory.getBean("sessionFactory");
-    }
-    
-    private PriService getPriService()
-    {
-    	PriService priService = (PriService) factory.getBean("priService");
-    	
-        return priService;
-    }
-   
+	protected void tearDown() throws Exception {
+		closeSession();
+	}
+
+	private void openSession() {
+		SessionFactory sessionFactory = getSessionFactory();
+		Session session = SessionFactoryUtils.getSession(sessionFactory, true);
+		TransactionSynchronizationManager.bindResource(sessionFactory,
+				new SessionHolder(session));
+	}
+
+	private void closeSession() {
+		SessionFactory sessionFactory = getSessionFactory();
+		SessionHolder sessionHolder = (SessionHolder) TransactionSynchronizationManager
+				.unbindResource(sessionFactory);
+		sessionHolder.getSession().flush();
+		sessionHolder.getSession().close();
+		SessionFactoryUtils.releaseSession(sessionHolder.getSession(),
+				sessionFactory);
+	}
+
+	private void restartSession() {
+		closeSession();
+		openSession();
+	}
+
+	private SessionFactory getSessionFactory() {
+		return (SessionFactory) factory.getBean("sessionFactory");
+	}
+
+	private PriService getPriService() {
+		PriService priService = (PriService) factory.getBean("priService");
+
+		return priService;
+	}
+
 }

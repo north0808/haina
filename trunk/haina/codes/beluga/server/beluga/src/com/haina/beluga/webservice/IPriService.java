@@ -31,10 +31,16 @@ public interface IPriService extends Serializable {
 	public HessianRemoteReturning register(String loginName, String password, String mobile);
 	
 	/**
-	 * 联系人用户退出。<br/>
+	 * 联系人用户通过护照退出。<br/>
 	 * @param passport 登录护照
 	 */
-	public HessianRemoteReturning logout(String passport);
+	public HessianRemoteReturning logoutByPsssport(String passport);
+	
+	/**
+	 * 联系人用户通过登录名退出。<br/>
+	 * @param loginName 登录名
+	 */
+	public HessianRemoteReturning logoutByLoginName(String loginName);
 	
 	/**
 	 * 修改密码。<br/>
@@ -60,5 +66,4 @@ public interface IPriService extends Serializable {
 	 * @return 操作结果
 	 */
 	public HessianRemoteReturning editLoginName(String passport, String neoEmail);
-
 }

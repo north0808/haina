@@ -1,6 +1,7 @@
 package com.haina.beluga.service;
 
-import org.springframework.beans.factory.InitializingBean;
+import java.util.Date;
+import java.util.List;
 
 import com.haina.beluga.domain.ContactUser;
 
@@ -12,7 +13,7 @@ import com.haina.beluga.domain.ContactUser;
  * @data 2009-07-11
  *
  */
-public interface IPassportService extends InitializingBean {
+public interface IPassportService {
 
 	/**
 	 * 添加护照。<br/>
@@ -20,6 +21,14 @@ public interface IPassportService extends InitializingBean {
 	 * @return
 	 */
 	public LoginPassport addPassport(ContactUser contactUser);
+	
+	/**
+	 * 添加护照。<br/>
+	 * @param loginName 登录名
+	 * @param loginTime 登录时间
+	 * @return
+	 */
+	public LoginPassport addPassport(String loginName,Date loginTime);
 	
 	/**
 	 * 更新护照。<br/>
@@ -82,4 +91,16 @@ public interface IPassportService extends InitializingBean {
 	 * @return
 	 */
 	public LoginPassport getLoginPassportByLoginName(String loginName);
+	
+	/**
+	 * 取得目前的护照数量。<br/>
+	 * @return
+	 */
+	public int getPassportQuantity();
+	
+	/**
+	 * 清楚超期的护照。<br/>
+	 * @return 被清除了护照的登录名
+	 */
+	public List<String> clearExpiredPassport();
 }

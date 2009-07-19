@@ -1,6 +1,7 @@
 package com.haina.beluga.webservice.data;
 
 import com.haina.beluga.core.dto.IDto;
+import com.haina.beluga.webservice.IStatusCode;
 
 /**
  * 远程调用传递数据的基类。<br/>
@@ -43,5 +44,12 @@ public abstract class AbstractRemoteData implements IDto {
 	public void setStatusText(String statusText) {
 		this.statusText = statusText;
 	}
-
+	
+	/**
+	 * 是否是成功状态。<br/>
+	 * @return
+	 */
+	public boolean isSuccessStatus() {
+		return this.statusCode==IStatusCode.SUCCESS;
+	}
 }
