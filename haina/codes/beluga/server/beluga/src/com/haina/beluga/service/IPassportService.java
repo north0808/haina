@@ -93,6 +93,13 @@ public interface IPassportService {
 	public LoginPassport getLoginPassportByLoginName(String loginName);
 	
 	/**
+	 * 通过登录名和密码取得登录护照对象。<br/>
+	 * @param loginName
+	 * @return
+	 */
+	public LoginPassport getLoginPassportByLoginNameAndPwd(String loginName,String password);
+	
+	/**
 	 * 取得目前的护照数量。<br/>
 	 * @return
 	 */
