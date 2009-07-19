@@ -162,7 +162,7 @@ public class PriService implements IPriService, InitializingBean {
 		ret=contactUserHessianService.editContactUserToOnline(loginName, password, null,now);
 		if(ret.isSuccessStatus()) {
 			//$4 生成护照
-			loginPassport=passportService.addPassport(loginName,now);
+			loginPassport=passportService.addPassport(loginName,password,now);
 			ret.setValue(loginPassport.getPassport());
 		}		
 		return ret;
@@ -240,7 +240,7 @@ public class PriService implements IPriService, InitializingBean {
 				loginName, password, mobile, ContactUser.USER_STATUS_ONLINE,null,now);
 		if(ret.isSuccessStatus()) {
 			//$3 生成护照
-			LoginPassport loginPassport=passportService.addPassport(loginName,now);
+			LoginPassport loginPassport=passportService.addPassport(loginName,password,now);
 			ret.setValue(loginPassport.getPassport());
 		}
 		return ret;
