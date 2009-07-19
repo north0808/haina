@@ -27,7 +27,7 @@ public:
     
     gint32 GetEntityFieldsName(GPtrArray ** fieldsName);
     
-    virtual gint32 InitEntityDb() = 0;
+    virtual gint32 InitEntityDb(gchar* dbName) = 0;
     virtual gint32 GetMaxId(guint32 * nMaxId) = 0;
     virtual gint32 GetEntityById(guint32 nId, CDbEntity** ppEntity) = 0;
 
@@ -49,6 +49,7 @@ protected:
 	CppSQLite3DB  	m_dbBeluga;
 	CppSQLite3Query m_dbQuery;
 	
+	gchar		    m_dbName[260];	
 	guint32  		m_ndbCount;
 };
 

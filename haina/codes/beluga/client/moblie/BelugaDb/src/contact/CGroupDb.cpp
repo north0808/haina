@@ -23,8 +23,9 @@ EXPORT_C CGroupDb::~CGroupDb()
 	{
 	}
     
-EXPORT_C gint32 CGroupDb::InitEntityDb() /* fill fields name */
+EXPORT_C gint32 CGroupDb::InitEntityDb(gchar* dbName) /* fill fields name */
 	{
+	strcpy(m_dbName, dbName);
 	OpenDatabase();
 	CppSQLite3Table groupTable = m_dbBeluga.getTable("select * from cgroup limit 1;");
 	m_pFieldsName = g_ptr_array_sized_new(groupTable.numFields());

@@ -22,8 +22,9 @@ EXPORT_C CConfigDb::~CConfigDb()
 	{
 	}
     
-EXPORT_C gint32 CConfigDb::InitEntityDb() /* fill fields name */
+EXPORT_C gint32 CConfigDb::InitEntityDb(gchar* dbName) /* fill fields name */
 	{
+	strcpy(m_dbName, dbName);
 	OpenDatabase();
 	CppSQLite3Table configTable = m_dbBeluga.getTable("select * from config limit 1;");
 	m_pFieldsName = g_ptr_array_sized_new(configTable.numFields());

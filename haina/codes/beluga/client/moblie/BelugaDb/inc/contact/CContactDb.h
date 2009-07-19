@@ -51,6 +51,26 @@ struct stRecentContact
     tm time;
 };
 
+
+#define MAX_DISTRICT_NUMBER_LEN			10
+#define MAX_DISTRICT_NAME_LEN			64
+#define MAX_OWNER_STATE_NAME_LEN		64
+#define MAX_FEE_TYPE_LEN				64
+#define MAX_WEATHER_CODE_LEN			20
+
+
+struct stPhoneDistrict
+{
+    gchar districtNumber[MAX_DISTRICT_NUMBER_LEN];
+    gchar districtName[MAX_DISTRICT_NAME_LEN];
+	gchar ownerState[MAX_OWNER_STATE_NAME_LEN];
+	gchar feeType[MAX_FEE_TYPE_LEN];
+    gchar weatherCode[MAX_WEATHER_CODE_LEN];
+    guint16 updateFlag;
+	GString * phoneRange;
+};
+
+
 #define 	MAX_RECENT_CONTACT_NUM		15
 
 
@@ -65,7 +85,7 @@ public:
     IMPORT_C CContactDb();
     IMPORT_C ~CContactDb();
     
-    IMPORT_C gint32 InitEntityDb();
+    IMPORT_C gint32 InitEntityDb(gchar* dbName);
     IMPORT_C gint32 GetMaxId(guint32 * nMaxId);
     IMPORT_C gint32 GetEntityById(guint32 nId, CDbEntity** ppEntity);
 
@@ -103,8 +123,10 @@ public:
     IMPORT_C gint32 GetContactsTotalityByTag(guint32 nTagId, guint32 * totality);
     IMPORT_C gint32 GetContactsTotalityByGroup(guint32 nGroupId, guint32 * totality);
 
-    IMPORT_C gint32 GetPhoneDistrict(gchar* phoneNumber, gchar ** districtNumber, gchar ** districtName, gchar ** feeType);
- 
+    IMPORT_C gint32 GetPhoneDistrict(gchar* phoneNumber, stPhoneDistrict * phoneDistrict);
+	IMPORT_C gint32 SavePhoneDistrict(stPhoneDistrict * phoneDistrict);
+	IMPORT_C gint32 GetMaxPhoneDistrictUpdateFlag(guint16 * updateFlag);
+
     IMPORT_C gint32 GetRecentContacts(GPtrArray ** pContacts);
     IMPORT_C gint32 SaveRecentContact(stRecentContact * contact);
 
