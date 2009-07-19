@@ -10,6 +10,7 @@
 //  Include Files
 
 #include <glib.h>
+#include <time.h>
 #include "Beluga.h"		 
 
 
@@ -41,3 +42,27 @@ EXPORT_C void freeAddressArray(GPtrArray * pArray)
 	    g_ptr_array_free(pArray, TRUE);
 		}
 	}
+
+#ifdef _WIN32_WCE
+#include <winbase.h>
+
+EXPORT_C void GetLocalTime(tm* time)
+	{
+	SYSTEMTIME systime; 
+	GetLocalTime(&systime);
+	time->tm_year = systime.wYear;
+	time->tm_mon = systime.wMonth;
+	time->tm_mday = systime.wDay;
+	time->tm_hour = systime.wHour;
+	time->tm_min = systime.wMinute;
+	time->tm_sec = systime.wSecond;
+	}
+
+#else
+EXPORT_C void GetLocalTime(tm* tim)
+	{
+	time_t t;
+	time(&t);
+	tim = localtime(&t);
+	}
+#endif

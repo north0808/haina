@@ -17,7 +17,7 @@
 #include "CContactDb.h"
 #include "CContactIterator.h"
 
-GLREF_C void freeAddressArray(GPtrArray * pArray);
+GLREF_C void GetLocalTime(tm*);
 
 static void insert_contact_ext_row(gpointer key, gpointer value, gpointer user_data)
 	{
@@ -861,9 +861,9 @@ EXPORT_C gint32 CContactDb::GetRecentContacts(GPtrArray ** pContacts)
 	{
 	char sql[64] = {0};
 	char times[20] = {0};
-	time_t t;
+//	time_t t;
 	
-	time(&t); 
+//	time(&t); 
 	*pContacts = NULL;
 	*pContacts = g_ptr_array_new();
 	if (*pContacts == NULL)
@@ -887,17 +887,18 @@ EXPORT_C gint32 CContactDb::GetRecentContacts(GPtrArray ** pContacts)
 		recentContact->event = (EContactEvent)query.getIntField(2);
 		strcpy(recentContact->eventCommInfo, query.getStringField(3));
 		strcpy(times, query.getStringField(4));  /* exp: 2009-6-30 21:51:23 */
- 		recentContact->time = localtime(&t); 
+ 		//recentContact->time = localtime(&t); 
+		GetLocalTime(&recentContact->time);
 		char * tmp = strrchr(times, '-');
-		recentContact->time->tm_mon = atoi(tmp+1);
+		recentContact->time.tm_mon = atoi(tmp+1);
 		tmp = strrchr(tmp, '-');
-		recentContact->time->tm_mday = atoi(tmp+1);
+		recentContact->time.tm_mday = atoi(tmp+1);
 		tmp = strrchr(tmp, ' ');
-		recentContact->time->tm_hour = atoi(tmp+1);
+		recentContact->time.tm_hour = atoi(tmp+1);
 		tmp = strrchr(tmp, ':');
-		recentContact->time->tm_min = atoi(tmp+1);
+		recentContact->time.tm_min = atoi(tmp+1);
 		tmp = strrchr(tmp, ':');
-		recentContact->time->tm_sec = atoi(tmp+1);
+		recentContact->time.tm_sec = atoi(tmp+1);
 		
 		g_ptr_array_add(*pContacts, recentContact);
 		query.nextRow();
@@ -918,8 +919,8 @@ EXPORT_C gint32 CContactDb::SaveRecentContact(stRecentContact * contact)
 
 	sprintf(sql, "insert into recent_contact values(null, %d, %d, '%s', %d-%d-%d %02d:%02d:%02d);", 
 				contact->nContactId, contact->event, contact->eventCommInfo,
-				contact->time->tm_year, contact->time->tm_mon, contact->time->tm_mday,
-				contact->time->tm_hour, contact->time->tm_min, contact->time->tm_sec);
+				contact->time.tm_year, contact->time.tm_mon, contact->time.tm_mday,
+				contact->time.tm_hour, contact->time.tm_min, contact->time.tm_sec);
 	m_dbBeluga.execDML(sql);	
 	CloseDatabase();
 	return 0;
