@@ -105,7 +105,7 @@
 			Name="Debug|Windows Mobile 6 Professional SDK (ARMV4I)"
 			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
-			ConfigurationType="2"
+			ConfigurationType="4"
 			CharacterSet="1"
 			>
 			<Tool
@@ -148,17 +148,8 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLinkerTool"
-				AdditionalOptions=" /subsystem:windowsce,5.02"
-				OutputFile="$(OutDir)/glib-2-20.dll"
-				LinkIncremental="2"
-				DelayLoadDLLs="$(NOINHERIT)"
-				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(OutDir)/glib.pdb"
-				SubSystem="0"
-				StackReserveSize="65536"
-				StackCommitSize="4096"
-				ImportLibrary="$(OutDir)/glib-2-20.lib"
+				Name="VCLibrarianTool"
+				AdditionalOptions=" /SUBSYSTEM:WINDOWSCE,5.02"
 			/>
 			<Tool
 				Name="VCALinkTool"
