@@ -19,7 +19,7 @@ public class LoginPassport implements Serializable {
 	/*电子邮件即登录名。*/
 	private String loginName;
 	
-	/*密码。*/
+	/*加密后的密码。*/
 	private String password;
 	
 	/*手机号码。*/
