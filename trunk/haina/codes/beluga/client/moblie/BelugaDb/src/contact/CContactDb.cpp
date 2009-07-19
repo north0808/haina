@@ -55,8 +55,9 @@ EXPORT_C CContactDb::~CContactDb()
 	{
 	}
     
-EXPORT_C gint32 CContactDb::InitEntityDb() /* fill fields name */
+EXPORT_C gint32 CContactDb::InitEntityDb(gchar* dbName) /* fill fields name */
 	{
+	strcpy(m_dbName, dbName);
 	OpenDatabase();
 	CppSQLite3Table contactTable = m_dbBeluga.getTable("select * from contact limit 1;");
 	m_pFieldsName = g_ptr_array_sized_new(contactTable.numFields());
@@ -824,39 +825,50 @@ EXPORT_C gint32 CContactDb::GetContactsTotalityByGroup(guint32 nGroupId, guint32
 	return 0;
 	}
     
-EXPORT_C gint32 CContactDb::GetPhoneDistrict(gchar* phoneNumber, gchar ** districtNumber, gchar ** districtName, gchar ** feeType)
+EXPORT_C gint32 CContactDb::GetPhoneDistrict(gchar* phoneNumber,  stPhoneDistrict * phoneDistrict)
 	{
 	char sql[256] = {0};
 	OpenDatabase();
 	
-	sprintf(sql, "select * from phone_district where %s >= range_start and %s <= rang_end;", phoneNumber, phoneNumber);
+	phoneDistrict->phoneRange = NULL;
+	sprintf(sql, "select * from phone_district where phone_range like '%%%s%%';", phoneNumber);
 	CppSQLite3Query query = m_dbBeluga.execQuery(sql);
 	
-	*districtNumber = NULL;
-	*districtNumber =  g_strdup(query.getStringField(1));
-	if (NULL == *districtNumber)
-		{
-		CloseDatabase();
-		return ERROR(ESide_Client, EModule_Db, ECode_No_Memory);
-		}
-	
-	*districtName = NULL;
-	*districtNumber =  g_strdup(query.getStringField(2));
-	if (NULL == *districtNumber)
-		{
-		CloseDatabase();
-		g_free(*districtNumber);
-		*districtNumber = NULL;
-		return ERROR(ESide_Client, EModule_Db, ECode_No_Memory);
-		}
-	
-	*feeType = NULL;
-	*feeType =  (gchar*)query.getStringField(5);
+	strcpy(phoneDistrict->districtNumber, query.getStringField(1));
+	strcpy(phoneDistrict->districtName, query.getStringField(2));
+	strcpy(phoneDistrict->ownerState, query.getStringField(3));
+	strcpy(phoneDistrict->feeType, query.getStringField(5));
+	strcpy(phoneDistrict->weatherCode, query.getStringField(7));
+	phoneDistrict->updateFlag = query.getIntField(6);
 		
 	CloseDatabase();
 	return 0;
 	}
-    
+
+EXPORT_C gint32 CContactDb::SavePhoneDistrict(stPhoneDistrict * phoneDistrict)
+	{
+	GString * sql = NULL;
+	OpenDatabase();
+	
+	sql = g_string_new_len("", 256);
+	g_string_printf(sql, "insert into phone_district values(null, '%s', '%s', '%s', '%s', '%s', %d, '%s');", 
+				phoneDistrict->districtNumber, phoneDistrict->districtName, phoneDistrict->ownerState,
+				phoneDistrict->phoneRange->str, phoneDistrict->feeType, phoneDistrict->updateFlag, 
+				phoneDistrict->weatherCode);
+
+	m_dbBeluga.execDML(sql->str);	
+	CloseDatabase();
+	g_string_free(sql, TRUE);
+
+	return 0;
+	}
+
+EXPORT_C gint32 CContactDb::GetMaxPhoneDistrictUpdateFlag(guint16 * updateFlag)
+	{
+	*updateFlag = m_dbBeluga.execScalar("select max(update_flag) from phone_district;");
+	return 0;
+	}
+
 EXPORT_C gint32 CContactDb::GetRecentContacts(GPtrArray ** pContacts)
 	{
 	char sql[64] = {0};

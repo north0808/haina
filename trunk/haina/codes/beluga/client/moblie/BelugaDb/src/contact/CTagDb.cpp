@@ -22,8 +22,9 @@ EXPORT_C CTagDb::~CTagDb()
 	{
 	}
     
-EXPORT_C gint32 CTagDb::InitEntityDb() /* fill fields name */
+EXPORT_C gint32 CTagDb::InitEntityDb(gchar* dbName) /* fill fields name */
 	{
+	strcpy(m_dbName, dbName);
 	OpenDatabase();
 	CppSQLite3Table tagTable = m_dbBeluga.getTable("select * from tag limit 1;");
 	m_pFieldsName = g_ptr_array_sized_new(tagTable.numFields());

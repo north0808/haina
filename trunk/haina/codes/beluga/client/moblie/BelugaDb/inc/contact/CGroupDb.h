@@ -23,7 +23,7 @@ public:
 	IMPORT_C CGroupDb();
     IMPORT_C ~CGroupDb();
 
-    IMPORT_C gint32 InitEntityDb();
+    IMPORT_C gint32 InitEntityDb(gchar* dbName);
     IMPORT_C gint32 GetMaxId(guint32 * nMaxId);
     IMPORT_C gint32 GetEntityById(guint32 nId, CDbEntity** ppEntity);
 

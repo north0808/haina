@@ -19,6 +19,7 @@ EXPORT_C CEntityDb::CEntityDb()
 	m_ndbCount = 0;
 	m_bSortAscending = TRUE;
 	m_pFieldsName = NULL;
+	memset(m_dbName, 0, sizeof(m_dbName));
 	}
 
 EXPORT_C CEntityDb::~CEntityDb()
@@ -46,7 +47,7 @@ gint32 CEntityDb::GetEntityFieldsName(GPtrArray ** fieldsName)
 gint32 CEntityDb::OpenDatabase()
 	{
 	if (m_ndbCount == 0)
-		m_dbBeluga.open(BELUGA_DATABASE);
+		m_dbBeluga.open(m_dbName);
 	m_ndbCount++;
 	
 	return 0;

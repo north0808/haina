@@ -57,12 +57,6 @@
 
 
 
-
-/* database name */
-#define	BELUGA_DATABASE		"..\\..\\beluga.db"
-
-
-
 /* define error code */
 enum ESide
 	{
