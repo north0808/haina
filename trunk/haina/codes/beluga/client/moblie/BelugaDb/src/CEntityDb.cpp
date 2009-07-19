@@ -9,7 +9,7 @@
 
 #include "CEntityDb.h"
 #include "Beluga.h"
-#include <io.h>
+//#include <io.h>
 
 GLDEF_C void freeGStringArray(GPtrArray * pArray);
 

@@ -100,7 +100,7 @@
 			Name="Debug|Windows Mobile 6 Professional SDK (ARMV4I)"
 			OutputDirectory="$(SolutionDir)Windows Mobile 6 Professional SDK (ARMV4I)\$(ConfigurationName)"
 			IntermediateDirectory="Windows Mobile 6 Professional SDK (ARMV4I)\$(ConfigurationName)"
-			ConfigurationType="1"
+			ConfigurationType="2"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -120,7 +120,11 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				ExecutionBucket="7"
+				Optimization="0"
 				AdditionalIncludeDirectories="..\..\inc\message;..\..\inc\contact\;..\..\inc\config\;..\..\inc;&quot;..\..\..\sqlite-3.3.5\&quot;;&quot;..\..\..\glib-2.20.1\glib-2.20.1\build\wince\glib-mobile\&quot;;&quot;..\..\..\glib-2.20.1\glib-2.20.1\build\wince\glib-mobile\glib\&quot;"
+				PreprocessorDefinitions="_DEBUG;_WIN32_WCE=$(CEVER);UNDER_CE;$(PLATFORMDEFINES);WINCE;DEBUG;_WINDOWS;_USRDLL;DLLMOBILE_EXPORTS;$(ARCHFAM);$(_ARCHFAM_);_UNICODE;UNICODE"
+				WarningLevel="3"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -133,7 +137,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalOptions=" /subsystem:windowsce,5.02"
 				AdditionalLibraryDirectories="&quot;..\..\..\sqlite-3.3.5\vs8\sqlite3\sqlite3\Windows Mobile 6 Professional SDK (ARMV4I)\Debug\&quot;;&quot;..\..\..\glib-2.20.1\glib-2.20.1\build\wince\glib-mobile\glib\glib\Windows Mobile 6 Professional SDK (ARMV4I)\Debug\&quot;"
+				GenerateDebugInformation="true"
+				StackReserveSize="65536"
+				StackCommitSize="4096"
 				ResourceOnlyDLL="false"
 			/>
 			<Tool
