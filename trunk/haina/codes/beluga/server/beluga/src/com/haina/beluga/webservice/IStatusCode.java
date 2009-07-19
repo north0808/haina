@@ -65,7 +65,7 @@ public interface IStatusCode {
 	int INVALID_LOGINNAME=1009;
 	
 	/**
-	 * 无效的电子邮件地址。<br/>
+	 * 无效的手机号码。<br/>
 	 */
 	int INVALID_MOBILE=1010;
 	
