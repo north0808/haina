@@ -41,5 +41,3 @@ EXPORT_C void freeAddressArray(GPtrArray * pArray)
 	    g_ptr_array_free(pArray, TRUE);
 		}
 	}
-
-
