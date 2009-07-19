@@ -9,7 +9,6 @@ using namespace hessian;
 
 CacNetEngine::CacNetEngine()
 {
-
 }
 
 CacNetEngine::CacNetEngine(LPCTSTR aHostName,int aHttp_Port)
@@ -19,7 +18,6 @@ CacNetEngine::CacNetEngine(LPCTSTR aHostName,int aHttp_Port)
 
 CacNetEngine::~CacNetEngine()
 {
-
 }
 
 /************************************************************************/
@@ -39,7 +37,7 @@ void CacNetEngine::setNetHost(LPCTSTR aHostName,int aHttp_Port)
 // 函数：getQQStatus
 // 功能：获取QQ在线状态
 // 参数：QQ号码
-// 返回：在线(10000) 离线(10001) 出错(-1)
+// 返回：在线(10000) 离线(10001) 出错(-1)  （如果失败可用getErrCode获取错误信息）
 /************************************************************************/
 int CacNetEngine::getQQStatus(string aQQId)
 {
@@ -50,8 +48,9 @@ int CacNetEngine::getQQStatus(string aQQId)
 	Json::Value jsonValue;
 	string retstring = getHessianString(retData);
 	HessianRemoteReturning hes_return = parse_json(retstring,jsonValue);
+	iErrCode = hes_return.getStatusCode();
 
-	if(hes_return.getStatusCode() != 0)
+	if(iErrCode != 0)
 		return -1;
 
 	int online = hes_return.getValue().asInt();
@@ -63,11 +62,11 @@ int CacNetEngine::getQQStatus(string aQQId)
 // 函数：getLiveWeather
 // 功能：获取当天天气的数据
 // 参数：归属地表中的城市ID
-// 返回：天气数据（WeatherDto）
+// 返回：成功返回天气数据（WeatherDto）失败返回NULL（如果失败可用getErrCode获取错误信息）
 /************************************************************************/
-WeatherDto CacNetEngine::getLiveWeather(string aCityCode)
+WeatherDto* CacNetEngine::getLiveWeather(string aCityCode)
 {
-	WeatherDto weatherDto;
+	WeatherDto* weatherDto = new WeatherDto();
 
 	iSendHes.clear();
 	ihes_output.write_string(iSendHes,aCityCode);
@@ -76,25 +75,25 @@ WeatherDto CacNetEngine::getLiveWeather(string aCityCode)
 	Json::Value jsonValue;
 	string retstring = getHessianString(retData);
 	HessianRemoteReturning hes_return = parse_json(retstring,jsonValue);
+	iErrCode = hes_return.getStatusCode();
 
-	if(hes_return.getStatusCode() != 0)
+	if(iErrCode != 0)
 	{
-
+		return NULL;
 	}
 	else
 	{
 		Json::Value jVal = hes_return.getValue();
-		weatherDto.setDate(jVal["date"].asString());
-		weatherDto.setHigh(jVal["high"].asInt());
-		weatherDto.setIcon(jVal["icon"].asString());
-		weatherDto.setIssuetime(jVal["issuetime"].asString());
-		weatherDto.setLow(jVal["low"].asInt());
-		weatherDto.setTemperature(jVal["temperature"].asString());
-		weatherDto.setWeatherCityCode(jVal["weatherCityCode"].asString());
-		weatherDto.setWeatherType(jVal["weatherType"].asString());
-		weatherDto.setWind(jVal["wind"].asString());
+		weatherDto->setDate(jVal["date"].asString());
+		weatherDto->setHigh(jVal["high"].asInt());
+		weatherDto->setIcon(jVal["icon"].asString());
+		weatherDto->setIssuetime(jVal["issuetime"].asString());
+		weatherDto->setLow(jVal["low"].asInt());
+		weatherDto->setTemperature(jVal["temperature"].asString());
+		weatherDto->setWeatherCityCode(jVal["weatherCityCode"].asString());
+		weatherDto->setWeatherType(jVal["weatherType"].asString());
+		weatherDto->setWind(jVal["wind"].asString());
 	}
-
 	return weatherDto;
 }
 
@@ -103,7 +102,7 @@ WeatherDto CacNetEngine::getLiveWeather(string aCityCode)
 // 函数：get7WeatherDatas
 // 功能：获取未来7天的天气数据
 // 参数：归属地表中的城市ID
-// 返回：天气数据数组（GPtrArray）
+// 返回：天气数据数组（GPtrArray）失败返回NULL（如果失败可用getErrCode获取错误信息）
 /************************************************************************/
 GPtrArray* CacNetEngine::get7WeatherDatas(string aCityCode)
 {
@@ -116,10 +115,12 @@ GPtrArray* CacNetEngine::get7WeatherDatas(string aCityCode)
 	Json::Value jsonValue;
 	string retstring = getHessianString(retData);
 	HessianRemoteReturning hes_return = parse_json(retstring,jsonValue);
+	iErrCode = hes_return.getStatusCode();
 
-	if(hes_return.getStatusCode() != 0)
+	if(iErrCode != 0)
 	{
-		
+		g_ptr_array_free(weather7_list,true);
+		return NULL;
 	}
 	else
 	{
@@ -144,7 +145,6 @@ GPtrArray* CacNetEngine::get7WeatherDatas(string aCityCode)
 			}
 		}
 	}
-	
 	return weather7_list;
 }
 
@@ -153,7 +153,7 @@ GPtrArray* CacNetEngine::get7WeatherDatas(string aCityCode)
 // 函数：getOrUpdatePD
 // 功能：获取归属地数据
 // 参数：标识位（0：全部数据 非0：增量数据）
-// 返回：归属地数据数组（GPtrArray）
+// 返回：归属地数据数组（GPtrArray） 失败返回NULL	（如果失败可用getErrCode获取错误信息）
 /************************************************************************/
 GPtrArray* CacNetEngine::getOrUpdatePD(string aFlag)
 {
@@ -169,10 +169,12 @@ GPtrArray* CacNetEngine::getOrUpdatePD(string aFlag)
 	CChineseCodeLib::UTF_8ToGB2312(retstring8,(char*)retstring.c_str(),retstring.length());
 
 	HessianRemoteReturning hes_return = parse_json(retstring8,jsonValue);
-
-	if(hes_return.getStatusCode() != 0)
+	iErrCode = hes_return.getStatusCode();
+	
+	if(iErrCode != 0)
 	{
-
+		g_ptr_array_free(pd_list,true);
+		return NULL;
 	}
 	else
 	{
@@ -196,9 +198,91 @@ GPtrArray* CacNetEngine::getOrUpdatePD(string aFlag)
 		}
 	}
 
-	return pd_list;
+	return pd_list;	
 }
 
+
+/************************************************************************/
+// 函数：registerx
+// 功能：注册账号
+// 参数：loginName：登录用户名	password：登录密码		mobile：手机号码
+// 返回：如果成功返回服务器分配的Passport，失败返回字符串（如果失败可用getErrCode获取错误信息）
+// 备注：loginName长度不能超过60，password长度不能超过16
+/************************************************************************/
+string CacNetEngine::registerx(string loginName, string password, string mobile)
+{
+	iSendHes.clear();
+	ihes_output.write_string(iSendHes,loginName);
+	ihes_output.write_string(iSendHes,password);
+	ihes_output.write_string(iSendHes,mobile);
+	string retData = iHttpNet.SyncPostData(KRegisterUrl,iSendHes);
+
+	Json::Value jsonValue;
+	string retstring = getHessianString(retData);
+	HessianRemoteReturning hes_return = parse_json(retstring,jsonValue);
+
+	iErrCode = hes_return.getStatusCode();
+	return iErrCode == 0?hes_return.getValue().asString():"";
+}
+
+
+/************************************************************************/
+// 函数：login
+// 功能：登录系统
+// 参数：loginName：登录用户名	password：登录密码
+// 返回：如果成功返回服务器分配的Passport，失败返回字符串（如果失败可用getErrCode获取错误信息）
+/************************************************************************/
+string CacNetEngine::login(string loginName, string password)
+{
+	iSendHes.clear();
+	ihes_output.write_string(iSendHes,loginName);
+	ihes_output.write_string(iSendHes,password);
+	string retData = iHttpNet.SyncPostData(KLoginUrl,iSendHes);
+
+	Json::Value jsonValue;
+	string retstring = getHessianString(retData);
+	HessianRemoteReturning hes_return = parse_json(retstring,jsonValue);
+
+	iErrCode = hes_return.getStatusCode();
+	return iErrCode == 0?hes_return.getValue().asString():"";
+}
+
+
+/************************************************************************/
+// 函数：logoutByPsssport
+// 功能：用passport作为依据退出系统
+// 参数：登录获取的passport
+// 返回：退出是否成功（如果失败可用getErrCode获取错误信息）
+/************************************************************************/
+bool CacNetEngine::logoutByPsssport(string passport)
+{
+	iSendHes.clear();
+	ihes_output.write_string(iSendHes,passport);
+	string retData = iHttpNet.SyncPostData(KLogoutByPsssportUrl,iSendHes);
+
+	Json::Value jsonValue;
+	string retstring = getHessianString(retData);
+	HessianRemoteReturning hes_return = parse_json(retstring,jsonValue);
+
+	iErrCode = hes_return.getStatusCode();
+	return iErrCode == 0?true:false;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+int CacNetEngine::getErrCode()
+{
+	return iErrCode;
+}
 
 /************************************************************************/
 // 函数：getHessianString
@@ -235,3 +319,24 @@ HessianRemoteReturning CacNetEngine::parse_json(string& aJson_string,Json::Value
 	}
 	return remoteRet;
 }
+
+
+
+
+
+
+
+/************************************************************************/
+/* 
+10002	QQ参数错误
+10003	网络错误
+10004	网络异常没有数据
+
+1002	登录名或密码无效
+1007	用户不存在或用户未激活
+1008	登录护照无效或已过期
+1009	无效的登录名称
+1010	无效的手机号码
+1013	登录名称或手机号码已存在
+*/
+/************************************************************************/

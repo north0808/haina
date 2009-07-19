@@ -30,16 +30,22 @@ public:
 	void	setNetHost(LPCTSTR aHostName,int aHttp_Port=INTERNET_DEFAULT_HTTP_PORT);
 
 public:
+	int			getErrCode();
 	int			getQQStatus(string aQQId);
-	WeatherDto	getLiveWeather(string aCityCode);
+	WeatherDto*	getLiveWeather(string aCityCode);
 	GPtrArray*	get7WeatherDatas(string aCityCode);
 	GPtrArray*	getOrUpdatePD(string aFlag);
+ 	string		registerx(string loginName, string password, string mobile);
+ 	string		login(string loginName, string password);
+ 	bool		logoutByPsssport(string passport);
 	
+
 private:
 	string getHessianString(string aHessianStr);
 	HessianRemoteReturning	parse_json(string& aJson_string,Json::Value& jsonValue);
 
 private:
+	int		iErrCode;
 	hessian::hessian_output	ihes_output;
 //	hessian::hessian_input	ihes_input;
 
