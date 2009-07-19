@@ -48,7 +48,7 @@ struct stRecentContact
     guint32 nContactId;
     EContactEvent event;
     gchar eventCommInfo[256];
-    tm * time;
+    tm time;
 };
 
 #define 	MAX_RECENT_CONTACT_NUM		15
