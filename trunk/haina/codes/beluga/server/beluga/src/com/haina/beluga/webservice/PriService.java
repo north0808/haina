@@ -250,7 +250,8 @@ public class PriService implements IPriService, InitializingBean {
 	private void removeExpiredLoginUser() {
 		LOG.info(">>>>>>>>>>>>>>>>>>PassportMonitor start clear expired login user>>>>>>>>>>>>>>>>>>>>>");
 		List<String> expiredLoginName=passportService.clearExpiredPassport();
-		this.contactUserHessianService.editContactUserToOffline(expiredLoginName);
+		/*暂时不修改数据库状态。*/
+		//this.contactUserHessianService.editContactUserToOffline(expiredLoginName);
 	}
 
 	/**
