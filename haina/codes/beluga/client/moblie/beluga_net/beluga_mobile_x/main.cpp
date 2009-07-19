@@ -54,7 +54,7 @@ int main(int argc, TCHAR* argv[])
 
 	
 	/************************************************************************/
-	/*		获取7天天气预报数据信息示例                  
+	/*		获取7天天气预报数据信息示例      */            
 	CacNetEngine* acNetEngine = new CacNetEngine(KHostName,KHostNamePort);
 
 	GPtrArray* weather7_list = acNetEngine->get7WeatherDatas("W56985");
@@ -73,10 +73,9 @@ int main(int argc, TCHAR* argv[])
 		cout << "Wind:\t" << pWeather->getWind() << endl;
 		cout << endl;
 	}
-	g_ptr_array_free(weather7_list,true);
-
+	freeGPtrArray(weather7_list);
 	delete acNetEngine;
-	*/  
+	  
 	/************************************************************************/
 
 
@@ -85,7 +84,6 @@ int main(int argc, TCHAR* argv[])
 	CacNetEngine* acNetEngine = new CacNetEngine(KHostName,KHostNamePort);
 
 	GPtrArray* pd_list = acNetEngine->getOrUpdatePD("1");
-
 	for(int i = 0; i < pd_list->len; i++)
 	{
 	 	PhoneDistrictDto* phoneDistrict = (PhoneDistrictDto*)g_ptr_array_index(pd_list,i);
@@ -99,9 +97,7 @@ int main(int argc, TCHAR* argv[])
 		cout << "UpdateFlg:\t" << phoneDistrict->getUpdateFlg() << endl;
 	 	cout << endl;
 	}
-
-	g_ptr_array_free(pd_list,true);
-
+	freeGPtrArray(pd_list);
 	delete acNetEngine;
 	*/ 
 	/************************************************************************/
