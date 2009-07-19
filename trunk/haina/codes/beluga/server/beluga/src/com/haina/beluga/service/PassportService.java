@@ -112,6 +112,10 @@ public class PassportService implements IPassportService {
 		LoginPassport loginPassport=null;
 		if(passport!=null && passportPool.containsKey(passport)) {
 			loginPassport=passportPool.get(passport);
+			if(isExpiredPassport(loginPassport)) {
+				this.removePassport(loginPassport.getPassport());
+				loginPassport=null;
+			}
 		}
 		return loginPassport;
 	}
@@ -163,6 +167,9 @@ public class PassportService implements IPassportService {
 
 	@Override
 	public boolean removePassport(String passport) {
+		if(!StringUtils.isNull(passport) && passportPool.containsValue(passport)) {
+			passportPool.remove(passport);
+		}
 		return false;
 	}
 
