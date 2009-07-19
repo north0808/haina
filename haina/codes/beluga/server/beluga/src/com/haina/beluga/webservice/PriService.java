@@ -10,6 +10,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.haina.beluga.core.util.DESUtil;
 import com.haina.beluga.core.util.StringUtils;
 import com.haina.beluga.domain.ContactUser;
 import com.haina.beluga.service.IContactUserHessianService;
@@ -146,12 +147,22 @@ public class PriService implements IPriService, InitializingBean {
 			return ret;
 		}
 		
-		//$2 设置用户在线状态
+		//$2 取得目前有效的护照
+		LoginPassport loginPassport=null;
+		loginPassport=passportService.getLoginPassportByLoginNameAndPwd(loginName, DESUtil.encrypt(password));
+		if(loginPassport!=null) {
+			ret = new HessianRemoteReturning();
+			ret.setValue(loginPassport.getPassport());
+			ret.setStatusCode(IStatusCode.SUCCESS);
+			return ret;
+		}
+		
+		//$3 设置用户在线状态
 		Date now=new Date();
 		ret=contactUserHessianService.editContactUserToOnline(loginName, password, null,now);
 		if(ret.isSuccessStatus()) {
-			//$3 生成护照
-			LoginPassport loginPassport=passportService.addPassport(loginName,now);
+			//$4 生成护照
+			loginPassport=passportService.addPassport(loginName,now);
 			ret.setValue(loginPassport.getPassport());
 		}		
 		return ret;
