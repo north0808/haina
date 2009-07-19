@@ -51,7 +51,7 @@ typedef enum {
   G_ASCII_XDIGIT = 1 << 10
 } GAsciiType;
 
-const guint16 * const g_ascii_table;
+extern guint16 * g_ascii_table;
 
 #define g_ascii_isalnum(c) \
   ((g_ascii_table[(guchar) (c)] & G_ASCII_ALNUM) != 0)

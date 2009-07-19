@@ -78,7 +78,7 @@ static const guint16 ascii_table_data[256] = {
   /* the upper 128 are all zeroes */
 };
 
-const guint16 * const g_ascii_table = ascii_table_data;
+guint16 * g_ascii_table = ascii_table_data;
 
 /**
  * g_strdup:

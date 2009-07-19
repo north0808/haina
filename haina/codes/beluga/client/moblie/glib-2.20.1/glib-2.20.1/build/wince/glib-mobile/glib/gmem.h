@@ -96,11 +96,11 @@ struct _GMemVTable
 void	 g_mem_set_vtable (GMemVTable	*vtable);
 gboolean g_mem_is_system_malloc (void);
 
-gboolean g_mem_gc_friendly;
+extern gboolean g_mem_gc_friendly;
 
 /* Memory profiler and checker, has to be enabled via g_mem_set_vtable()
  */
-GMemVTable	*glib_mem_profiler_table;
+extern GMemVTable	*glib_mem_profiler_table;
 void	g_mem_profile	(void);
 
 

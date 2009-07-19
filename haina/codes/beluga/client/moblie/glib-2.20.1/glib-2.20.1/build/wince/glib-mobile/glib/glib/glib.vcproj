@@ -150,7 +150,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions=" /subsystem:windowsce,5.02"
-				OutputFile="$(OutDir)/glib-2.20.dll"
+				OutputFile="$(OutDir)/glib-2-20.dll"
 				LinkIncremental="2"
 				DelayLoadDLLs="$(NOINHERIT)"
 				GenerateDebugInformation="true"
@@ -158,7 +158,7 @@
 				SubSystem="0"
 				StackReserveSize="65536"
 				StackCommitSize="4096"
-				ImportLibrary="$(OutDir)/glib.lib"
+				ImportLibrary="$(OutDir)/glib-2-20.lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
