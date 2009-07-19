@@ -11,6 +11,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 
+import com.haina.beluga.core.util.DESUtil;
 import com.haina.beluga.core.util.StringUtils;
 import com.haina.beluga.domain.ContactUser;
 
@@ -62,7 +63,8 @@ public class PassportService implements IPassportService {
 		LoginPassport loginPassport=null;
 		if(null!=contactUser) {
 			loginPassport=new LoginPassport();
-			loginPassport.setLoginName(contactUser.getLoginName());
+			loginPassport.setLoginName(contactUser.getLoginName().trim());
+			loginPassport.setPassword(DESUtil.encrypt(contactUser.getPassword().trim()));
 			loginPassport.setLoginExpiry(loginExpiry);
 			Long time=contactUser.getLastLoginTime().getTime();
 			loginPassport.setLoginTime(time);
@@ -127,9 +129,11 @@ public class PassportService implements IPassportService {
 			Iterator<String> keys=passportPool.keySet().iterator();
 			while(keys.hasNext()) {
 				LoginPassport value=passportPool.get(keys.next());
-				if(value.getLoginName().equals(loginName)) {
-					loginPassport=value;
-					break;
+				if(!isExpiredPassport(value)) {
+					if(value.getLoginName().equals(loginName)) {
+						loginPassport=value;
+						break;
+					}
 				}
 			}
 		}
@@ -293,5 +297,26 @@ public class PassportService implements IPassportService {
 	@Override
 	public int getPassportQuantity() {
 		return passportPool.size();
+	}
+
+
+	@Override
+	public LoginPassport getLoginPassportByLoginNameAndPwd(String loginName,
+			String password) {
+		LoginPassport loginPassport=null;
+		if(loginName!=null) {
+			Iterator<String> keys=passportPool.keySet().iterator();
+			while(keys.hasNext()) {
+				LoginPassport value=passportPool.get(keys.next());
+				if(!isExpiredPassport(value)) {
+					if(value.getLoginName().equals(loginName) 
+							&& value.getPassword().equals(password)) {
+						loginPassport=value;
+						break;
+					}
+				}
+			}
+		}
+		return loginPassport;
 	}
 }
