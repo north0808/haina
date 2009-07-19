@@ -19,6 +19,9 @@ public class LoginPassport implements Serializable {
 	/*电子邮件即登录名。*/
 	private String loginName;
 	
+	/*密码。*/
+	private String password;
+	
 	/*手机号码。*/
 	//private String mobile;
 	
@@ -86,6 +89,15 @@ public class LoginPassport implements Serializable {
 		this.passportTime = passportTime;
 	}
 
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	
 	/**
 	 * @see java.lang.Object#equals(Object)
 	 */
@@ -99,7 +111,7 @@ public class LoginPassport implements Serializable {
 				rhs.passportTime).append(this.passportExpiry,
 				rhs.passportExpiry).append(this.loginName, rhs.loginName).append(
 				this.loginExpiry, rhs.loginExpiry).append(this.passport,
-				rhs.passport).isEquals();
+				rhs.passport).append(this.password,rhs.password).isEquals();
 	}
 
 	/**
@@ -110,8 +122,6 @@ public class LoginPassport implements Serializable {
 				super.hashCode()).append(this.loginTime).append(
 				this.passportTime).append(this.passportExpiry).append(
 				this.loginName).append(this.loginExpiry).append(this.passport)
-				.toHashCode();
+				.append(this.password).toHashCode();
 	}
-
-	
 }
