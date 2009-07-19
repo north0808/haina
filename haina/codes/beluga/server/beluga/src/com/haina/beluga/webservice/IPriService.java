@@ -46,6 +46,7 @@ public interface IPriService extends Serializable {
 	 * 		2.登录护照无效或已过期 statusCode = 1008
 	 * 		3.无效的登录名称 statusCode = 1009
 	 * 		4.用户不存在或用户未激活 statusCode = 1007
+	 * 		5.登录名或手机号码已存在 statusCode = 1007
 	 */
 	public HessianRemoteReturning logoutByPsssport(String passport);
 	
