@@ -267,7 +267,7 @@ public class ContactUserHessianService extends BaseSerivce<IContactUserDao,Conta
 		}
 		int result=getBaseDao().editToOnline(loginName, DESUtil.encrypt(password), userLoginIp,onlineTime);
 		if(result<1) {
-			ret.setStatusCode(IStatusCode.INVALID_CONTACT_USER);
+			ret.setStatusCode(IStatusCode.INVALID_LOGINNAME_OR_PASSWORD);
 			return ret;
 		}
 		ret.setStatusCode(IStatusCode.SUCCESS);
