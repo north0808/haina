@@ -3,6 +3,8 @@ package com.haina.beluga.webservice.data;
 import com.haina.beluga.core.dto.IDto;
 import com.haina.beluga.webservice.IStatusCode;
 
+import flexjson.JSON;
+
 /**
  * 远程调用传递数据的基类。<br/>
  * @author huangyongqiang
@@ -20,7 +22,7 @@ public abstract class AbstractRemoteData implements IDto {
 	
 	/*操作码。*/
 	protected int operationCode;
-
+	
 	public Integer getStatusCode() {
 		return statusCode;
 	}
@@ -49,6 +51,7 @@ public abstract class AbstractRemoteData implements IDto {
 	 * 是否是成功状态。<br/>
 	 * @return
 	 */
+	@JSON(include=false)
 	public boolean isSuccessStatus() {
 		return this.statusCode==IStatusCode.SUCCESS;
 	}
