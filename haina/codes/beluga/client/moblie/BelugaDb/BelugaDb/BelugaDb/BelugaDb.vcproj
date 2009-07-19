@@ -11,6 +11,9 @@
 		<Platform
 			Name="Win32"
 		/>
+		<Platform
+			Name="Windows Mobile 6 Professional SDK (ARMV4I)"
+		/>
 	</Platforms>
 	<ToolFiles>
 	</ToolFiles>
@@ -94,6 +97,70 @@
 			/>
 		</Configuration>
 		<Configuration
+			Name="Debug|Windows Mobile 6 Professional SDK (ARMV4I)"
+			OutputDirectory="$(SolutionDir)Windows Mobile 6 Professional SDK (ARMV4I)\$(ConfigurationName)"
+			IntermediateDirectory="Windows Mobile 6 Professional SDK (ARMV4I)\$(ConfigurationName)"
+			ConfigurationType="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				ExecutionBucket="7"
+				AdditionalIncludeDirectories="..\..\inc\message;..\..\inc\contact\;..\..\inc\config\;..\..\inc;&quot;..\..\..\sqlite-3.3.5\&quot;;&quot;..\..\..\glib-2.20.1\glib-2.20.1\build\wince\glib-mobile\&quot;;&quot;..\..\..\glib-2.20.1\glib-2.20.1\build\wince\glib-mobile\glib\&quot;"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalLibraryDirectories="&quot;..\..\..\sqlite-3.3.5\vs8\sqlite3\sqlite3\Windows Mobile 6 Professional SDK (ARMV4I)\Debug\&quot;;&quot;..\..\..\glib-2.20.1\glib-2.20.1\build\wince\glib-mobile\glib\glib\Windows Mobile 6 Professional SDK (ARMV4I)\Debug\&quot;"
+				ResourceOnlyDLL="false"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCCodeSignTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+			<DeploymentTool
+				ForceDirty="-1"
+				RemoteDirectory=""
+				RegisterOutput="0"
+				AdditionalFiles=""
+			/>
+			<DebuggerTool
+			/>
+		</Configuration>
+		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
@@ -168,80 +235,70 @@
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
+		<Configuration
+			Name="Release|Windows Mobile 6 Professional SDK (ARMV4I)"
+			IntermediateDirectory="Windows Mobile 6 Professional SDK (ARMV4I)\$(ConfigurationName)"
+			ConfigurationType="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				ExecutionBucket="7"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCCodeSignTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+			<DeploymentTool
+				ForceDirty="-1"
+				RemoteDirectory=""
+				RegisterOutput="0"
+				AdditionalFiles=""
+			/>
+			<DebuggerTool
+			/>
+		</Configuration>
 	</Configurations>
 	<References>
 	</References>
 	<Files>
-		<Filter
-			Name="源文件"
-			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
-			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
-			>
-			<File
-				RelativePath="..\..\src\BelugaDbDllMain.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\CDbEntity.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\CEntityDb.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\CppSQLite3.cpp"
-				>
-			</File>
-			<Filter
-				Name="config"
-				>
-				<File
-					RelativePath="..\..\src\config\CConfigDb.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\config\CConfigIterator.cpp"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="contact"
-				>
-				<File
-					RelativePath="..\..\src\contact\CContactDb.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\contact\CContactIterator.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\contact\CGroupDb.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\contact\CGroupIterator.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\contact\CPhoneContact.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\contact\CTagDb.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\contact\CTagIterator.cpp"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="message"
-				>
-			</Filter>
-		</Filter>
 		<Filter
 			Name="头文件"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
@@ -386,6 +443,76 @@
 					RelativePath="..\..\inc\message\CSignatureIterator.h"
 					>
 				</File>
+			</Filter>
+			<Filter
+				Name="源文件"
+				Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
+				UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
+				>
+				<File
+					RelativePath="..\..\src\BelugaDbDllMain.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\CDbEntity.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\CEntityDb.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\CppSQLite3.cpp"
+					>
+				</File>
+				<Filter
+					Name="config"
+					>
+					<File
+						RelativePath="..\..\src\config\CConfigDb.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\config\CConfigIterator.cpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="contact"
+					>
+					<File
+						RelativePath="..\..\src\contact\CContactDb.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\contact\CContactIterator.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\contact\CGroupDb.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\contact\CGroupIterator.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\contact\CPhoneContact.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\contact\CTagDb.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\contact\CTagIterator.cpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="message"
+					>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter
