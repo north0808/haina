@@ -138,7 +138,8 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions=" /subsystem:windowsce,5.02"
-				AdditionalLibraryDirectories="&quot;..\..\..\sqlite-3.3.5\vs8\sqlite3\sqlite3\Windows Mobile 6 Professional SDK (ARMV4I)\Debug\&quot;;&quot;..\..\..\glib-2.20.1\glib-2.20.1\build\wince\glib-mobile\glib\glib\Windows Mobile 6 Professional SDK (ARMV4I)\Debug\&quot;"
+				AdditionalDependencies="..\..\..\glib-2.20.1\glib-2.20.1\build\wince\glib-mobile\glib\glib\WindowsMobile6\glib.lib ..\..\..\sqlite-3.3.5\vs8\sqlite3\sqlite3\WindowsMobile6\sqlite3.lib"
+				AdditionalLibraryDirectories="&quot;..\..\..\sqlite-3.3.5\vs8\sqlite3\sqlite3\WindowsMobile6\&quot;;&quot;..\..\..\glib-2.20.1\glib-2.20.1\build\wince\glib-mobile\glib\glib\WindowsMobile6\&quot;"
 				GenerateDebugInformation="true"
 				StackReserveSize="65536"
 				StackCommitSize="4096"
