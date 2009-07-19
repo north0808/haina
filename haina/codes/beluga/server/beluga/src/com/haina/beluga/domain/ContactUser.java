@@ -277,6 +277,15 @@ public class ContactUser extends VersionalModel {
 	}
 	
 	/**
+	 * 是否离线。<br/>
+	 * @return
+	 */
+	public boolean isOffline() {
+		return (!this.isNew() && this.getValidFlag() 
+				&& this.getUserStatus().equals(ContactUser.USER_STATUS_OFFLINE));
+	}
+	
+	/**
 	 * @see java.lang.Object#equals(Object)
 	 */
 	@Override

@@ -1,5 +1,6 @@
 package com.haina.beluga.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
@@ -8,7 +9,6 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import com.haina.beluga.core.dao.BaseDao;
-import com.haina.beluga.core.util.DESUtil;
 import com.haina.beluga.core.util.StringUtils;
 import com.haina.beluga.domain.ContactUser;
 
@@ -158,62 +158,6 @@ public class ContactUserDao extends BaseDao<ContactUser,String> implements ICont
 		return list;
 	}
 	
-	@Override
-	public String create(ContactUser o) {
-		return super.create(encryptPassword(o));
-	}
-
-	@Override
-	public ContactUser getBaseModel() {
-		ContactUser contactUser=super.getBaseModel();
-		if(contactUser!=null && !StringUtils.isNull(contactUser.getPassword())) {
-			contactUser.setPassword(DESUtil.decrypt(contactUser.getPassword().trim()));
-		}
-		return contactUser;
-	}
-
-	@Override
-	public List<ContactUser> getModelByPage(ContactUser exampleEntity,
-			int begin, int count) {
-		List<ContactUser> list=super.getModelByPage(this.encryptPassword(exampleEntity), begin, count);
-		list=this.decryptPassword(list);
-		return list;
-	}
-
-	@Override
-	public List<ContactUser> getModels(boolean useCache) {
-		List<ContactUser> list=super.getModels(useCache);
-		list=this.decryptPassword(list);
-		return list;
-	}
-
-	@Override
-	public ContactUser load(String id) {
-		ContactUser contactUser=super.load(id);
-		return this.decryptPassword(contactUser);
-	}
-
-	@Override
-	public ContactUser read(String id) {
-		ContactUser contactUser=super.read(id);
-		return this.decryptPassword(contactUser);
-	}
-
-	@Override
-	public void saveOrUpdate(ContactUser newInstance) {
-		super.saveOrUpdate(encryptPassword(newInstance));
-	}
-
-	@Override
-	public void setBaseModel(ContactUser t) {
-		super.setBaseModel(encryptPassword(t));
-	}
-
-	@Override
-	public void update(ContactUser o) {
-		super.update(encryptPassword(o));
-	}
-	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<ContactUser> getUserByHibernateCriteria(DetachedCriteria criteria,int begin, int count) {
@@ -228,7 +172,6 @@ public class ContactUserDao extends BaseDao<ContactUser,String> implements ICont
 		List<ContactUser> list=null;
 		if(criteria!=null) {
 			list=this.getModelByHibernateCriteria(criteria, begin, count);
-			list=this.decryptPassword(list);
 		}
 		return list;
 	}
@@ -239,33 +182,6 @@ public class ContactUserDao extends BaseDao<ContactUser,String> implements ICont
 		List<ContactUser> list=null;
 		if(criteria!=null) {
 			list=this.getModelByHibernateCriteria(criteria);
-			list=this.decryptPassword(list);
-		}
-		return list;
-	}
-	
-	private ContactUser encryptPassword(ContactUser contactUser) {
-		ContactUser user=contactUser;
-		if(user!=null && !StringUtils.isNull(user.getPassword())) {
-			user.setPassword(DESUtil.encrypt(user.getPassword().trim()));
-		}
-		return user;
-	}
-	
-	private ContactUser decryptPassword(ContactUser contactUser) {
-		ContactUser user=contactUser;
-		if(user!=null && !StringUtils.isNull(user.getPassword())) {
-			user.setPassword(DESUtil.decrypt(user.getPassword().trim()));
-		}
-		return user;
-	}
-	
-	private List<ContactUser> decryptPassword(List<ContactUser> contactUsers) {
-		List<ContactUser> list=contactUsers;
-		if(list!=null && list.size()>0) {
-			for(int i=0;i<list.size();i++) {
-				list.set(i, this.decryptPassword(list.get(i)));
-			}
 		}
 		return list;
 	}
@@ -273,7 +189,66 @@ public class ContactUserDao extends BaseDao<ContactUser,String> implements ICont
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<ContactUser> getUserByExample(ContactUser contactUser) {
-		List<ContactUser> list=this.getHibernateTemplate().findByExample(this.encryptPassword(contactUser));
-		return this.decryptPassword(list);
+		List<ContactUser> list=this.getHibernateTemplate().findByExample(contactUser);
+		return list;
 	}
+	
+	public int editToOffline(final List<String> loginNames) {
+		int i=0;
+		if(null!=loginNames && loginNames.isEmpty()) {
+			i=this.getHibernateTemplate().bulkUpdate(
+					"update ContactUser u set u.userStatus = ? where u.loginName in ( ? )",
+					new Object[]{ContactUser.USER_STATUS_OFFLINE,loginNames});
+		}
+		return i;
+	}
+
+	@Override
+	public int editToOffline(String loginName) {
+		int i=0;
+		if(!StringUtils.isNull(loginName)) {
+			i=this.getHibernateTemplate().bulkUpdate(
+					"update ContactUser u set u.userStatus = ? where u.loginName = ? ",
+					new Object[]{ContactUser.USER_STATUS_OFFLINE,loginName});
+		}
+		return i;
+	}
+
+	@Override
+	public int editToOnline(String loginName, String password,String userLoginIp,Date onlineTime) {
+		int i=0;
+		if(!StringUtils.isNull(loginName)) {
+			i=this.getHibernateTemplate().bulkUpdate(
+					"update ContactUser u set u.userStatus = ?,u.lastLoginIp=?,u.lastLoginTime=? where u.loginName = ? and u.password = ?",
+					new Object[]{ContactUser.USER_STATUS_ONLINE,userLoginIp!=null ? userLoginIp : "",
+							onlineTime!=null ? onlineTime : new Date(),loginName,password});
+		}
+		return i;
+	}
+	
+//	private ContactUser encryptPassword(ContactUser contactUser) {
+//		ContactUser user=contactUser;
+//		if(user!=null && !StringUtils.isNull(user.getPassword())) {
+//			user.setPassword(DESUtil.encrypt(user.getPassword().trim()));
+//		}
+//		return user;
+//	}
+//	
+//	private ContactUser decryptPassword(ContactUser contactUser) {
+//		ContactUser user=contactUser;
+//		if(user!=null && !StringUtils.isNull(user.getPassword())) {
+//			user.setPassword(DESUtil.decrypt(user.getPassword().trim()));
+//		}
+//		return user;
+//	}
+//	
+//	private List<ContactUser> decryptPassword(List<ContactUser> contactUsers) {
+//		List<ContactUser> list=contactUsers;
+//		if(list!=null && list.size()>0) {
+//			for(int i=0;i<list.size();i++) {
+//				list.set(i, this.decryptPassword(list.get(i)));
+//			}
+//		}
+//		return list;
+//	}
 }

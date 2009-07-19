@@ -1,5 +1,6 @@
 package com.haina.beluga.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
@@ -100,5 +101,29 @@ public interface IContactUserDao extends IBaseDao<ContactUser,String> {
 	 * @return
 	 */
 	public List<ContactUser> getUserByExample(ContactUser contactUser);
+	
+	/**
+	 * 设置多个用户离线。<br/>
+	 * @param loginNames 登录名
+	 * @return
+	 */
+	public int editToOffline(final List<String> loginNames);
+	
+	/**
+	 * 设置用户离线。<br/>
+	 * @param loginName 登录名
+	 * @return
+	 */
+	public int editToOffline(String loginName);
+	
+	/**
+	 * 设置用户在线。<br/>
+	 * @param loginName 登录名
+	 * @param password 密码
+	 * @param userLoginIp 用户IP地址
+	 * @param onlineTime 上线的时间
+	 * @return
+	 */
+	public int editToOnline(String loginName, String password,String userLoginIp,Date onlineTime);
 	
 }
