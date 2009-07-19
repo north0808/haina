@@ -50,12 +50,10 @@ std::string CHttpInternet::SyncPostData(LPCTSTR aUrl,string aData)
 		return NULL;
 	}
 
-	std::cout << "HttpSendRequest start " << __TIME__ << endl;
 	if (!HttpSendRequest(i_HttpRequest,http_header,_tcslen(http_header),(LPVOID)aData.c_str(),aData.size()))
 	{
 		return NULL;    
 	}
-	std::cout << "HttpSendRequest end " << __TIME__ << endl;
 
 
 	DWORD	qdwSize;     
