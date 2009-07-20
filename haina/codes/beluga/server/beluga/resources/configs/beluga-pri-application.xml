@@ -73,7 +73,9 @@
      					<value>editLoginName</value>
 			     		<value>editMobile</value>
 			     		<value>editPassword</value>
-			     		<value>logout</value>
+			     		<value>logoutByPsssport</value>
+			     		<value>logoutByLoginName</value>
+			     		<value>editPassportToKeepHeart</value>
      				</list>
      			</entry>
     		</map>
