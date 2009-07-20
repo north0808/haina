@@ -33,8 +33,8 @@ public class LogDaoTest extends TestCase
         factory = new ClassPathXmlApplicationContext("test/test-applicationContext.xml");
     }
     @Ignore
-    public void testCrud() throws Exception
-    {
+//    public void testCrud() throws Exception
+//    {
 
         // Create
 //    	LogService logService = getLogService();
@@ -82,7 +82,7 @@ public class LogDaoTest extends TestCase
 //        // find size
 //        Long size = logService.findAllSize();
         //assertEquals(size.longValue(), 10);
-    }
+//    }
     
 //    public void testCache() throws Exception
 //    {
@@ -90,7 +90,7 @@ public class LogDaoTest extends TestCase
 ////    	logService.findAll(true);
 ////    	logService.findAll(true);
 //    }
-    public void testWeather() throws Exception {
+//    public void testWeather() throws Exception {
 //    	getWeatherService().getLiveWeather("56672");
 //    	getWeatherService().findAll(true);
     	
@@ -99,8 +99,8 @@ public class LogDaoTest extends TestCase
 //    	for(WeatherDto  dto:list){
 //    		System.out.println(dto.getDate()+":"+dto.getWeatherType()+":"+dto.getHigh());
 //    	}
-    }
-    public void testPD() throws Exception {
+//    }
+//    public void testPD() throws Exception {
 //    	getPhoneDistrictDao().getModels(true);
 //    	Iterator<PhoneDistrict> iterator = getPhoneDistrictDao().getPhoneDistrictsByUpdateFlg(0);
 //    	int i = 0;
@@ -109,10 +109,14 @@ public class LogDaoTest extends TestCase
 //			System.out.println(w.getDistrictCity()+i++);
 //		}
 //    	getPhoneDistrictService().getOrUpdatePhoneDistricts(1);
-    }
+//    }
     public void testPri() throws Exception {
-    	HessianRemoteReturning h = getPriService().register("fuxiang", "fuxiang", "15901819287");
-    	System.out.println(h);
+//    	getPhoneDistrictDao().getModels();
+    	HessianRemoteReturning hess  =  getPhoneDistrictService().getOrUpdatePhoneDistricts(2);
+    		System.out.println(hess);
+    	for(int i = 0 ; i < 10; i++)
+    	 getPhoneDistrictDao().getWeatherCityCodes();
+    	
     }
     protected void setUp() throws Exception
     {

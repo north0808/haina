@@ -25,14 +25,14 @@ public class TestPriService extends TestCase {
 				"test/test-applicationContext.xml");
 	}
 
-//	public void testRegister() throws Exception {
-//		HessianRemoteReturning h = getPriService().register("testuser6", "123456", "13503280999");
-//		System.out.println(h);
-//	}
-//	public void testRegister1() throws Exception {
-//		HessianRemoteReturning h = getPriService().register("testuser6", "123456", "13503280999");
-//		System.out.println(h);
-//	}
+	public void testRegister() throws Exception {
+		HessianRemoteReturning h = getPriService().register("testuser6", "123456", "13503280999");
+		System.out.println(h);
+	}
+	public void testRegister1() throws Exception {
+		HessianRemoteReturning h = getPriService().register("testuser6", "123456", "13503280999");
+		System.out.println(h);
+	}
 	public void testLogin() throws Exception {
 		HessianRemoteReturning h = getPriService().login("testuser6", "12345");
 		System.out.println(h);

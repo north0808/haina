@@ -69,8 +69,8 @@ public  class BaseSerivce<D extends IBaseDao<T,PK>,T extends IModel,PK extends S
 	}
 
 	@Override
-	public List<T> findAll(boolean useCache) {
-		return baseDao.getModels(useCache);
+	public List<T> findAll() {
+		return baseDao.getModels();
 	}
 
 	@Override

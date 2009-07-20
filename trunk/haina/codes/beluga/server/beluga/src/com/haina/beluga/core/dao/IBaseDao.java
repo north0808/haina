@@ -1,6 +1,7 @@
 package com.haina.beluga.core.dao;
 
 import java.io.Serializable;
+import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
@@ -36,7 +37,7 @@ public interface IBaseDao<T extends IModel, PK extends Serializable> {
 
 	public T getBaseModel();
 
-	public List<T> getModels(boolean useCache);
+	public List<T> getModels();
 
 	public Long getModelSize();
 	
@@ -69,9 +70,15 @@ public interface IBaseDao<T extends IModel, PK extends Serializable> {
      * @param hql.
      * @return List.
      */
-	public List<T> getResultByHQLAndParam(String hql);
+	public List<?> getResultByHQLAndParam(String hql);
 	
-	public List<T> getResultByHQLAndParam(String hql,Object object);
+	public List<?> getResultByHQLAndParam(String hql,Object object);
 	
-	public List<T> getResultByHQLAndParam(String hql,Object[] object);
+	public List<?> getResultByHQLAndParam(String hql,Object[] object);
+	
+	public Iterator<?> getIteratorByHQLAndParam(String hql);
+	
+	public Iterator<?> getIteratorByHQLAndParam(String hql,Object object);
+	
+	public Iterator<?> getIteratorByHQLAndParam(String hql,Object[] object);
 }

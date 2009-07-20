@@ -61,7 +61,7 @@ public class WeatherService extends BaseSerivce<IWeatherDao,Weather,String> impl
 		}
 		getBaseDao().saveAll(weatherList);
 		//所有更新后的天气加载到缓存
-		findAll(true);
+		findAll();
 		long t2 = System.currentTimeMillis();
 		logger.info("loadWeatherDatasByApi-complete:"+(t2-t1));
 	}
@@ -127,7 +127,7 @@ public class WeatherService extends BaseSerivce<IWeatherDao,Weather,String> impl
 	
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		findAll(true);
+		findAll();
 		
 	}
 

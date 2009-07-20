@@ -3,7 +3,6 @@ package com.haina.beluga.dao;
 import java.util.Iterator;
 import java.util.List;
 
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.springframework.stereotype.Component;
 
@@ -28,23 +27,18 @@ public class WeatherDao extends BaseDao<Weather,String> implements IWeatherDao {
 //				 return null;
 //				}
 //		});
-		getSession().createQuery("delete from Weather").executeUpdate();
+		getSession(true).createQuery("delete from Weather").executeUpdate();
 	}
 
 	@Override
 	public Iterator<Weather> get7WeatherDatas(String cityCode) {
-		Session session = getSession();
-		Query query = session.createQuery("from Weather where weatherCityCode =:cityCode");
-		query.setString("cityCode",cityCode);
-// unuse
-//		query.setCacheable(true);
-//		query.setCacheRegion("com.haina.beluga.domain.Weather");
-		return query.iterate();
+		String hql = "from Weather where weatherCityCode = ? ";
+		return (Iterator<Weather>) getIteratorByHQLAndParam(hql, cityCode);
 	}
 
 	@Override
 	public void saveAll(List<Weather> list) {
-		Session session = getSession();
+		Session session = getSession(true);
 		session.createQuery("delete from Weather").executeUpdate();
 		for(int i = 0 ; i < list.size(); i++){
 			create(list.get(i));

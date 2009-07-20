@@ -23,6 +23,6 @@ public interface IBaseSerivce<D extends IBaseDao<T,PK>,T extends IModel,PK exten
 	// load from cache
 	public T load(PK id);
 	public T read(PK id);
-	public List<T> findAll(boolean useCache);
+	public List<T> findAll();
 	public Long findAllSize();
 }

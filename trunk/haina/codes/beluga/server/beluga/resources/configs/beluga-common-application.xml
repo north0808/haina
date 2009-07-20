@@ -82,7 +82,7 @@
 		<tx:attributes>
 			<tx:method name="save*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
 			<tx:method name="add*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
-			<tx:method name="loadWeather*" propagation="REQUIRED"
+			<tx:method name="load*" propagation="REQUIRED"
 				isolation="READ_COMMITTED" />
 			<tx:method name="creat*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
 			<tx:method name="remove*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
