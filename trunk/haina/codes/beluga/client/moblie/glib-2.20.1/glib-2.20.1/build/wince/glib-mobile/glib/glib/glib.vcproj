@@ -367,6 +367,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\gdataset.c"
+				>
+			</File>
+			<File
 				RelativePath="..\gerror.c"
 				>
 			</File>
@@ -376,6 +380,10 @@
 			</File>
 			<File
 				RelativePath="..\glist.c"
+				>
+			</File>
+			<File
+				RelativePath="..\gmarkup.c"
 				>
 			</File>
 			<File
@@ -416,6 +424,14 @@
 			</File>
 			<File
 				RelativePath="..\gtree.c"
+				>
+			</File>
+			<File
+				RelativePath="..\guniprop.c"
+				>
+			</File>
+			<File
+				RelativePath="..\gutf8.c"
 				>
 			</File>
 			<File
