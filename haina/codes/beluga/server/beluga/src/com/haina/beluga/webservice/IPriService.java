@@ -84,4 +84,11 @@ public interface IPriService extends Serializable {
 	 * @return 操作结果
 	 */
 	public HessianRemoteReturning editLoginName(String passport, String neoEmail);
+	
+	/**
+	 * 护照的保持心跳功能。<br/>
+	 * @param passport 登录护照
+	 * @return 操作结果
+	 */
+	public HessianRemoteReturning editPassportToKeepHeart(String passport);
 }
