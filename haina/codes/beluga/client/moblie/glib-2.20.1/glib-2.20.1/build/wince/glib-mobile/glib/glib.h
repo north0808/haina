@@ -38,10 +38,10 @@
 #include <glib/gbase64.h>
 #include <glib/gbookmarkfile.h>
 #include <glib/gcache.h>
-#include <glib/gcompletion.h>
+#include <glib/gcompletion.h>*/
 #include <glib/gconvert.h>
 #include <glib/gdataset.h>
-#include <glib/gdate.h>
+/*#include <glib/gdate.h>
 #include <glib/gdir.h>*/
 #include <glib/gerror.h>
 //#include <glib/gfileutils.h>
@@ -52,8 +52,8 @@
 #include <glib/glist.h>
 #include <glib/gmacros.h>
 /*#include <glib/gmain.h>
-#include <glib/gmappedfile.h>
-#include <glib/gmarkup.h>*/
+#include <glib/gmappedfile.h>*/
+#include <glib/gmarkup.h>
 #include <glib/gmem.h>
 #include <glib/gmessages.h>
 #include <glib/gnode.h>
@@ -81,7 +81,7 @@
 #include <glib/gtimer.h>*/
 #include <glib/gtree.h>
 #include <glib/gtypes.h>
-//#include <glib/gunicode.h>
+#include <glib/gunicode.h>
 //#include <glib/gurifuncs.h>
 #include <glib/gutils.h>
 /*
