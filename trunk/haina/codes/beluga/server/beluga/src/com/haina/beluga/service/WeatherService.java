@@ -105,6 +105,7 @@ public class WeatherService extends BaseSerivce<IWeatherDao,Weather,String> impl
 //		dto.setLow(Integer.valueOf(livedata.getTemperatureLow()));
 //		dto.setHigh(Integer.valueOf(livedata.getTemperatureHigh()));
 		dto.setTemperature(livedata.getTemperature());
+		dto.setWeatherCityCode(cityCode);
 		dto.setIssuetime(MfTime.toNow());
 		dto.setIcon(livedata.getCurrIcon());
 		dto.setIssuetime(MfTime.toNow());
