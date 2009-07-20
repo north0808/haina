@@ -290,4 +290,24 @@ public class PriService implements IPriService, InitializingBean {
 		}
 		
 	}
+
+	@Override
+	public HessianRemoteReturning editPassportToKeepHeart(String passport) {
+		HessianRemoteReturning ret = new HessianRemoteReturning();
+		//$1 验证合法性
+		if(StringUtils.isNull(passport)) {
+			ret.setStatusCode(IStatusCode.INVALID_LOGIN_PASSPORT);
+			return ret;
+		}
+		
+		//$2 保持护照的心跳
+		LoginPassport loginPassport=passportService.keepPassport(passport);
+		if(null==loginPassport) {
+			ret.setStatusCode(IStatusCode.INVALID_LOGIN_PASSPORT);
+			return ret;
+		}
+		ret.setStatusCode(IStatusCode.SUCCESS);
+		ret.setValue(loginPassport.getPassport());
+		return ret;
+	}
 }

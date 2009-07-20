@@ -154,7 +154,7 @@ public class OUServiceExporter implements HttpRequestHandler, InitializingBean {
 	 */
 	private String getRequestPath(HttpServletRequest request) {
 		String ret = null;
-		if (null != null) {
+		if (null != request) {
 			String contextPath = request.getContextPath();
 			String urlPath = request.getRequestURI();
 			if (contextPath.length() > 0) {
