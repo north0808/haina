@@ -64,7 +64,7 @@ public class Weather extends VersionalModel {
 
 	/**
 	 * @hibernate.property column="high"
-	 * @return int
+	 * @return Integer
 	 */
 	public Integer getHigh() {
 		return high;
@@ -76,7 +76,7 @@ public class Weather extends VersionalModel {
 
 	/**
 	 * @hibernate.property column="low"
-	 * @return int
+	 * @return Integer
 	 */
 	public int getLow() {
 		return low;

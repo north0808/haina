@@ -2,10 +2,9 @@ package com.haina.beluga.core.dao;
 
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.util.Iterator;
 import java.util.List;
 
-import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.DetachedCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,19 +26,26 @@ public class BaseDao<T extends IModel, PK extends Serializable> extends
 	private SessionFactory sessionFactory;
 
 	private T type;
-
+	@Override
 	public PK create(T o) {
 		return (PK) getHibernateTemplate().save(o);
 	}
-
+	@Override
 	public T read(PK id) {
 		return (T) getHibernateTemplate().get(type.getClass(), id);
 	}
-
+	@Override
+	/**
+	 * 走缓存
+	 */
+	public T load(PK id) {
+		return (T) getHibernateTemplate().load(type.getClass(), id);
+	}
+	@Override
 	public void update(T o) {
 		getHibernateTemplate().update(o);
 	}
-
+	@Override
 	public void delete(T o) {
 		getHibernateTemplate().delete(o);
 	}
@@ -72,29 +78,22 @@ public class BaseDao<T extends IModel, PK extends Serializable> extends
 	}
 
 	@Override
-	public List<T> getModels(boolean useCache) {
-		Criteria c = getSession().createCriteria(type.getClass());
-		c.setCacheable(useCache);
-		return c.list();
+	public List<T> getModels() {
+		return (List<T>) getResultByHQLAndParam("from "+ type.getClass().getSimpleName());
 	}
 
 	@Override
 	public Long getModelSize() {
-		Query q = getSession().createSQLQuery(
-				"select count(*) from " + type.getClass().getSimpleName());
-		return ((BigInteger) q.list().get(0)).longValue();
-	}
-
-	@Override
-	public T load(PK id) {
-		return (T) getSession().load(type.getClass(), id);
+		String hql = "select count(*) from " + type.getClass().getSimpleName();
+		List list= getResultByHQLAndParam(hql);
+		return ((BigInteger) list.get(0)).longValue();
 	}
 
 	@Autowired(required = true)
 	public void setSessionFactory1(SessionFactory sessionFactory) {
 		super.setSessionFactory(sessionFactory);
 	}
-
+	@Override
 	public List<T> getModelByPage(T exampleEntity, int begin, int count) {
 		int first=begin;
 		int size=count;
@@ -143,16 +142,36 @@ public class BaseDao<T extends IModel, PK extends Serializable> extends
      * @param hql.
      * @return List.
      */
-    public List<T> getResultByHQLAndParam(String hql){
+	@Override
+    public List<?> getResultByHQLAndParam(String hql){
     	return getHibernateTemplate().find(hql);
     }
-    
-    public List<T> getResultByHQLAndParam(String hql,Object object){
+	@Override
+    public List<?> getResultByHQLAndParam(String hql,Object object){
     	return getHibernateTemplate().find(hql,object);
     }
-    
-    public List<T> getResultByHQLAndParam(String hql,Object[] object){
+	@Override
+    public List<?> getResultByHQLAndParam(String hql,Object[] object){
     	return getHibernateTemplate().find(hql,object);
+    }
+    /**
+     * 通过HQL和参数查出结果集的Iterator.
+     * @param hql.
+     * @return List.
+     *
+	 * 走缓存
+	 */
+	@Override
+    public Iterator<?> getIteratorByHQLAndParam(String hql){
+    	return getHibernateTemplate().iterate(hql);
+    }
+	@Override
+    public Iterator<?> getIteratorByHQLAndParam(String hql,Object object){
+    	return getHibernateTemplate().iterate(hql,object);
+    }
+	@Override
+    public Iterator<?> getIteratorByHQLAndParam(String hql,Object[] object){
+    	return getHibernateTemplate().iterate(hql,object);
     }
 
 }
