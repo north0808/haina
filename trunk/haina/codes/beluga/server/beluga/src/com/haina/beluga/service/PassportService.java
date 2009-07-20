@@ -99,16 +99,16 @@ public class PassportService implements IPassportService {
 	
 	@Override
 	public LoginPassport updatePassport(String passport) {
-		LoginPassport loginPassport=null;
-		if(null!=passport && passportPool.containsKey(passport)) {
-			loginPassport=passportPool.get(passport);
+		if(!StringUtils.isNull(passport) && passportPool.containsKey(passport)) {
+			LoginPassport loginPassport=passportPool.get(passport);
 			Long now=(new Date()).getTime();
-			if(isExpiredPassport(loginPassport)) {
+			if(loginPassport!=null && isExpiredPassport(loginPassport)) {
 				loginPassport.setPassport(generatePassport());
 				loginPassport.setPassportTime(now);
+				return loginPassport;
 			}
 		}
-		return loginPassport;
+		return null;
 	}
 	
 	@Override
@@ -163,7 +163,7 @@ public class PassportService implements IPassportService {
 			return true;
 		}
 		Long now=(new Date()).getTime();
-		return loginPassport.getPassportTime()+loginPassport.getPassportExpiry()<now-passportExpiryTimeOff;
+		return loginPassport.getPassportTime()+loginPassport.getPassportExpiry()>=now-passportExpiryTimeOff;
 	}
 
 	@Override
@@ -196,7 +196,7 @@ public class PassportService implements IPassportService {
 			if(!passportPool.containsValue(loginPassport)) {
 				return true;
 			}
-			return loginPassport.getLoginTime()+loginPassport.getLoginExpiry()<now-loginExpiryTimeOff;
+			return loginPassport.getLoginTime()+loginPassport.getLoginExpiry()>=now-loginExpiryTimeOff;
 		}
 	}
 	
@@ -320,5 +320,19 @@ public class PassportService implements IPassportService {
 			}
 		}
 		return loginPassport;
+	}
+
+
+	@Override
+	public LoginPassport keepPassport(String passport) {
+		if(!StringUtils.isNull(passport) && passportPool.containsKey(passport)) {
+			LoginPassport loginPassport=passportPool.get(passport);
+			Long now=(new Date()).getTime();
+			if(loginPassport!=null && !isExpiredPassport(loginPassport)) {
+				loginPassport.setPassportTime(now);
+				return loginPassport;
+			}
+		}
+		return null;
 	}
 }

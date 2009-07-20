@@ -39,6 +39,14 @@ public interface IPassportService {
 	public LoginPassport updatePassport(String passport);
 	
 	/**
+	 * 保持护照。<br/>
+	 * 护照的保持心跳功能。
+	 * @param passport 护照
+	 * @return
+	 */
+	public LoginPassport keepPassport(String passport);
+	
+	/**
 	 * 取得登录护照对象。<br/>
 	 * @param passport 护照
 	 * @return
