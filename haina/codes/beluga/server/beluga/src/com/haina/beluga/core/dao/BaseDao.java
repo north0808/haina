@@ -79,7 +79,8 @@ public class BaseDao<T extends IModel, PK extends Serializable> extends
 
 	@Override
 	public List<T> getModels() {
-		return (List<T>) getResultByHQLAndParam("from "+ type.getClass().getSimpleName());
+//		return (List<T>) getResultByHQLAndParam("from "+ type.getClass().getSimpleName());
+		return getHibernateTemplate().loadAll(type.getClass());
 	}
 
 	@Override
