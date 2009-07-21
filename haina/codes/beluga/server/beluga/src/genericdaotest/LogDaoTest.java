@@ -18,7 +18,6 @@ import com.haina.beluga.service.IWeatherService;
 import com.haina.beluga.service.PhoneDistrictService;
 import com.haina.beluga.service.WeatherService;
 import com.haina.beluga.webservice.PriService;
-import com.haina.beluga.webservice.data.hessian.HessianRemoteReturning;
 
 /**
  * Simple test of the PersonDao
@@ -112,11 +111,13 @@ public class LogDaoTest extends TestCase
 //    }
     public void testPri() throws Exception {
 //    	getPhoneDistrictDao().getModels();
-    	HessianRemoteReturning hess  =  getPhoneDistrictService().getOrUpdatePhoneDistricts(2);
-    		System.out.println(hess);
-    	for(int i = 0 ; i < 10; i++)
-    	 getPhoneDistrictDao().getWeatherCityCodes();
-    	
+//    	HessianRemoteReturning hess  =  getPhoneDistrictService().getOrUpdatePhoneDistricts(2);
+//    		System.out.println(hess);
+//    	for(int i = 0 ; i < 10; i++)
+    	 String[] s= getPhoneDistrictDao().getWeatherCityCodes();
+    	System.out.println(s.length);
+    	 String[] s1= getPhoneDistrictDao().getWeatherCityCodes();
+     	System.out.println(s1.length);
     }
     protected void setUp() throws Exception
     {
