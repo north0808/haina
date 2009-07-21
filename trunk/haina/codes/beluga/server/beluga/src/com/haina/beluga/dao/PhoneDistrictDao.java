@@ -1,8 +1,12 @@
 package com.haina.beluga.dao;
 
+import java.sql.SQLException;
 import java.util.Iterator;
-import java.util.List;
 
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.stereotype.Component;
 
 import com.haina.beluga.core.dao.BaseDao;
@@ -13,9 +17,20 @@ public class PhoneDistrictDao extends BaseDao<PhoneDistrict,String> implements I
 
 	@Override
 	public String[] getWeatherCityCodes() {
-		 String hql ="select distinct p.weatherCityCode from PhoneDistrict p";  
-		 List<String> list = (List<String>) getResultByHQLAndParam(hql);
-         return list.toArray(new String[]{}); 
+		return (String[]) getHibernateTemplate().execute(new HibernateCallback(){
+
+			@Override
+			public Object doInHibernate(Session session)
+					throws HibernateException, SQLException {
+				Query query = session.createQuery("select distinct p.weatherCityCode from PhoneDistrict p");
+				query.setCacheable(true);
+				return query.list().toArray(new String[]{});
+			}
+			
+		});
+//		 String hql ="select distinct p.weatherCityCode from PhoneDistrict p";  
+//		 List<String> list = (List<String>) getResultByHQLAndParam(hql);
+//         return list.toArray(new String[]{}); 
 	}
 
 	@Override
