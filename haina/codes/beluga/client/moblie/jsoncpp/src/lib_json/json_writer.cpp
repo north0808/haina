@@ -49,9 +49,13 @@ std::string valueToString( Value::UInt value )
 
 std::string valueToString( double value )
 {
-   char buffer[32];
+	char buffer[32]={0};
 #ifdef __STDC_SECURE_LIB__ // Use secure version with visual studio 2005 to avoid warning.
-   sprintf_s(buffer, sizeof(buffer), "%#.16g", value); 
+	#ifdef _WIN32_WCE
+		sprintf(buffer, "%#.16g", value); 
+	#else
+	   sprintf_s(buffer, sizeof(buffer), "%#.16g", value); 
+	#endif
 #else	
    sprintf(buffer, "%#.16g", value); 
 #endif

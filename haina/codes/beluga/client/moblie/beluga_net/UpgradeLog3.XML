@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="beluga_mobile_x">
+</Property><Property Name="Solution File" Value="D:\haina\src\beluga_net\beluga_mobile_x.sln">
+</Property><Property Name="Date" Value="2009年7月22日">
+</Property><Property Name="Time" Value="10:58:34">
+</Property><Property Name="Log Number" Value="3">
+</Property></Properties><Event ErrorLevel="2" Project="beluga_comm_m6" Source="beluga_mobile_x\beluga_comm_m6.vcproj" Description="The following error has occurred during XML parsing:&#xA;&#xA;File: D:\haina\src\beluga_net\beluga_mobile_x\beluga_comm_m6.vcproj&#xA;Line: 10&#xA;Column: 2&#xA;Error Message:&#xA;'9.00' 违反了 '7.00 7,00 7.10 7,10 8.00 8,00' 的 enumeration 约束。&#xA;无法分析值为 '9.00' 的属性 'Version'。&#xA;&#xA;The file 'D:\haina\src\beluga_net\beluga_mobile_x\beluga_comm_m6.vcproj' has failed to load.">
+</Event><Event ErrorLevel="2" Project="beluga_comm_m6" Source="beluga_mobile_x\beluga_comm_m6.vcproj" Description="Project upgrade failed.">
+</Event><Event ErrorLevel="3" Project="beluga_comm_m6" Source="beluga_mobile_x\beluga_comm_m6.vcproj" Description="Not Converted">
+</Event></UpgradeLog>

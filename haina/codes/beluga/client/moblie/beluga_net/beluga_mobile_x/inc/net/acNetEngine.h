@@ -17,10 +17,14 @@
 #include "hessian_input.h"
 #include "string_input_stream.h"
 #include "HessianRemoteReturning.h"
-
+#ifdef BELUGA_DLL_BUILD
+#define BELUGA_API __declspec(dllexport)
+#else
+#define BELUGA_API __declspec(dllimport)
+#endif
 using namespace std;
 
-class CacNetEngine
+class BELUGA_API CacNetEngine
 {
 public:
 	CacNetEngine();

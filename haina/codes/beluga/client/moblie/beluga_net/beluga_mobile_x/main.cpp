@@ -20,7 +20,7 @@ int main(int argc, TCHAR* argv[])
 	/************************************************************************/ 
 	CacNetEngine* acNetEngine = new CacNetEngine(KHostName,KHostNamePort);
 
-//	Test_getQQStatus(acNetEngine);				//获取QQ在线状态示例
+	Test_getQQStatus(acNetEngine);				//获取QQ在线状态示例
 //	Test_getLiveWeather(acNetEngine);			//获取当天天气信息示例
 //	Test_get7WeatherDatas(acNetEngine);			//获取7天天气预报数据信息示例
 //	Test_getOrUpdatePD(acNetEngine);			//获取号码归属地数据示例
