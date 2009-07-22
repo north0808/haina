@@ -6,9 +6,9 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.springframework.stereotype.Component;
 
-import com.haina.beluga.core.dao.BaseDao;
-import com.haina.beluga.core.util.StringUtils;
 import com.haina.beluga.log.domain.Log;
+import com.haina.core.dao.BaseDao;
+import com.haina.core.util.StringUtils;
 /**
  * @author:付翔.
  * @createDate:2007-7-16.

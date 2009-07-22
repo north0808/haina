@@ -19,15 +19,15 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.haina.beluga.core.service.BaseSerivce;
-import com.haina.beluga.core.util.MfDate;
-import com.haina.beluga.core.util.MfTime;
 import com.haina.beluga.dao.IPhoneDistrictDao;
 import com.haina.beluga.dao.IWeatherDao;
 import com.haina.beluga.domain.Weather;
 import com.haina.beluga.dto.WeatherDto;
 import com.haina.beluga.webservice.Constant;
 import com.haina.beluga.webservice.data.hessian.HessianRemoteReturning;
+import com.haina.core.service.BaseSerivce;
+import com.haina.core.util.MfDate;
+import com.haina.core.util.MfTime;
 @Component
 public class WeatherService extends BaseSerivce<IWeatherDao,Weather,String> implements IWeatherService,InitializingBean {
 	@Autowired(required=true)

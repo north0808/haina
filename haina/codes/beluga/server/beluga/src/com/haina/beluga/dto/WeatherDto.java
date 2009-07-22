@@ -1,8 +1,8 @@
 package com.haina.beluga.dto;
 
-import com.haina.beluga.core.dto.IDto;
-import com.haina.beluga.core.util.BeanUtil;
 import com.haina.beluga.domain.Weather;
+import com.haina.core.dto.IDto;
+import com.haina.core.util.BeanUtil;
 
 public class WeatherDto implements IDto{
 

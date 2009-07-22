@@ -2,8 +2,8 @@ package com.haina.beluga.dto;
 
 import java.util.Date;
 
-import com.haina.beluga.core.dto.IDto;
 import com.haina.beluga.domain.enumerate.SexEnum;
+import com.haina.core.dto.IDto;
 
 /**
  * 联系人信息传输类。<br/>

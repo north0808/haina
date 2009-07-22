@@ -10,13 +10,13 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.haina.beluga.core.util.DESUtil;
-import com.haina.beluga.core.util.StringUtils;
 import com.haina.beluga.domain.ContactUser;
 import com.haina.beluga.service.IContactUserHessianService;
-import com.haina.beluga.service.LoginPassport;
 import com.haina.beluga.service.IPassportService;
+import com.haina.beluga.service.LoginPassport;
 import com.haina.beluga.webservice.data.hessian.HessianRemoteReturning;
+import com.haina.core.util.DESUtil;
+import com.haina.core.util.StringUtils;
 
 /**
  * 个人服务Api接口实现类。<br/>

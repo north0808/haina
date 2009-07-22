@@ -3,12 +3,12 @@ package com.haina.beluga.domain;
 import java.util.Date;
 import java.util.Set;
 
-import org.springframework.stereotype.Component;
-
-import com.haina.beluga.core.model.VersionalModel;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.springframework.stereotype.Component;
+
+import com.haina.core.model.VersionalModel;
 
 /**
  * 联系人用户表的领域模型类。<br/>

@@ -9,9 +9,9 @@ import org.aopalliance.intercept.MethodInvocation;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.haina.beluga.core.util.DESUtil;
-import com.haina.beluga.core.util.StringUtils;
 import com.haina.beluga.domain.ContactUser;
+import com.haina.core.util.DESUtil;
+import com.haina.core.util.StringUtils;
 
 /**
  * 用户密码编码解码AOP拦截器。<br/>

@@ -5,8 +5,8 @@ import java.lang.reflect.Method;
 import org.springframework.aop.MethodBeforeAdvice;
 import org.springframework.stereotype.Component;
 
-import com.haina.beluga.core.util.Constants;
-import com.haina.beluga.core.util.SafeMapUtil;
+import com.haina.core.util.Constants;
+import com.haina.core.util.SafeMapUtil;
 @Component
 public class LogBeforeAdvice implements MethodBeforeAdvice {
 

@@ -4,11 +4,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import com.haina.beluga.core.service.IBaseSerivce;
 import com.haina.beluga.dao.IContactUserDao;
 import com.haina.beluga.domain.ContactUser;
 import com.haina.beluga.domain.UserProfile;
 import com.haina.beluga.domain.UserProfileExt;
+import com.haina.core.service.IBaseSerivce;
 
 /**
  * 联系人用户业务处理接口。<br/>

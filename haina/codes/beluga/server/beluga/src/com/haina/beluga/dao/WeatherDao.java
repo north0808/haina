@@ -8,8 +8,8 @@ import org.hibernate.Session;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.stereotype.Component;
 
-import com.haina.beluga.core.dao.BaseDao;
 import com.haina.beluga.domain.Weather;
+import com.haina.core.dao.BaseDao;
 @Component
 public class WeatherDao extends BaseDao<Weather,String> implements IWeatherDao {
 

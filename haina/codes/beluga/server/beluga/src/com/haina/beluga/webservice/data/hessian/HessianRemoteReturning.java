@@ -2,9 +2,9 @@ package com.haina.beluga.webservice.data.hessian;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 import com.haina.beluga.webservice.data.AbstractRemoteReturning;
-import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
  * 基于Hessian协议的远程调用返回值类。<br/>

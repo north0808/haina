@@ -9,11 +9,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-//import org.springframework.stereotype.Service;
 
-import com.haina.beluga.core.util.DESUtil;
-import com.haina.beluga.core.util.StringUtils;
 import com.haina.beluga.domain.ContactUser;
+import com.haina.core.util.DESUtil;
+import com.haina.core.util.StringUtils;
 
 /**
  * 用户验证护照业务处理接口实现类。<br/>

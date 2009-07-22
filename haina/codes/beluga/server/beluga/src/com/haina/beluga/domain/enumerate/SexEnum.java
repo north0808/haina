@@ -1,6 +1,6 @@
 package com.haina.beluga.domain.enumerate;
 
-import com.haina.beluga.core.enumerate.IntegerEnumAbbr;
+import com.haina.core.enumerate.IntegerEnumAbbr;
 
 /**
  * 性别枚举类型。<br/>

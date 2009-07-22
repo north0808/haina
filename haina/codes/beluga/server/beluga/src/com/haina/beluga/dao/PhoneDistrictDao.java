@@ -9,8 +9,8 @@ import org.hibernate.Session;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.stereotype.Component;
 
-import com.haina.beluga.core.dao.BaseDao;
 import com.haina.beluga.domain.PhoneDistrict;
+import com.haina.core.dao.BaseDao;
 @Component
 @SuppressWarnings("unchecked")
 public class PhoneDistrictDao extends BaseDao<PhoneDistrict,String> implements IPhoneDistrictDao {

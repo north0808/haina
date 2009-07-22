@@ -3,10 +3,10 @@ package com.haina.beluga.service;
 import java.util.Date;
 import java.util.List;
 
-import com.haina.beluga.core.service.IBaseSerivce;
 import com.haina.beluga.dao.IContactUserDao;
 import com.haina.beluga.domain.ContactUser;
 import com.haina.beluga.webservice.data.hessian.HessianRemoteReturning;
+import com.haina.core.service.IBaseSerivce;
 
 /**
  * 联系人用户hessian协议业务处理接口。<br/>
