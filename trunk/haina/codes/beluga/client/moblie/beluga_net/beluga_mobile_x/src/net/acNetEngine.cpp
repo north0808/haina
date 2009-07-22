@@ -19,7 +19,6 @@ CacNetEngine::CacNetEngine(LPCTSTR aHostName,int aHttp_Port)
 CacNetEngine::~CacNetEngine()
 {
 }
-
 /************************************************************************/
 // 函数：setNetHost
 // 功能：设置服务器主机域名或IP地址
