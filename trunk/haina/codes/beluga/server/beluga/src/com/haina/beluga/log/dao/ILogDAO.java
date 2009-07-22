@@ -2,8 +2,8 @@ package com.haina.beluga.log.dao;
 
 import java.util.List;
 
-import com.haina.beluga.core.dao.IBaseDao;
 import com.haina.beluga.log.domain.Log;
+import com.haina.core.dao.IBaseDao;
 
 /**
  * @author:付翔.

@@ -21,8 +21,8 @@ import org.springframework.orm.hibernate3.SessionFactoryUtils;
 import org.springframework.orm.hibernate3.SessionHolder;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
-import com.haina.beluga.core.util.FileUtil;
 import com.haina.beluga.domain.PhoneDistrict;
+import com.haina.core.util.FileUtil;
 import com.showji.api.Locating.MobileLocator;
 import com.showji.api.Locating.MobileSoap;
 

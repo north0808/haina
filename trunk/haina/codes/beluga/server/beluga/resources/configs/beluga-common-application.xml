@@ -10,7 +10,7 @@
            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 
-	<context:component-scan base-package="com.haina.beluga">
+	<context:component-scan base-package="com.haina">
 	</context:component-scan>
 
 	<bean id="dataSource"
@@ -65,7 +65,7 @@
 	<aop:config>
 		<!-- Core框架事务拦截 -->
 		<aop:pointcut id="serviceOperation"
-			expression="execution(* com.haina.beluga.core.service.*.*(..))" />
+			expression="execution(* com.haina.core.service.*.*(..))" />
 		<aop:advisor pointcut-ref="serviceOperation"
 			advice-ref="belugaAdvice" />
 		<!-- security安全事务拦截 

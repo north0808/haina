@@ -5,12 +5,11 @@ import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
-
 import org.springframework.stereotype.Repository;
 
-import com.haina.beluga.core.dao.BaseDao;
-import com.haina.beluga.core.util.StringUtils;
 import com.haina.beluga.domain.ContactUser;
+import com.haina.core.dao.BaseDao;
+import com.haina.core.util.StringUtils;
 
 /**
  * 联系人用户领域模型类Dao访问接口实现类。<br/>

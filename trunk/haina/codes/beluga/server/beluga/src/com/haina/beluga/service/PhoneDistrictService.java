@@ -6,11 +6,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.haina.beluga.core.service.BaseSerivce;
 import com.haina.beluga.dao.IPhoneDistrictDao;
 import com.haina.beluga.domain.PhoneDistrict;
 import com.haina.beluga.dto.PhoneDistrictDto;
 import com.haina.beluga.webservice.data.hessian.HessianRemoteReturning;
+import com.haina.core.service.BaseSerivce;
 @Component
 public class PhoneDistrictService extends BaseSerivce<IPhoneDistrictDao,PhoneDistrict,String> implements IPhoneDistrictService {
 

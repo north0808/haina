@@ -4,12 +4,10 @@ import java.util.List;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
-//import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
-//import org.springframework.stereotype.Component;
 
-import com.haina.beluga.core.util.DESUtil;
 import com.haina.beluga.domain.ContactUser;
+import com.haina.core.util.DESUtil;
 
 
 /**

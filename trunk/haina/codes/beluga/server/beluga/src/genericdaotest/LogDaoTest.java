@@ -119,7 +119,7 @@ public class LogDaoTest extends TestCase
     	 String[] s1= getPhoneDistrictDao().getWeatherCityCodes();
      	System.out.println(s1.length);
     }
-    protected void setUp() throws Exception
+    protected void sestUp() throws Exception
     {
     	
         openSession();

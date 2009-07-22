@@ -2,10 +2,10 @@ package com.haina.beluga.log.service;
 
 import java.util.List;
 
-import com.haina.beluga.core.service.IBaseSerivce;
 import com.haina.beluga.log.dao.ILogDAO;
 import com.haina.beluga.log.domain.Log;
 import com.haina.beluga.log.mvc.LogCommand;
+import com.haina.core.service.IBaseSerivce;
 
 /**
  * @author:付翔.

@@ -1,9 +1,5 @@
 package test;
 
-import java.io.File;
-import java.io.FileOutputStream;
-
-import com.haina.beluga.webservice.MicroHessianOutput;
 
 
 

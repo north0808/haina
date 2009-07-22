@@ -4,10 +4,10 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.haina.beluga.core.service.BaseSerivce;
 import com.haina.beluga.log.dao.ILogDAO;
 import com.haina.beluga.log.domain.Log;
 import com.haina.beluga.log.mvc.LogCommand;
+import com.haina.core.service.BaseSerivce;
 
 /**
  * @author:付翔.

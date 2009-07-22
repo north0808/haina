@@ -3,8 +3,8 @@ package com.haina.beluga.dao;
 import java.util.Iterator;
 import java.util.List;
 
-import com.haina.beluga.core.dao.IBaseDao;
 import com.haina.beluga.domain.Weather;
+import com.haina.core.dao.IBaseDao;
 
 public interface IWeatherDao extends IBaseDao<Weather, String>{
 	/**

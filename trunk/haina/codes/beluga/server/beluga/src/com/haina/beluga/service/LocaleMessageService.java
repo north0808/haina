@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Service;
 
-import com.haina.beluga.core.util.StringUtils;
+import com.haina.core.util.StringUtils;
 
 /**
  * 本地化信息业务接口实现类。<br/>

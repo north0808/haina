@@ -2,7 +2,7 @@ package com.haina.beluga.domain;
 
 import org.springframework.stereotype.Component;
 
-import com.haina.beluga.core.model.VersionalModel;
+import com.haina.core.model.VersionalModel;
 
 /**
  * 联系人扩展信息的领域模型类。<br/>

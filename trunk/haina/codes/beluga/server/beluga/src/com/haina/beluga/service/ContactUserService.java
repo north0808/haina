@@ -6,13 +6,13 @@ import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
-import com.haina.beluga.core.service.BaseSerivce;
-import com.haina.beluga.core.util.StringUtils;
 import com.haina.beluga.dao.IContactUserDao;
 import com.haina.beluga.domain.ContactUser;
 import com.haina.beluga.domain.UserProfile;
 import com.haina.beluga.domain.UserProfileExt;
 import com.haina.beluga.domain.enumerate.SexEnum;
+import com.haina.core.service.BaseSerivce;
+import com.haina.core.util.StringUtils;
 
 /**
  * 联系人用户业务处理接口实现类。<br/>
