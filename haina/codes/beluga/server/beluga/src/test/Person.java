@@ -2,7 +2,8 @@ package test;
 
 import java.util.List;
 
-import flexjson.JSONSerializer;
+import com.haina.beluga.webservice.flexjson.JSONSerializer;
+
 
 
 public class Person {

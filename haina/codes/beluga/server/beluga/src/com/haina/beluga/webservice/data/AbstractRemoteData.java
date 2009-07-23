@@ -1,9 +1,9 @@
 package com.haina.beluga.webservice.data;
 
 import com.haina.beluga.webservice.IStatusCode;
+import com.haina.beluga.webservice.flexjson.JSON;
 import com.haina.core.dto.IDto;
 
-import flexjson.JSON;
 
 /**
  * 远程调用传递数据的基类。<br/>
