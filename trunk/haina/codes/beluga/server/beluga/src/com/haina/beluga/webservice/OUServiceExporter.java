@@ -18,9 +18,9 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.web.HttpRequestHandler;
 
 import com.haina.beluga.webservice.data.hessian.HessianRemoteReturning;
+import com.haina.beluga.webservice.flexjson.JSONSerializer;
 import com.haina.core.util.StringUtils;
 
-import flexjson.JSONSerializer;
 
 public class OUServiceExporter implements HttpRequestHandler, InitializingBean {
 
