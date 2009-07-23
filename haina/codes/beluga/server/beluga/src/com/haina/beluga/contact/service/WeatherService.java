@@ -167,19 +167,34 @@ public class WeatherService extends BaseSerivce<IWeatherDao,Weather,String> impl
 	private void loadWDbyCityCode(String cityCode, List<Weather> weatherList,int no){
 		try {
 			ApiForecastData[] forecastDatas = weatherBugWebServicesSoap.getForecastByCityCode(cityCode, UnitType.Metric, ACode);
-			for(ApiForecastData afd:forecastDatas){
-				Weather weather = new Weather();
-				weather.setDate(week2num(afd.getTitle()));
-				weather.setHigh(Integer.valueOf(afd.getTempHigh()));
-				weather.setLow(Integer.valueOf(afd.getTempLow()));
-				weather.setWeatherCityCode(cityCode);
-				weather.setWeatherType(afd.getDescription());
-				weather.setWind(getWindByStr(afd.getPrediction()));
-				weather.setIcon(getIcon(afd.getImage()));
-				weather.setNight(afd.isIsNight());
-				weather.setIssuetime(MfTime.toNow());
-				weatherList.add(weather);
-			}
+			if(forecastDatas.length == 7)
+				for(ApiForecastData afd:forecastDatas){
+					Weather weather = new Weather();
+					weather.setDate(week2num(afd.getTitle()));
+					weather.setHigh(Integer.valueOf(afd.getTempHigh()));
+					weather.setLow(Integer.valueOf(afd.getTempLow()));
+					weather.setWeatherCityCode(cityCode);
+					weather.setWeatherType(afd.getDescription());
+					weather.setWind(getWindByStr(afd.getPrediction()));
+					weather.setIcon(getIcon(afd.getImage()));
+					weather.setNight(afd.isIsNight());
+					weather.setIssuetime(MfTime.toNow());
+					weatherList.add(weather);
+				}
+			else
+				for(int i = 1 ; i < forecastDatas.length; i=i+2){
+					Weather weather = new Weather();
+					weather.setDate(week2num(forecastDatas[i].getTitle()));
+					weather.setHigh(Integer.valueOf(forecastDatas[i].getTempHigh()));
+					weather.setLow(Integer.valueOf(forecastDatas[i].getTempLow()));
+					weather.setWeatherCityCode(cityCode);
+					weather.setWeatherType(forecastDatas[i].getDescription());
+					weather.setWind(getWindByStr(forecastDatas[i].getPrediction()));
+					weather.setIcon(getIcon(forecastDatas[i].getImage()));
+					weather.setNight(forecastDatas[i].isIsNight());
+					weather.setIssuetime(MfTime.toNow());
+					weatherList.add(weather);
+				}
 		} catch (RemoteException e) {
 			if(no < 3){
 				loadWDbyCityCode(cityCode,weatherList,no++);
