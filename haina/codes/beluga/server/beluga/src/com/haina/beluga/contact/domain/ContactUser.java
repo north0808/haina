@@ -272,7 +272,7 @@ public class ContactUser extends VersionalModel {
 	 * @return
 	 */
 	public boolean isValid() {
-		return (!this.isNew() && this.getValidFlag());
+		return (!this.isNew() && this.getValidFlag()!=null && this.getValidFlag());
 	}
 	
 	/**
@@ -280,7 +280,7 @@ public class ContactUser extends VersionalModel {
 	 * @return
 	 */
 	public boolean isOnline() {
-		return (!this.isNew() && this.getValidFlag() 
+		return (!this.isNew() && this.getValidFlag()!=null && this.getValidFlag() 
 				&& this.getUserStatus().equals(ContactUser.USER_STATUS_ONLINE));
 	}
 	
@@ -289,7 +289,7 @@ public class ContactUser extends VersionalModel {
 	 * @return
 	 */
 	public boolean isOffline() {
-		return (!this.isNew() && this.getValidFlag() 
+		return (!this.isNew() && this.getValidFlag()!=null && this.getValidFlag() 
 				&& this.getUserStatus().equals(ContactUser.USER_STATUS_OFFLINE));
 	}
 	
