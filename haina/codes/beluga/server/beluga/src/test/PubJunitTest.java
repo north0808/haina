@@ -11,9 +11,9 @@ import org.springframework.orm.hibernate3.SessionFactoryUtils;
 import org.springframework.orm.hibernate3.SessionHolder;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
+import com.haina.beluga.contact.service.IWeatherService;
+import com.haina.beluga.contact.service.WeatherService;
 import com.haina.beluga.log.service.LogService;
-import com.haina.beluga.service.IWeatherService;
-import com.haina.beluga.service.WeatherService;
 
 public class PubJunitTest  extends TestCase
 {

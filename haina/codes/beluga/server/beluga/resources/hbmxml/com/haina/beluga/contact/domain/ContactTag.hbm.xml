@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping
+
+>
+
+    <class
+            name="com.haina.beluga.contact.domain.ContactTag"
+            table="ContactTag"
+            optimistic-lock="version"
+    >
+
+        <cache 
+            usage="read-write"
+        />
+
+    <id
+        name="id"
+                type="string"
+            length="32"
+            unsaved-value="null"
+    >
+
+            <column
+                name="id" 
+                sql-type="char(32)"
+            />
+
+    <generator
+        class="uuid.hex"
+    >
+
+    </generator>
+
+    </id>
+
+        <version
+            name="version"
+            column="version"
+            type="long"
+        />
+
+        <property
+            name="name"
+                    type="java.lang.String"
+                    column="name"
+                length="64"
+                not-null="true"
+        >
+
+        </property>
+
+        <property
+            name="logo"
+                    type="java.lang.String"
+                    column="logo"
+                length="128"
+                not-null="true"
+        >
+
+        </property>
+
+        <property
+            name="createTime"
+                    type="java.util.Date"
+                not-null="true"
+        >
+
+            <column
+                name="createTime" 
+                sql-type="timestamp"
+            />
+
+        </property>
+
+        <property
+            name="tagOrder"
+                    type="java.lang.Integer"
+                    column="tagOrder"
+                not-null="true"
+        >
+
+        </property>
+
+        <property
+            name="deleteFlag"
+                    type="java.lang.Boolean"
+                    column="deleteFlag"
+                not-null="true"
+        >
+
+        </property>
+
+        <many-to-one
+            name="contactUser"
+                not-null="true"
+                cascade="save-update"
+                outer-join="true"
+                insert="true"
+                update="false"
+                lazy="false"
+        >
+
+            <column
+                name="createUser" 
+                sql-type="char(32)"
+            />
+
+        </many-to-one>
+
+        <property
+            name="remark"
+                    type="java.lang.String"
+                    column="remark"
+                length="2000"
+        >
+
+        </property>
+
+    </class>    
+
+</hibernate-mapping>
+
