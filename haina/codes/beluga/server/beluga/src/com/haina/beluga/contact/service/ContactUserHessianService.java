@@ -246,7 +246,7 @@ public class ContactUserHessianService extends BaseSerivce<IContactUserDao,Conta
 		HessianRemoteReturning ret=new HessianRemoteReturning();
 		ContactUser user=contactUser;
 		int result=0;
-		if(null!=user && user.isOnline()) {
+		if(null!=user && user.isValid()) {
 			result=this.getBaseDao().editToOffline(contactUser.getLoginName());
 		}
 		if(result<1) {
@@ -310,7 +310,7 @@ public class ContactUserHessianService extends BaseSerivce<IContactUserDao,Conta
 	public HessianRemoteReturning addContactUserLoginNumber(ContactUser contactUser) {
 		HessianRemoteReturning ret=new HessianRemoteReturning();
 		ContactUser user=contactUser;
-		if(null!=user && user.isOnline()) {
+		if(null!=user && user.isValid()) {
 			user.setLoginNumber(user.getLoginNumber()!=null ? user.getLoginNumber()+1 : 1);
 			this.getBaseDao().update(user);
 		}
