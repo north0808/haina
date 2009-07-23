@@ -177,14 +177,14 @@
             </key>          
 
             <one-to-many
-                class="com.haina.beluga.domain.ContactTag"
+                class="com.haina.beluga.contact.domain.ContactTag"
             />
 
         </set>
 
         <one-to-one
             name="userProfile"
-            class="com.haina.beluga.domain.UserProfile"
+            class="com.haina.beluga.contact.domain.UserProfile"
             cascade="all"
             constrained="false"
             property-ref="contactUser"
@@ -209,7 +209,7 @@
             </key>          
 
             <one-to-many
-                class="com.haina.beluga.domain.UserProfileExt"
+                class="com.haina.beluga.contact.domain.UserProfileExt"
             />
 
         </set>

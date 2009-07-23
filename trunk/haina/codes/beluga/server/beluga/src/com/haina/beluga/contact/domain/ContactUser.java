@@ -218,7 +218,7 @@ public class ContactUser extends VersionalModel {
 	 * 用户的联系人标签。<br/>
 	 * @hibernate.set name="contactTags" table="ContactTag" lazy="true" outer-join="false" inverse="false" cascade="all" order-by="tagOrder"
 	 * @hibernate.key column="createUser"
-	 * @hibernate.one-to-many class="com.haina.beluga.domain.ContactTag"
+	 * @hibernate.one-to-many class="com.haina.beluga.contact.domain.ContactTag"
 	 * @return
 	 */
 	public Set<ContactTag> getContactTags() {
@@ -230,7 +230,7 @@ public class ContactUser extends VersionalModel {
 	}
 	
 	/**
-	 * @hibernate.one-to-one name="userProfile" class="com.haina.beluga.domain.UserProfile" property-ref="contactUser" cascade="all" constrained="false"
+	 * @hibernate.one-to-one name="userProfile" class="com.haina.beluga.contact.domain.UserProfile" property-ref="contactUser" cascade="all" constrained="false"
 	 * @return
 	 */
 	public UserProfile getUserProfile() {
@@ -244,7 +244,7 @@ public class ContactUser extends VersionalModel {
 	/**
 	 * @hibernate.set name="userProfileExts" table="UserProfileExt" lazy="true" outer-join="false" inverse="false" cascade="all" order-by="commKey"
 	 * @hibernate.key column="userId"
-	 * @hibernate.one-to-many class="com.haina.beluga.domain.UserProfileExt"
+	 * @hibernate.one-to-many class="com.haina.beluga.contact.domain.UserProfileExt"
 	 * @return
 	 */
 	public Set<UserProfileExt> getUserProfileExts() {
