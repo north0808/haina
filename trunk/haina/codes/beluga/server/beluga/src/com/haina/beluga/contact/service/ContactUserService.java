@@ -188,7 +188,7 @@ public class ContactUserService extends BaseSerivce<IContactUserDao,ContactUser,
 	@Override
 	public ContactUser editContactUserToOffline(ContactUser contactUser) {
 		ContactUser user=contactUser;
-		if(null!=user && user.isOnline()) {
+		if(null!=user && user.isValid()) {
 			user.setUserStatus(ContactUser.USER_STATUS_OFFLINE);
 		}
 		this.getBaseDao().update(user);
@@ -234,7 +234,7 @@ public class ContactUserService extends BaseSerivce<IContactUserDao,ContactUser,
 	@Override
 	public ContactUser addContactUserLoginNumber(ContactUser contactUser) {
 		ContactUser user=contactUser;
-		if(null!=user && user.isOnline()) {
+		if(null!=user && user.isValid()) {
 			user.setLoginNumber(user.getLoginNumber()!=null ? user.getLoginNumber()+1 : 1);
 			this.getBaseDao().update(user);
 		}
