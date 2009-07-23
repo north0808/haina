@@ -11,12 +11,12 @@ import org.springframework.orm.hibernate3.SessionFactoryUtils;
 import org.springframework.orm.hibernate3.SessionHolder;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
-import com.haina.beluga.dao.PhoneDistrictDao;
+import com.haina.beluga.contact.dao.PhoneDistrictDao;
+import com.haina.beluga.contact.service.IPhoneDistrictService;
+import com.haina.beluga.contact.service.IWeatherService;
+import com.haina.beluga.contact.service.PhoneDistrictService;
+import com.haina.beluga.contact.service.WeatherService;
 import com.haina.beluga.log.service.LogService;
-import com.haina.beluga.service.IPhoneDistrictService;
-import com.haina.beluga.service.IWeatherService;
-import com.haina.beluga.service.PhoneDistrictService;
-import com.haina.beluga.service.WeatherService;
 import com.haina.beluga.webservice.PriService;
 
 /**
@@ -113,11 +113,12 @@ public class LogDaoTest extends TestCase
 //    	getPhoneDistrictDao().getModels();
 //    	HessianRemoteReturning hess  =  getPhoneDistrictService().getOrUpdatePhoneDistricts(2);
 //    		System.out.println(hess);
-//    	for(int i = 0 ; i < 10; i++)
-    	 String[] s= getPhoneDistrictDao().getWeatherCityCodes();
-    	System.out.println(s.length);
-    	 String[] s1= getPhoneDistrictDao().getWeatherCityCodes();
-     	System.out.println(s1.length);
+    	for(int i = 0 ; i < 10000; i++)
+    		System.out.println(i);
+//    	 String[] s= getPhoneDistrictDao().getWeatherCityCodes();
+//    	System.out.println(s.length);
+//    	 String[] s1= getPhoneDistrictDao().getWeatherCityCodes();
+//     	System.out.println(s1.length);
     }
     protected void sestUp() throws Exception
     {

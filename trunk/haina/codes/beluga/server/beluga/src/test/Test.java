@@ -12,9 +12,10 @@ public class Test {
 //		MicroHessianOutput mh = new MicroHessianOutput(out);
 //		String s = "sfsd：!@#$%*(&)*()_)(_(" ;
 //		mh.writeString(s);
-		int i = -67;
-		int x = i<<5;
-		System.out.println(Byte.MAX_VALUE);
+		long x = System.currentTimeMillis();
+//		for(int i = 0 ; i < 1000000; i++)
+//			System.out.println(i);
+//			System.out.println(System.currentTimeMillis()-x);
 //		System.out.println(s.length());
 //		System.out.println(s.getBytes("utf-8").length);
 		} 

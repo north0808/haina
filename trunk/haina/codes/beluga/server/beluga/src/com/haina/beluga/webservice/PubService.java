@@ -3,9 +3,9 @@ package com.haina.beluga.webservice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.haina.beluga.service.IIMService;
-import com.haina.beluga.service.IPhoneDistrictService;
-import com.haina.beluga.service.IWeatherService;
+import com.haina.beluga.contact.service.IIMService;
+import com.haina.beluga.contact.service.IPhoneDistrictService;
+import com.haina.beluga.contact.service.IWeatherService;
 import com.haina.beluga.webservice.data.hessian.HessianRemoteReturning;
 
 

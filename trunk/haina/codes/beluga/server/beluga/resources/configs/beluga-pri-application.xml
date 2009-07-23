@@ -11,7 +11,7 @@
 
 
 	<bean id="authenticationService"
-		class="com.haina.beluga.service.AuthenticationService">
+		class="com.haina.beluga.contact.service.AuthenticationService">
 		<property name="proxyLoginUrl">
 			<value>http://localhost:8080/shield/r/s?call=proxyLogin</value>
 		</property>
@@ -36,7 +36,7 @@
 	</bean>
 	
 	<bean id="passportService"
-		class="com.haina.beluga.service.PassportService">
+		class="com.haina.beluga.contact.service.PassportService">
 		<property name="loginExpiry">
 			<value>604800000</value>
 		</property>

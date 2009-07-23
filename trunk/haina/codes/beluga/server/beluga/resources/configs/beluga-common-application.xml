@@ -73,7 +73,7 @@
 			advice-ref="belugaAdvice"/>  
 			应用系统(App)事务拦截 -->
 		<aop:advisor
-			pointcut="execution(* com.haina.beluga.service.*.*(..))"
+			pointcut="execution(* com.haina.beluga.*.service.*.*(..))"
 			advice-ref="belugaAdvice" />
 	</aop:config>
 

@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping
+
+>
+
+    <class
+            name="com.haina.beluga.contact.domain.ContactUser"
+            table="ContactUser"
+            optimistic-lock="version"
+    >
+
+        <cache 
+            usage="read-write"
+        />
+
+    <id
+        name="id"
+                type="java.lang.String"
+            length="32"
+            unsaved-value="null"
+    >
+
+            <column
+                name="id" 
+                sql-type="char(32)"
+            />
+
+    <generator
+        class="uuid.hex"
+    >
+
+    </generator>
+
+    </id>
+
+        <version
+            name="version"
+            column="version"
+            type="long"
+        />
+
+        <property
+            name="loginName"
+                    type="java.lang.String"
+                    column="loginName"
+                length="64"
+                not-null="true"
+                unique="true"
+        >
+
+        </property>
+
+        <property
+            name="password"
+                    type="string"
+                    column="password"
+                length="256"
+                not-null="true"
+        >
+
+        </property>
+
+        <property
+            name="userStatus"
+                    type="integer"
+                    column="userStatus"
+                not-null="true"
+        >
+
+        </property>
+
+        <property
+            name="registerTime"
+                    type="timestamp"
+                not-null="true"
+        >
+
+            <column
+                name="registerTime" 
+                sql-type="timestamp"
+            />
+
+        </property>
+
+        <property
+            name="mobile"
+                    type="java.lang.String"
+                    column="mobile"
+                length="64"
+                not-null="true"
+                unique="true"
+        >
+
+        </property>
+
+        <property
+            name="lastLoginTime"
+                    type="timestamp"
+        >
+
+            <column
+                name="lastLoginTime" 
+                sql-type="timestamp"
+            />
+
+        </property>
+
+        <property
+            name="lastUpdateTime"
+                    type="timestamp"
+        >
+
+            <column
+                name="lastUpdateTime" 
+                sql-type="timestamp"
+            />
+
+        </property>
+
+        <property
+            name="loginNumber"
+        >
+
+            <column
+                name="loginNumber" 
+                sql-type="int default 0"
+            />
+
+        </property>
+
+        <property
+            name="lastLoginIp"
+                    type="java.lang.String"
+                    column="lastLoginIp"
+                length="64"
+        >
+
+        </property>
+
+        <property
+            name="validFlag"
+                    type="java.lang.Boolean"
+                    column="validFlag"
+                not-null="true"
+        >
+
+        </property>
+
+        <property
+            name="description"
+                    type="java.lang.String"
+                    column="description"
+                length="2000"
+        >
+
+        </property>
+
+        <set
+            name="contactTags"
+            table="ContactTag"
+            lazy="true"
+            inverse="false"
+            cascade="all"
+            order-by="tagOrder"
+            outer-join="false"
+        >
+
+            <key
+                column="createUser"
+            >
+
+            </key>          
+
+            <one-to-many
+                class="com.haina.beluga.domain.ContactTag"
+            />
+
+        </set>
+
+        <one-to-one
+            name="userProfile"
+            class="com.haina.beluga.domain.UserProfile"
+            cascade="all"
+            constrained="false"
+            property-ref="contactUser"
+        >
+
+        </one-to-one>
+
+        <set
+            name="userProfileExts"
+            table="UserProfileExt"
+            lazy="true"
+            inverse="false"
+            cascade="all"
+            order-by="commKey"
+            outer-join="false"
+        >
+
+            <key
+                column="userId"
+            >
+
+            </key>          
+
+            <one-to-many
+                class="com.haina.beluga.domain.UserProfileExt"
+            />
+
+        </set>
+
+        <property
+            name="remark"
+                    type="java.lang.String"
+                    column="remark"
+                length="2000"
+        >
+
+        </property>
+
+    </class>    
+
+</hibernate-mapping>
+

@@ -10,10 +10,10 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.haina.beluga.domain.ContactUser;
-import com.haina.beluga.service.IContactUserHessianService;
-import com.haina.beluga.service.IPassportService;
-import com.haina.beluga.service.LoginPassport;
+import com.haina.beluga.contact.domain.ContactUser;
+import com.haina.beluga.contact.service.IContactUserHessianService;
+import com.haina.beluga.contact.service.IPassportService;
+import com.haina.beluga.contact.service.LoginPassport;
 import com.haina.beluga.webservice.data.hessian.HessianRemoteReturning;
 import com.haina.core.util.DESUtil;
 import com.haina.core.util.StringUtils;
