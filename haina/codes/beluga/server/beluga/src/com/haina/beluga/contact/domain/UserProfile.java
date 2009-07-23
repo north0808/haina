@@ -255,7 +255,7 @@ public class UserProfile extends VersionalModel {
 	}
 
 	/**
-	 * @hibernate.many-to-one name="contactUser" cascade="save-update" class="com.haina.beluga.domain.ContactUser" unique="true"
+	 * @hibernate.many-to-one name="contactUser" cascade="save-update" class="com.haina.beluga.contact.domain.ContactUser" unique="true"
 	 * @hibernate.column name="userId" sql-type="char(32)" not-null="true"
 	 * @return
 	 */
@@ -279,7 +279,7 @@ public class UserProfile extends VersionalModel {
 	}
 
 	/**
-	 * @hibernate.property type="com.haina.beluga.domain.enumerate.SexEnumHibernateType"
+	 * @hibernate.property type="com.haina.beluga.contact.domain.enumerate.SexEnumHibernateType"
 	 * @hibernate.column name="sex" sql-type="smallint"
 	 */
 	public SexEnum getSex() {

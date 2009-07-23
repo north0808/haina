@@ -183,7 +183,7 @@
 
         <many-to-one
             name="contactUser"
-                    class="com.haina.beluga.domain.ContactUser"
+                    class="com.haina.beluga.contact.domain.ContactUser"
                 unique="true"
                 cascade="save-update"
         >
@@ -207,7 +207,7 @@
 
         <property
             name="sex"
-                    type="com.haina.beluga.domain.enumerate.SexEnumHibernateType"
+                    type="com.haina.beluga.contact.domain.enumerate.SexEnumHibernateType"
         >
 
             <column
