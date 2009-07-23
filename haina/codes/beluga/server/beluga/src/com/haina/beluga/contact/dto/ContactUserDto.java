@@ -60,7 +60,7 @@ public class ContactUserDto implements IDto {
 	
 	private String imPref;
 	
-	/*个性文件。*/
+	/*个性铃声文件。*/
 	private byte[] ring;
 	
 	/*组织名称。*/
