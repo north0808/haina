@@ -268,6 +268,14 @@ public class ContactUser extends VersionalModel {
 	}
 
 	/**
+	 * 是否有效。<br/>
+	 * @return
+	 */
+	public boolean isValid() {
+		return (!this.isNew() && this.getValidFlag());
+	}
+	
+	/**
 	 * 是否在线。<br/>
 	 * @return
 	 */
